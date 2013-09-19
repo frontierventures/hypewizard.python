@@ -29,7 +29,13 @@
     <div id="wrap">
         <t:transparent t:render="header" />            
         <div id="push"></div>
-        <t:transparent t:render="details" />            
+        <div class="row container-fluid">
+            <div class="span6">
+                <t:transparent t:render="twitter_summary" />            
+            </div>
+            <div class="span6">
+            </div>
+        </div>
         <div id="push"></div>
     </div>
     <t:transparent t:render="footer" />            

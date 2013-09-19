@@ -42,6 +42,10 @@ class Account(Page):
         self.pageTitle = pageTitle
 
     @renderer
+    def twitter_summary(self, request, tag):
+        return elements.TwitterSummary(self.session_user)
+
+    @renderer
     def details(self, request, tag):
         return account.Details(self.session_user)
 
@@ -62,7 +66,7 @@ class Ask(Page):
 
     @renderer
     def create_ask_popup(self, request, tag):
-        return popups.CreateAsk()
+        return popups.CreateAsk(self.session_user)
 
 
 class Bid(Page):
@@ -128,6 +132,14 @@ class Market(Page):
     @renderer
     def orders(self, request, tag):
         return market.Market(self.session_user, self.filters)
+
+    @renderer
+    def create_ask_popup(self, request, tag):
+        return popups.CreateAsk(self.session_user)
+
+    @renderer
+    def create_bid_popup(self, request, tag):
+        return popups.CreateBid()
 
     @renderer
     def feature_disabled_popup(self, request, tag):

@@ -11,8 +11,9 @@ import twitter_api
 
 
 class CreateAsk(Element):
-    def __init__(self):
+    def __init__(self, session_user):
         self.loader = XMLString(FilePath(templates['create_ask']).getContent())
+        self.session_user = session_user
 
     @renderer
     def form(self, request, tag):
@@ -34,6 +35,38 @@ class CreateAsk(Element):
                 newTag(selected='yes')
             yield newTag
 
+    @renderer
+    def niche_option(self, request, tag):
+        for key in definitions.niches.keys(): 
+            thisTagShouldBeSelected = False
+            #if key == propertyStatus:
+            #    thisTagShouldBeSelected = True
+
+            slots = {}
+            slots['value'] = key
+            slots['caption'] = definitions.niches[key]
+            newTag = tag.clone().fillSlots(**slots)
+            if thisTagShouldBeSelected:
+                newTag(selected='yes')
+            yield newTag
+
+    @renderer
+    def twitter_status_option(self, request, tag):
+        twitter_statuses = twitter_api.get_statuses(self.session_user['twitter_name'])
+
+        for twitter_status in twitter_statuses: 
+            thisTagShouldBeSelected = False
+            #if key == propertyStatus:
+            #    thisTagShouldBeSelected = True
+
+            slots = {}
+            slots['value'] = str(twitter_status.id)
+            slots['caption'] =  twitter_status.text.encode('utf-8')
+            newTag = tag.clone().fillSlots(**slots)
+            if thisTagShouldBeSelected:
+                newTag(selected='yes')
+            yield newTag
+
 
 class CreateBid(Element):
     def __init__(self):
@@ -43,6 +76,36 @@ class CreateBid(Element):
     def form(self, request, tag):
         slots = {}
         yield tag.clone().fillSlots(**slots)
+
+    @renderer
+    def niche_option(self, request, tag):
+        for key in definitions.niches.keys(): 
+            thisTagShouldBeSelected = False
+            #if key == propertyStatus:
+            #    thisTagShouldBeSelected = True
+
+            slots = {}
+            slots['value'] = key
+            slots['caption'] = definitions.niches[key]
+            newTag = tag.clone().fillSlots(**slots)
+            if thisTagShouldBeSelected:
+                newTag(selected='yes')
+            yield newTag
+
+    @renderer
+    def campaign_type_option(self, request, tag):
+        for key in definitions.campaign_types.keys(): 
+            thisTagShouldBeSelected = False
+            #if key == propertyStatus:
+            #    thisTagShouldBeSelected = True
+
+            slots = {}
+            slots['value'] = key
+            slots['caption'] = definitions.campaign_types[key]
+            newTag = tag.clone().fillSlots(**slots)
+            if thisTagShouldBeSelected:
+                newTag(selected='yes')
+            yield newTag
 
 
 class EngageClient(Element):

@@ -36,7 +36,7 @@ $(document).ready(function(){
                     $.colorbox.resize();
                 } else {
                     $.colorbox.close();
-                    window.location = '../ask'; 
+                    window.location = '../'; 
                 }
             }     
         });

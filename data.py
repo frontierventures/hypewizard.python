@@ -37,6 +37,7 @@ class Ask(Base):
     buyer_id = Column(Integer)
     cost = Column(String)
     campaign_type = Column(String)
+    niche = Column(String)
 
     def __init__(self, data):
         self.status = data['status']
@@ -48,6 +49,7 @@ class Ask(Base):
         self.buyer_id = data['buyer_id']
         self.cost = data['cost']
         self.campaign_type = data['campaign_type']
+        self.niche = data['niche']
 
 
 class Bid(Base):
@@ -62,6 +64,7 @@ class Bid(Base):
     buyer_id = Column(Integer)
     cost = Column(String)
     campaign_type = Column(String)
+    niche = Column(String)
 
     def __init__(self, data):
         self.status = data['status']
@@ -73,6 +76,8 @@ class Bid(Base):
         self.buyer_id = data['buyer_id']
         self.cost = data['cost']
         self.campaign_type = data['campaign_type']
+        self.niche = data['niche']
+
 
 
 class Log(Base):

@@ -2,13 +2,29 @@
     <form name="create_bid_form" action="../create_bid" method="POST" enctype="application/x-www-form-urlencoded" t:render="form">
         <input type="hidden" name="status_id" />
         <div>
-            <h1>Place Bid</h1>
+            <h1>Create Bid</h1>
             <div id="create_bid_alert">
             </div>
             <div>
                 <input type="text" placeholder="Price Per Retweet" name="price_per_retweet"/>
             </div>
-            <button name="button" value="Submit" class="btn btn-large btn-primary" type="submit">Put on Market</button>
+            <div>
+                <select name="niche">
+                    <option t:render="niche_option">
+                        <t:attr name="value"><t:slot name="value" /></t:attr>
+                        <t:slot name="caption" />
+                    </option>
+                </select>
+            </div>
+            <div>
+                <select name="campaign_type">
+                    <option t:render="campaign_type_option">
+                        <t:attr name="value"><t:slot name="value" /></t:attr>
+                        <t:slot name="caption" />
+                    </option>
+                </select>
+            </div>
+            <button name="button" value="Submit" class="btn btn-large btn-primary" type="submit">Place on Market</button>
         </div>
     </form>
 </div>

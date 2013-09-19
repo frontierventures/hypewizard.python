@@ -11,8 +11,6 @@
                 <ul class="nav">
                     <li class="active"><a href="../account">Account</a></li>
                     <li><a href="../transactions">Transactions</a></li>
-                    <li><a href="../ask">Ask</a></li>
-                    <li><a href="../bid">Bid</a></li>
                     <li><a href="../faq">FAQ</a></li>
                     <li><a href="../logout">Logout</a></li>
                 </ul>

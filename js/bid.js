@@ -35,7 +35,7 @@ $(document).ready(function(){
                     $.colorbox.resize();
                 } else {
                     $.colorbox.close();
-                    window.location = '../bid'; 
+                    window.location = '../'; 
                 }
             }     
         });

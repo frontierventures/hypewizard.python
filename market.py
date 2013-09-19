@@ -40,3 +40,17 @@ class Market(Element):
 
         template = 'templates/elements/market.xml'
         self.loader = XMLString(FilePath(template).getContent())
+
+    @renderer
+    def view(self, request, tag):
+
+        slots = {}
+        slots['url1'] = '../feature_disabled?reason=not_authorized'
+        slots['url2'] = '../feature_disabled?reason=not_authorized'
+
+        if self.session_user['id'] != 0:
+            slots['url1'] = '../process_ask?action=create' 
+            slots['url2'] = '../process_bid?action=create' 
+        yield tag.clone().fillSlots(**slots) 
+
+

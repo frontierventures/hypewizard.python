@@ -2,12 +2,28 @@
     <form name="create_ask_form" action="../create_ask" method="POST" enctype="application/x-www-form-urlencoded" t:render="form">
         <input type="hidden" name="status_id" />
         <div>
-            <h1>Place Ask</h1>
+            <h1>Create Ask</h1>
             <div id="create_ask_alert">
             </div>
             <div>
-                <label for="quantity">Pay per retweet:</label>
-                <input type="text" name="cost"/>
+                <select name="twitter_status_id">
+                    <option t:render="twitter_status_option">
+                        <t:attr name="value"><t:slot name="value" /></t:attr>
+                        <t:slot name="caption" />
+                    </option>
+                </select>
+            </div>
+            <div>
+                <label for="quantity">Price for retweet:</label>
+                <input type="text" name="price_per_retweet"/>
+            </div>
+            <div>
+                <select name="niche">
+                    <option t:render="niche_option">
+                        <t:attr name="value"><t:slot name="value" /></t:attr>
+                        <t:slot name="caption" />
+                    </option>
+                </select>
             </div>
             <div>
                 <select name="campaign_type">
@@ -17,7 +33,7 @@
                     </option>
                 </select>
             </div>
-            <button name="button" value="Submit" class="btn btn-large btn-primary" type="submit">Put on Market</button>
+            <button name="button" value="Submit" class="btn btn-large btn-primary" type="submit">Place on Market</button>
         </div>
     </form>
 </div>

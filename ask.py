@@ -96,16 +96,28 @@ class Process(Resource):
         response['error'] = False
         response['action'] = action
 
+
         if action == 'create':
             try:
-                status_id = int(request.args.get('status_id')[0])
+                twitter_status_id = int(request.args.get('status_id')[0])
                 print status_id
             except:
-                return redirectTo('../', request)
+                twitter_status_id = 0
 
             response['ask'] = {
-                    'status_id': str(status_id)
+                    'twitter_status_id': str(twitter_status_id)
                 } 
+
+        #if action == 'create':
+        #    try:
+        #        status_id = int(request.args.get('status_id')[0])
+        #        print status_id
+        #    except:
+        #        return redirectTo('../', request)
+
+        #    response['ask'] = {
+        #            'status_id': str(status_id)
+        #        } 
 
         print response
 
@@ -146,13 +158,15 @@ class Create(Resource):
         session_user = SessionManager(request).get_session_user()
         session_user['action'] = 'save_order'
         
-        try:
-            status_id = int(request.args.get('status_id')[0])
-        except:
-            return redirectTo('../', request)
+        #try:
+        #    status_id = int(request.args.get('status_id')[0])
+        #except:
+        #    return redirectTo('../', request)
 
-        cost = request.args.get('cost')[0]
+        twitter_status_id = request.args.get('twitter_status_id')[0]
+        niche = request.args.get('niche')[0]
         campaign_type = request.args.get('campaign_type')[0]
+        price_per_retweet = request.args.get('price_per_retweet')[0]
         #campaign_type = request.args.get('campaign_type')[0]
         
         ## Handle quantity input
@@ -193,11 +207,12 @@ class Create(Resource):
             'create_timestamp': timestamp,
             'update_timestamp': timestamp,
             'twitter_name': session_user['twitter_name'],
-            'status_id': status_id,
+            'status_id': twitter_status_id,
             'seller_id': 0,
             'buyer_id': session_user['id'],
-            'cost': cost,
-            'campaign_type': campaign_type 
+            'cost': price_per_retweet,
+            'campaign_type': campaign_type, 
+            'niche': niche
         }
 
         new_ask = Ask(data)

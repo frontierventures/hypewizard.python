@@ -40,6 +40,39 @@ class Main(Resource):
         return renderElement(request, Page)
 
 
+class Table(Element):
+    def __init__(self, session_user, filters):
+        self.session_user = session_user
+        self.filters = filters
+
+        template = 'templates/elements/ask_details.xml'
+
+        self.loader = XMLString(FilePath(template).getContent())
+        self.statuses = twitter_api.get_statuses(self.session_user['twitter_name'])
+
+    @renderer
+    def row(self, request, tag):
+        for status in self.statuses:
+            slots = {}
+            slots['status_id'] = str(status.id)
+            slots['status_text'] = status.text.encode('utf-8')
+            self.status = status
+            yield tag.clone().fillSlots(**slots)
+
+    @renderer
+    def action(self, request, tag):
+        buttons = []
+        buttons.append({
+            'url': '../process_ask?action=create&status_id=%s' % self.status.id,
+            'caption': 'Start Re-tweet Campaign' 
+        })
+        for button in buttons:
+            slots = {}
+            slots['caption'] = button['caption']
+            slots['url'] = button['url']
+            yield tag.clone().fillSlots(**slots) 
+
+
 class Details(Element):
     def __init__(self, session_user):
         self.session_user = session_user
@@ -59,52 +92,3 @@ class Details(Element):
         slots['slot_twitter_name'] = self.profile.twitter_name
         slots['slot_twitter_followers_count'] = str(twitter_api.get_followers_count(self.profile.twitter_name))
         yield tag.clone().fillSlots(**slots)
-
-
-#class Details(Element):
-#    def __init__(self, session_user):
-#        self.session_user = session_user
-#
-#        self.lender = db.query(Profile).filter(Profile.id == session_user['id']).first()
-#        self.solicitor = db.query(Profile).filter(Profile.id == 1).first()
-#
-#        if session_user['status'] == 'verified':
-#            template = 'templates/elements/account0.xml'
-#        else:
-#            template = 'templates/elements/account1.xml'
-#
-#        self.loader = XMLString(FilePath(template).getContent())
-#
-#    @renderer
-#    def details(self, request, tag):
-#        locale.setlocale(locale.LC_ALL, 'en_CA.UTF-8')
-#
-#        price = db.query(Price).filter(Price.currencyId == 'USD').first()
-#
-#        lenderBalanceBTC = float(self.lender.balance) / float(price.last)
-#        solicitorBalanceBTC = float(self.solicitor.balance) / float(price.last)
-#
-#        slots = {}
-#        slots['htmlPaymentAddress'] = str(self.lender.bitcoinAddress) 
-#        slots['htmlAvailableBalanceFiat'] = str(self.solicitor.balance) 
-#        slots['htmlLoanBalanceFiat'] = str(self.lender.balance) 
-#
-#        slots['htmlAvailableBalanceBtc'] = str(solicitorBalanceBTC) 
-#        slots['htmlLoanBalanceBtc'] = str(lenderBalanceBTC) 
-#
-#        slots['htmlNextPaymentDate'] = str(config.convertTimestamp(float(config.create_timestamp())))
-#        slots['htmlReturnRate'] = str('0.85%') 
-#        yield tag.clone().fillSlots(**slots)
-#
-#    @renderer
-#    def transaction(self, request, tag):
-#        transactions = db.query(Transaction).filter(Transaction.userId == self.session_user['id'])
-#        transactions = transactions.filter(Transaction.status == 'complete')
-#        transactions = transactions.order_by(Transaction.create_timestamp.desc())
-#
-#        for transaction in transactions: 
-#            slots = {}
-#            slots['htmlContractName'] = 'Contract #%s' % str(transaction.id)
-#            slots['htmlContractUrl'] = '../files/contract-%s.pdf' % str(transaction.id)
-#            yield tag.clone().fillSlots(**slots)
-#

@@ -40,6 +40,8 @@ class GetAsks(Resource):
         for ask in asks: 
             order = {}
             order['id'] = ask.id
+            order['niche'] = definitions.niches[ask.niche]
+            order['campaign_type'] = definitions.campaign_types[ask.campaign_type]
             order['twitter_name'] = ask.twitter_name
             order['status_id'] = ask.status_id
             order['cost'] = ask.cost
@@ -68,6 +70,8 @@ class GetBids(Resource):
         for bid in bids: 
             order = {}
             order['id'] = bid.id
+            order['niche'] = definitions.niches[bid.niche]
+            order['campaign_type'] = definitions.campaign_types[bid.campaign_type]
             order['twitter_name'] = bid.twitter_name
             order['status_id'] = bid.status_id
             order['cost'] = bid.cost

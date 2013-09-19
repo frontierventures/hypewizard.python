@@ -136,7 +136,8 @@ class Create(Resource):
         session_user['action'] = 'create_bid'
         
         price_per_retweet = request.args.get('price_per_retweet')[0]
-        #campaign_type = request.args.get('campaign_type')[0]
+        campaign_type = request.args.get('campaign_type')[0]
+        niche = request.args.get('niche')[0]
         
         ## Handle quantity input
         #if not quantity:
@@ -180,7 +181,8 @@ class Create(Resource):
             'seller_id': session_user['id'] ,
             'buyer_id': 0,
             'cost': price_per_retweet,
-            'campaign_type': ''
+            'campaign_type': campaign_type, 
+            'niche': niche
         }
 
         new_bid = Bid(data)
