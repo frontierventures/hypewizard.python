@@ -1,0 +1,15 @@
+<div class="container" xmlns:t="http://twistedmatrix.com/ns/twisted.web.template/0.1">
+    <div style="width: 100%;">
+        <span style="float:left">
+            <h1 t:render="count"><t:slot name="transaction_status" /> Orders (<t:slot name="transaction_count" />)</h1>
+        </span>
+        <span style="float:right">
+            <select name="transaction_status" style="margin-top: 15px">
+                <option t:render="transaction_status">
+                    <t:attr name="value"><t:slot name="value" /></t:attr>
+                    <t:slot name="caption" />
+                </option>
+            </select>
+        </span>
+    </div>
+</div>

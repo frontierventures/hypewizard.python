@@ -47,7 +47,7 @@ function add_ask_to_market(rule, ask) {
     
     var action_url = '../feature_disabled?reason=not_authorized';
     if (rule != 'limit')
-        action_url = '../process_ask?action=fullfil&id=' + ask.id; 
+        action_url = '../process_ask?action=engage&id=' + ask.id; 
 
     $('.asks').append(
             '<tr>' + 
@@ -55,7 +55,7 @@ function add_ask_to_market(rule, ask) {
             '<td style="text-align:center"><a href="https://twitter.com/' + ask.twitter_name + '">' + ask.twitter_name + '</td>' +
             '<td style="text-align:center"><a href="https://twitter.com/' + ask.twitter_name + '/status/' + ask.status_id + '">' + ask.status_id + '</td>' +
             '<td style="text-align:center">' + ask.cost + '</td>' +
-            '<td style="text-align:center"><a href="' + action_url + '">Fullfil</a></td>' +
+            '<td style="text-align:center"><a href="' + action_url + '">Engage Client</a></td>' +
             '</tr>');
 };
 function add_bid_to_market(rule, bid) { 
@@ -82,6 +82,6 @@ function add_bid_to_market(rule, bid) {
             '<td style="text-align:center">' + user.statuses_count + '</td>' +
             '<td style="text-align:center">' + user.followers_count + '</td>' +
             '<td style="text-align:center">' + bid.cost + '</td>' +
-            '<td style="text-align:center"><a href="' + action_url + '">Engage</a></td>' +
+            '<td style="text-align:center"><a href="' + action_url + '">Engage Promoter</a></td>' +
             '</tr>');
 };

@@ -11,6 +11,7 @@ import forms
 import market
 import orders
 import popups
+import transactions
 
 
 class Page(Element):
@@ -136,6 +137,10 @@ class Market(Page):
     def engage_promoter_popup(self, request, tag):
         return popups.EngagePromoter(self.session_user)
 
+    @renderer
+    def engage_client_popup(self, request, tag):
+        return popups.EngageClient(self.session_user)
+
 
 class Orders(Page):
     def __init__(self, pageTitle, template, filters):
@@ -161,6 +166,16 @@ class Register(Page):
         return forms.Register(self.session_user, self.session_response)
 
 
+class Transactions(Page):
+    def __init__(self, pageTitle, template, filters):
+        Page.__init__(self, pageTitle, template)
+        self.filters = filters
+
+    @renderer
+    def transactions_table(self, request, tag):
+        return transactions.Table(self.session_user, self.filters)
+
+
 templates = {
         'account': 'templates/pages/account.xml',
         'ask': 'templates/pages/ask.xml',
@@ -171,5 +186,6 @@ templates = {
         'login': 'templates/pages/login.xml',
         'market': 'templates/pages/market.xml',
         'orders': 'templates/pages/orders.xml',
-        'register': 'templates/pages/register.xml'
+        'register': 'templates/pages/register.xml',
+        'transactions': 'templates/pages/transactions.xml'
     }

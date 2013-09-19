@@ -8,7 +8,7 @@ from sessions import SessionManager
 class Main(Resource):
     def render_GET(self, request):
         session = request.getSession()
-        SessionManager(request).clearSessionUser()
+        SessionManager(request).clear_session_user()
         SessionManager(request).clearSessionSearch()
         SessionManager(request).clearSessionProperty()
         SessionManager(request).clearSessionStore()

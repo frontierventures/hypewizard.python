@@ -45,6 +45,37 @@ class CreateBid(Element):
         yield tag.clone().fillSlots(**slots)
 
 
+class EngageClient(Element):
+    def __init__(self, session_user):
+        self.loader = XMLString(FilePath(templates['engage_client']).getContent())
+        self.session_user = session_user
+
+    @renderer
+    def form(self, request, tag):
+        slots = {}
+        yield tag.clone().fillSlots(**slots)
+
+    @renderer
+    def is_confirmed_option(self, request, tag):
+        choices = {
+            'yes': 'Yes',
+            'no': 'No'
+            }
+
+        for key in choices.keys(): 
+            thisTagShouldBeSelected = False
+            #if key == propertyStatus:
+            #    thisTagShouldBeSelected = True
+
+            slots = {}
+            slots['value'] = key 
+            slots['caption'] = choices[key] 
+            newTag = tag.clone().fillSlots(**slots)
+            if thisTagShouldBeSelected:
+                newTag(selected='yes')
+            yield newTag
+
+
 class EngagePromoter(Element):
     def __init__(self, session_user):
         self.loader = XMLString(FilePath(templates['engage_promoter']).getContent())
@@ -65,7 +96,7 @@ class EngagePromoter(Element):
             #    thisTagShouldBeSelected = True
 
             slots = {}
-            slots['value'] = twitter_status.id
+            slots['value'] = str(twitter_status.id)
             slots['caption'] =  twitter_status.text.encode('utf-8')
             newTag = tag.clone().fillSlots(**slots)
             if thisTagShouldBeSelected:
@@ -87,5 +118,6 @@ templates = {
         'create_ask': 'templates/popups/create_ask.xml',
         'create_bid': 'templates/popups/create_bid.xml',
         'feature_disabled': 'templates/popups/feature_disabled.xml',
+        'engage_client': 'templates/popups/engage_client.xml',
         'engage_promoter': 'templates/popups/engage_promoter.xml'
     }

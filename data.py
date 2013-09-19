@@ -137,6 +137,31 @@ class Profile(Base):
         self.niche = data['niche']
 
 
+class Transaction(Base):
+    __tablename__ = 'transactions'
+    id = Column(Integer, Sequence('transaction_id_seq'), primary_key=True)
+    status = Column(String)
+    create_timestamp = Column(String)
+    update_timestamp = Column(String)
+    client_twitter_name = Column(String)
+    promoter_twitter_name = Column(String)
+    twitter_status_id = Column(String)
+    client_id = Column(Integer)
+    promoter_id = Column(Integer)
+    charge = Column(String)
+
+    def __init__(self, data):
+        self.status = data['status']
+        self.create_timestamp = data['create_timestamp']
+        self.update_timestamp = data['update_timestamp']
+        self.client_twitter_name = data['client_twitter_name']
+        self.promoter_twitter_name = data['promoter_twitter_name']
+        self.twitter_status_id = data['twitter_status_id'] 
+        self.client_id = data['client_id']
+        self.promoter_id = data['promoter_id']
+        self.charge = data['charge']
+
+
 class User(Base):
     __tablename__ = 'users'
     id = Column(Integer, Sequence('user_id_seq'), primary_key=True)

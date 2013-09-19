@@ -1,7 +1,6 @@
 $(document).ready(function(){
     $('a[href*=process_ask]').colorbox({
         inline:true,           
-        onClosed: function() { window.location = '../offers?kind=' + offer_kind; },
         href: function() {              
             var APIurl = $(this).attr('href'); 
             $.ajax({
@@ -16,6 +15,10 @@ $(document).ready(function(){
             if (response.action == 'create') {
                 $('input[name=status_id]').val(response.ask.status_id);
                 return "#create_ask_popup";
+            }
+            if (response.action == 'engage') {
+                $('input[name=status_id]').val(response.ask.status_id);
+                return "#engage_client_popup";
             }
         }      
     });

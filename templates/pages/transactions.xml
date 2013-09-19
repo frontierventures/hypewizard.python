@@ -12,7 +12,7 @@
         <link href="css/colorbox.css" rel="stylesheet" />
         <style>
             body {
-                padding-top: 60px; /* 60px to make the container go all the way to the bottom of the topbar */
+            padding-top: 60px; /* 60px to make the container go all the way to the bottom of the topbar */
             }
         </style>
         <link href="css/bootstrap-responsive.css" rel="stylesheet" />
@@ -31,15 +31,10 @@
 <body>
     <div id="wrap">
         <t:transparent t:render="header" />            
-        <t:transparent t:render="orders" />            
+        <t:transparent t:render="transactions_table" />            
         <div id="push"></div>
     </div>
     <t:transparent t:render="footer" />            
-    <div style="display:none">
-        <t:transparent t:render="engage_client_popup" />
-        <t:transparent t:render="engage_promoter_popup" />
-        <t:transparent t:render="feature_disabled_popup" />
-    </div>
     <!-- Le javascript
     ================================================== -->
     <!-- Placed at the end of the document so the pages load faster -->
@@ -57,9 +52,6 @@
     <script type="text/javascript" src="js/bootstrap-collapse.js"></script>
     <script type="text/javascript" src="js/bootstrap-carousel.js"></script>
     <script type="text/javascript" src="js/bootstrap-typeahead.js"></script>
-    <script type="text/javascript" src="js/market.js"></script>
-    <script type="text/javascript" src="js/popups.js"></script>
-    <script type="text/javascript" src="js/bid.js"></script>
     <script type="text/javascript" src="js/ask.js"></script>
 </body>
 </html>

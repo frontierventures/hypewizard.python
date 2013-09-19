@@ -19,6 +19,7 @@ import market
 import orders
 import pages
 import register
+import transactions
 import sys
 from sessions import SessionManager
 
@@ -34,6 +35,7 @@ root = campaign.assemble(root)
 root = login.assemble(root)
 root = orders.assemble(root)
 root = register.assemble(root)
+root = transactions.assemble(root)
 
 root.putChild('', root)
 root.putChild('faq', faq.Main())

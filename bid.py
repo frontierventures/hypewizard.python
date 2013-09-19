@@ -97,6 +97,31 @@ class Process(Resource):
 
         response['error'] = False
         response['action'] = action
+
+        if action == 'create':
+            try:
+                twitter_status_id = int(request.args.get('status_id')[0])
+                print status_id
+            except:
+                twitter_status_id = 0
+
+            response['bid'] = {
+                    'twitter_status_id': str(twitter_status_id)
+                } 
+
+        print response
+
+        if action == 'engage':
+            try:
+                bid_id = int(request.args.get('id')[0])
+            except:
+                return redirectTo('../', request)
+
+            #bid = db.query(Bid).filter(Bid.id == bid_id).first()
+            response['bid'] = {
+                    'id': bid_id, 
+                } 
+            
         return json.dumps(response)
 
 

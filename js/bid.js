@@ -1,7 +1,6 @@
 $(document).ready(function(){
     $('a[href*=process_bid]').colorbox({
         inline:true,           
-        onClosed: function() { window.location = '../offers?kind=' + offer_kind; },
         href: function() {              
             var APIurl = $(this).attr('href'); 
             $.ajax({
@@ -15,6 +14,10 @@ $(document).ready(function(){
             });
             if (response.action == 'create') {
                 return "#create_bid_popup";
+            }
+            if (response.action == 'engage') {
+                $('input[name*=bid_id]').val(response.bid.id);
+                return "#engage_promoter_popup";
             }
         }      
     });
@@ -33,6 +36,26 @@ $(document).ready(function(){
                 } else {
                     $.colorbox.close();
                     window.location = '../bid'; 
+                }
+            }     
+        });
+        return false; 
+    }); 
+    $('form[name*=engage_promoter_form]').submit(function() { 
+        var response = {};
+        $.ajax({
+            data: $(this).serialize(),
+            type: $(this).attr('method'),
+            url: $(this).attr('action'),
+            dataType: 'json',
+            success: function(json) {
+                if (json.response == 0) {
+                    $('#create_transaction_alert').empty();
+                    $('#create_transaction_alert').append('<div class="alert alert-error" id="alert">' + json.text + '</div>');
+                    $.colorbox.resize();
+                } else {
+                    $.colorbox.close();
+                    window.location = '../transactions'; 
                 }
             }     
         });
