@@ -1,0 +1,5 @@
+<div xmlns:t="http://twistedmatrix.com/ns/twisted.web.template/0.1" t:render="twitter_info">
+    <h1>Re-Twitter Account Summary</h1>
+    <div><b>Market Score:</b> <t:slot name="market_score" /></div>
+    <div><a href="../process_bid?action=create">Create Bid</a></div>
+</div>

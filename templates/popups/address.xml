@@ -1,0 +1,95 @@
+<div id="addressPopup" class="colorbox-zone" xmlns:t="http://twistedmatrix.com/ns/twisted.web.template/0.1">
+    <div class="c12 inner-content">
+        <ul class="settings-list addnew-prod">
+            <form id="addAddressForm" action="../saveAddress" method="POST" enctype="application/x-www-form-urlencoded">
+                <input type="hidden" name="addressId" />
+                <li>
+                    <div class="c12">
+                        <div class="c8">
+                            <h1 class="c12">Add New Address</h1>
+                        </div>
+                    </div>
+                </li>
+                <li t:render="form">
+                    <div id="addressNotification">
+                    </div>
+                    <div class="c12">
+                        <div class="c5x">
+                            First name:
+                            <input type="text" name="buyerFirst" id="firstname">
+                                <t:attr name="value"><t:slot name="htmlBuyerFirst" /></t:attr>
+                            </input>
+                        </div>
+                        <div class="c5x">
+                            Last name:
+                            <input type="text" name="buyerLast" id="firstname2">
+                                <t:attr name="value"><t:slot name="htmlBuyerLast" /></t:attr>
+                            </input>
+                        </div>
+                    </div>
+                    <div class="c12">
+                        <div class="c5x">
+                            E-mail:
+                            <input type="text" name="buyerEmail" id="email">
+                                <t:attr name="value"><t:slot name="htmlBuyerEmail" /></t:attr>
+                            </input>
+                        </div>
+                        <div class="c5x">
+                            Phone:
+                            <input type="text" name="buyerPhone" placeholder="optional" id="phone">
+                                <t:attr name="value"><t:slot name="htmlBuyerPhone" /></t:attr>
+                            </input>
+                        </div>
+                    </div>
+                    <div class="c12">
+                        <div class="c5x">
+                            Address line 1:
+                            <input type="text" name="buyerAddress1" id="addr1">
+                                <t:attr name="value"><t:slot name="htmlBuyerAddress1" /></t:attr>
+                            </input>
+                        </div>
+                        <div class="c5x">
+                            City:
+                            <input type="text" name="buyerCity" id="city">
+                                <t:attr name="value"><t:slot name="htmlBuyerCity" /></t:attr>
+                            </input>
+                        </div>
+                    </div>
+                    <div class="c12">
+                        <div class="c5x">
+                            Address line 2:
+                            <input type="text" name="buyerAddress2" placeholder="optional" id="addr2">
+                                <t:attr name="value"><t:slot name="htmlBuyerAddress2" /></t:attr>
+                            </input>
+                        </div>
+                        <div class="c5x">
+                            State:
+                            <input type="text" name="buyerState" id="">
+                                <t:attr name="value"><t:slot name="htmlBuyerState" /></t:attr>
+                            </input>
+                        </div>
+                    </div>
+                    <div class="c12">
+                        <div class="c5x">
+                            Postal code:
+                            <input type="text" name="buyerZip" id="postalcode">
+                                <t:attr name="value"><t:slot name="htmlBuyerZip" /></t:attr>
+                            </input>
+                        </div>
+                        <div class="c5x">
+                            Country:
+                            <select name="buyerCountry"><option t:render="country">
+                                    <t:attr name="value"><t:slot name="inputValue" /></t:attr>
+                                    <t:slot name="inputCaption" />
+                            </option></select>
+                        </div>
+                    </div>
+                </li>
+                <li class="full center">
+                    <input name="button" class="button green medium" type="submit" value="Save Address"></input> 
+                </li>
+            </form>
+        </ul>
+    </div>
+</div>
+

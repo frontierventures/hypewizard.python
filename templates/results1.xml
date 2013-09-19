@@ -1,0 +1,29 @@
+<div class="grid w980" xmlns:t="http://twistedmatrix.com/ns/twisted.web.template/0.1">
+    <div class="content-full">
+
+        <h2>Search Results</h2>
+        <p t:render="count">We found <t:slot name="htmlProductCount" /> products.</p>
+
+        <ul class="c12 products">
+            <li style="height: 265px;" t:render="view">
+                <div style="height: 170px;">
+                    <a><t:attr name="href"><t:slot name="htmlProductUrl" /></t:attr>
+                        <img><t:attr name="src"><t:slot name="htmlProductImage" /></t:attr></img>
+                    </a>
+                </div>
+                <div style="height: 0px;">
+                    <a><t:attr name="href"><t:slot name="htmlProductUrl" /></t:attr>
+                        <h2><t:slot name="htmlProductName" /></h2>
+                    </a>
+                </div>
+                <div style="height: 0px;">
+                    <strong class="productPrice"><t:slot name="htmlProductPrice" /></strong>
+                    <span style=" padding-left: 10px; font-size: 12px; color: green;">
+                        <t:slot name="htmlProductPriceFiat" />
+                    </span>
+                </div>
+            </li>
+        </ul>
+        <t:transparent t:render="pagination" />
+    </div>
+</div>

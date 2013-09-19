@@ -1,0 +1,20 @@
+<div class="container" xmlns:t="http://twistedmatrix.com/ns/twisted.web.template/0.1" t:render="inputs">
+    <form class="form-addproperty" action="../addProperty" method="POST" enctype="application/x-www-form-urlencoded">
+        <h2 class="form-addproperty-heading">New Property</h2>
+        <div>
+            <select name="propertyStatus">
+                <option t:render="status">
+                    <t:attr name="value"><t:slot name="inputValue" /></t:attr>
+                    <t:slot name="inputCaption" />
+                </option>
+            </select>
+        </div>
+        <div><input type="hidden" name="propertyId"><t:attr name="value"><t:slot name="htmlPropertyId" /></t:attr></input></div>
+        <div><input type="text" name="propertyTitle" placeholder="Property title"><t:attr name="value"><t:slot name="htmlTitle" /></t:attr></input></div>
+        <div><textarea type="text" name="propertyDescription" placeholder="Property description" cols="30" rows="5"><t:slot name="htmlDescription" /></textarea></div>
+        <div><textarea type="text" name="propertyAddress" placeholder="Property address" cols="30" rows="5"><t:slot name="htmlAddress" /></textarea></div>
+        <div><input type="text" name="propertyTotalUnits" placeholder="Property total units"><t:attr name="value"><t:slot name="htmlTotalUnits" /></t:attr></input></div>
+        <div><input type="text" name="propertyAskingPrice" placeholder="Property asking price"><t:attr name="value"><t:slot name="htmlAskingPrice" /></t:attr></input></div>
+        <div><button name="button" value="Save" class="btn btn-large btn-primary" type="submit">Save Property</button></div>
+    </form>
+</div>

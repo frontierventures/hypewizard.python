@@ -1,0 +1,10 @@
+<div class="container" xmlns:t="http://twistedmatrix.com/ns/twisted.web.template/0.1" t:render="details">
+    <form class="form-signin" action="../buyProperty" method="POST" enctype="application/x-www-form-urlencoded">
+        <input type="hidden" name="propertyId"><t:attr name="value"><t:slot name="htmlPropertyId" /></t:attr></input>
+        <h2 class="form-signin-heading"><t:slot name="htmlTitle" /></h2>
+        <div><t:slot name="htmlDescription" /></div>
+        <div><t:slot name="htmlUnits" /></div>
+        <input type="text" name="propertyQuantity" placeholder="1"></input>
+        <button name="button" value="Buy" class="btn btn-large btn-primary" type="submit">Buy Units</button>
+    </form>
+</div>

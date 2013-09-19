@@ -1,0 +1,5 @@
+<div class="form-account" xmlns:t="http://twistedmatrix.com/ns/twisted.web.template/0.1" t:render="details">
+    <h1 class="form-account-heading">Account Details</h1>
+    <div><b>Twitter Name: </b><t:slot name="slot_twitter_name" /> <a href="../settings">Change</a></div>
+    <div><b>Twitter Followers Count: </b><t:slot name="slot_twitter_followers_count" /></div>
+</div>

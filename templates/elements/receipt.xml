@@ -1,0 +1,13 @@
+<div class="container" xmlns:t="http://twistedmatrix.com/ns/twisted.web.template/0.1">
+    <div class="form-receipt" xmlns:t="http://twistedmatrix.com/ns/twisted.web.template/0.1" t:render="details">
+        <h2 class="form-receipt-heading">Contract Finalized</h2>
+        <div style="text-align: center;">Please send</div>
+        <div style="text-align: center;"><b><t:slot name="htmlTotal" /> BTC</b></div>
+        <div style="text-align: center;">to</div>
+        <div style="text-align: center;"><b><t:slot name="htmlPaymentAddress" /></b></div>
+        <div style="text-align: center;">to complete this transaction.</div>
+        <div style="text-align: center;"><a><t:attr name="href"><t:slot name="htmlContractUrl" /></t:attr>Contract Copy</a></div>
+        <br />
+        <div style="text-align: center;">Thank you, Smart Property Group</div>
+    </div>
+</div>

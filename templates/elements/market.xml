@@ -1,0 +1,36 @@
+<div class="container" xmlns:t="http://twistedmatrix.com/ns/twisted.web.template/0.1">
+    <div style="width: 100%;">
+        <h1>Retweet Market</h1>
+    </div>
+    <div style="width: 100%;">
+        <h2>Asks (Retweet and earn or promote your tweets)</h2>
+        <table style="width: 100%">
+            <thead>
+                <tr>
+                    <th>Niche</th>
+                    <th>Twitter Name</th>
+                    <th>Status Id</th>
+                    <th>Pay per Retweet</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody class="asks">
+            </tbody>
+        </table>
+        <h2>Bids (Become a promoter or boost your campaign)</h2>
+        <table style="width: 100%">
+            <thead>
+                <tr>
+                    <th>Niche</th>
+                    <th>Twitter Name</th>
+                    <th>Statuses Count</th>
+                    <th>Followers Count</th>
+                    <th>Charge per Retweet</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody class="bids">
+            </tbody>
+        </table>
+    </div>
+</div>

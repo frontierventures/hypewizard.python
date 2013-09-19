@@ -1,0 +1,24 @@
+<div xmlns:t="http://twistedmatrix.com/ns/twisted.web.template/0.1" id="tabs" class="wfull option-choose">
+	<div class="grid w980">
+		<div class="c12">
+			<h1>Choose the option that fits you best:</h1>
+		</div>
+		<div class="c12">
+
+			<div class="s2 c4">
+                <a class="button orange big" href="../buyer">Create a buyer account!</a>
+				<h3>I just want to buy stuff</h3>
+				<p></p>
+			</div>
+			
+			<span class="betw">or</span>
+
+			<div class="c4">
+                <a class="button green big" href="../seller">Open your own store now!</a>
+				<h3>I want to sell products</h3>
+				<p></p>
+			</div>
+
+		</div>
+	</div>
+</div>

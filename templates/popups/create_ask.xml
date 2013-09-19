@@ -1,0 +1,23 @@
+<div id="create_ask_popup" style='padding:10px; background:#fff;' xmlns:t="http://twistedmatrix.com/ns/twisted.web.template/0.1">
+    <form name="create_ask_form" action="../create_ask" method="POST" enctype="application/x-www-form-urlencoded" t:render="form">
+        <input type="hidden" name="status_id" />
+        <div>
+            <h1>Place Ask</h1>
+            <div id="create_ask_alert">
+            </div>
+            <div>
+                <label for="quantity">Pay per retweet:</label>
+                <input type="text" name="cost"/>
+            </div>
+            <div>
+                <select name="campaign_type">
+                    <option t:render="campaign_type_option">
+                        <t:attr name="value"><t:slot name="value" /></t:attr>
+                        <t:slot name="caption" />
+                    </option>
+                </select>
+            </div>
+            <button name="button" value="Submit" class="btn btn-large btn-primary" type="submit">Put on Market</button>
+        </div>
+    </form>
+</div>

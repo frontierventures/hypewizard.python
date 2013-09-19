@@ -1,0 +1,16 @@
+<div class="wfull breadcrumbs" xmlns:t="http://twistedmatrix.com/ns/twisted.web.template/0.1" t:render="view">
+	<div class="grid w980">
+		<ul>
+			<li>
+                <a href="../">home</a>&#187;
+			</li>
+			<li>
+				<a href="#">shops</a>&#187;
+			</li>
+			<li>
+                <a class="active"><t:attr name="href"><t:slot name="htmlUrl" /></t:attr><t:slot name="htmlStorename" /></a>
+			</li>
+		</ul>
+	</div>
+</div>
+

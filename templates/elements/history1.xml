@@ -1,0 +1,37 @@
+<div class="container" xmlns:t="http://twistedmatrix.com/ns/twisted.web.template/0.1">
+    <div class="row" style="padding-bottom: 20px">
+        <span style="float:left">
+            <h1 t:render="count"><t:slot name="htmlTransactionStatus" /> Transactions (<t:slot name="htmlTransactionCount" />)</h1>
+        </span>
+        <span style="float:right">
+            <select name="transactionStatus" id="transactionStatus" style="margin-top: 15px">
+                <option t:render="transactionStatus">
+                    <t:attr name="value"><t:slot name="inputValue" /></t:attr>
+                    <t:slot name="inputCaption" />
+                </option>
+            </select>
+        </span>
+    </div>
+    <div>
+        <table style="width: 100%">
+            <thead>
+                <tr>
+                    <th>Create Timestamp</th>
+                    <th>Update Timestamp</th>
+                    <th>TransactionId</th>
+                    <th>Balance</th>
+                    <th>Bitcoin Address</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr t:render="row">
+                    <td style="text-align:center"><t:slot name="htmlTransactionCreateTimestamp" /></td>
+                    <td style="text-align:center"><t:slot name="htmlTransactionUpdateTimestamp" /></td>
+                    <td style="text-align:center"><t:slot name="htmlTransactionId" /></td>
+                    <td style="text-align:center"><t:slot name="htmlTransactionAmount" /></td>
+                    <td style="text-align:center"><t:slot name="htmlTransactionBitcoinAddress" /></td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>

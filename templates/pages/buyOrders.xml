@@ -1,0 +1,32 @@
+<html xmlns:t="http://twistedmatrix.com/ns/twisted.web.template/0.1">
+    <head>
+        <meta charset="utf-8" />
+        <title t:render="title"><t:slot name="htmlPageTitle" /></title>
+        <meta name="description" content="" />
+        <link rel="stylesheet" href="../styles/normalize.min.css" />
+        <link rel="stylesheet" href="../styles/main.css" />
+        <script type="text/javascript" src="../scripts/head.js"></script>
+        <script type="text/javascript" src="//use.typekit.net/uis4jqg.js"></script>
+        <script type="text/javascript" src="../scripts/typeKit.js"></script>
+    </head>
+    <body>
+        <div class="wfull headbg">
+            <t:transparent t:render="header" />            
+        </div>
+        <t:transparent t:render="orders" />            
+        <t:transparent t:render="footer" />            
+        <div style="display:none">
+            <t:transparent t:render="reviewOrderPopup" />
+            <t:transparent t:render="helpEscrowPopup" />
+        </div>
+        <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+        <script type="text/javascript" src="../scripts/windowJQuery.js"></script>
+        <script type="text/javascript" src="../scripts/jquery-ui.js"></script>
+        <script type="text/javascript" src="../scripts/jquery.bxslider.min.js"></script>
+        <script type="text/javascript" src="../scripts/main.js"></script>
+        <script type="text/javascript" src="../scripts/jquery.colorbox-min.js"></script>
+        <script type="text/javascript" src="../scripts/formReview.js"></script>"
+        <script type="text/javascript" src="../scripts/buyOrders.js"></script>"
+        <script type="text/javascript" src="../scripts/help.js"></script>"
+    </body>
+</html>

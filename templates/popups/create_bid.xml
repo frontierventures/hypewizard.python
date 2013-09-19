@@ -1,0 +1,14 @@
+<div id="create_bid_popup" style='padding:10px; background:#fff;' xmlns:t="http://twistedmatrix.com/ns/twisted.web.template/0.1">
+    <form name="create_bid_form" action="../create_bid" method="POST" enctype="application/x-www-form-urlencoded" t:render="form">
+        <input type="hidden" name="status_id" />
+        <div>
+            <h1>Place Bid</h1>
+            <div id="create_bid_alert">
+            </div>
+            <div>
+                <input type="text" placeholder="Price Per Retweet" name="price_per_retweet"/>
+            </div>
+            <button name="button" value="Submit" class="btn btn-large btn-primary" type="submit">Put on Market</button>
+        </div>
+    </form>
+</div>

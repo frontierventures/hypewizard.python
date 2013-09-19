@@ -1,0 +1,23 @@
+<div style="float: left; width: 100%;" xmlns:t="http://twistedmatrix.com/ns/twisted.web.template/0.1">
+    <div style="margin: 5px 0px 0px 50px;" class="c2x">
+        <ul class="sidebar-menu">
+            <t:transparent t:render="menu" />            
+        </ul>
+    </div>
+    <div class="content" style="overflow: hidden; padding: 0px 50px 0px 50px;">
+        <div style="float:left; width:100%; margin: 15px 0px 5px 0px;">
+            <div style="float: left; padding: 0px;">
+                <h1>My Products</h1>
+            </div>
+            <div style="float: right; padding: 0px 10px;" t:render="form">
+                <a class="button green medium addnew end">
+                    <t:attr name="href"><t:slot name="htmlUrl" /></t:attr>
+                    Add New Product<span>+</span>
+                </a>
+            </div>
+        </div>
+        <div class="search-no-products">
+            <h2>None Found</h2>
+        </div>
+    </div>
+</div>

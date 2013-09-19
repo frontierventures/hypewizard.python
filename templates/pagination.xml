@@ -1,0 +1,21 @@
+<ul class="pagination" xmlns:t="http://twistedmatrix.com/ns/twisted.web.template/0.1">
+    <li t:render='first'>
+        <a><t:attr name="href"><t:slot name="htmlPageUrl" /></t:attr>&#171;</a>
+	</li>
+    <li t:render='previous'>
+        <a><t:attr name="href"><t:slot name="htmlPageUrl" /></t:attr>&#8249;</a>
+	</li>
+	<li t:render="link">
+        <a>
+            <t:attr name="href"><t:slot name="htmlPageUrl" /></t:attr>
+            <t:attr name="class"><t:slot name="htmlClass" /></t:attr>
+            <t:slot name="htmlPageNumber" />
+        </a>
+	</li>
+    <li t:render='next'>
+        <a><t:attr name="href"><t:slot name="htmlPageUrl" /></t:attr>&#8250;</a>
+	</li>
+    <li t:render='last'>
+        <a><t:attr name="href"><t:slot name="htmlPageUrl" /></t:attr>&#187;</a>
+	</li>
+</ul>

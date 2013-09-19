@@ -1,0 +1,46 @@
+<div id="sendMessagePopup" class="colorbox-zone" xmlns:t="http://twistedmatrix.com/ns/twisted.web.template/0.1">
+    <div class="c12 inner-content">
+        <ul class="settings-list addnew-prod">
+            <form id="sendMessageForm" action="../sendMessage" method="POST" enctype="application/x-www-form-urlencoded" t:render="form">
+                <input type="hidden" name="messageReceiverId" />
+                <input type="hidden" name="messageSenderId" />
+                <li>
+                    <div class="c12">
+                        <h1 class="c12">New Message</h1>
+                    </div>
+                </li>
+                <li id="sendMessage">
+                    <div id="messageNotification">
+                    </div>
+                    <div class="c12">
+                        <div class="c2">
+                            <label for="name">Sender:</label>
+                        </div>
+                        <div class="c9">
+                            <div class="productText"><t:slot name="htmlSenderName" /></div>
+                        </div>
+                    </div>
+                    <div class="c12">
+                        <div class="c2">
+                            <label for="subject">Subject:</label>
+                        </div>
+                        <div class="c9">
+                            <input name="messageSubject" type="text" id="subject" />
+                        </div>
+                    </div>
+                    <div class="c12">
+                        <div class="c2">
+                            <label for="body">Body:</label>
+                        </div>
+                        <div class="c9">
+                            <textarea name="messageBody" id="body" cols="30" rows="10"></textarea>
+                        </div>
+                    </div>
+                    <div class="center">
+                        <input name="button" class="button green medium" type="submit" value="Send Message"></input>
+                    </div>
+                </li>
+            </form>
+        </ul>
+    </div>
+</div>

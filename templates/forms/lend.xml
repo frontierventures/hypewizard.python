@@ -1,0 +1,16 @@
+<div class="container" xmlns:t="http://twistedmatrix.com/ns/twisted.web.template/0.1" t:render="details">
+    <form class="form-lend" action="../lendAction" method="POST" enctype="application/x-www-form-urlencoded">
+        <div>
+            <t:transparent t:render="alert" />
+        </div>
+        <input type="hidden" name="last">
+            <t:attr name="value"><t:slot name="htmlLast" /></t:attr>
+        </input>
+        <h2 class="form-lend-heading">Loan Amount</h2>
+        <div><b>Maximum Amount (CAD):</b> <t:slot name="htmlMaximumAmountFiat" /></div>
+        <div><b>Maximum Amount (BTC):</b> <t:slot name="htmlMaximumAmountBtc" /></div>
+        <div id="rateFiat"><b>Loan Amount(CAD):</b> <input type="text" name="loanAmountFiat"></input></div>
+        <div id="rateBtc"><b>Loan Amount(BTC):</b> <input type="text" name="loanAmountBtc"></input></div>
+        <button name="button" value="Get Address" class="btn btn-large btn-primary" type="submit">Get Address</button>
+    </form>
+</div>

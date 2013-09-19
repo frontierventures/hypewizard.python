@@ -1,0 +1,18 @@
+<div class="container" xmlns:t="http://twistedmatrix.com/ns/twisted.web.template/0.1" t:render="form">
+    <form class="form-login" action="../authenticate" method="POST" enctype="application/x-www-form-urlencoded">
+        <h2 class="form-login-heading">Login Information</h2>
+        <div>
+            <t:transparent t:render="alert" />
+        </div>
+        <input type="text" class="input-block-level" placeholder="Email address" name="email">
+            <t:attr name="value"><t:slot name="htmlEmail" /></t:attr>
+        </input>
+        <input type="password" class="input-block-level" placeholder="Password" name="password">
+            <t:attr name="value"><t:slot name="htmlPassword" /></t:attr>
+        </input>
+        <label class="checkbox">
+            <input type="checkbox" value="remember-me" /> Remember Me
+        </label>
+        <button name="button" value="Login" class="btn btn-large btn-primary" type="submit">Sign In</button>
+    </form>
+</div>

@@ -1,0 +1,105 @@
+<div class="container" xmlns:t="http://twistedmatrix.com/ns/twisted.web.template/0.1" t:render="details">
+    <form class="form-contract" action="../contractAction" method="POST" enctype="application/x-www-form-urlencoded">
+        <h2 class="form-contract-heading">Loan Agreement</h2>
+        <div class="frame-contract">
+            <p><b>THIS LOAN AGREEMENT</b> made as of <b><t:slot name="htmlTransactionTimestamp" /></b></p> 
+            <p><p>between</p></p>
+            <p><b>BITCOIN REALTY MANAGEMENT LIMITED</b>, a body corporate incorporated under the laws of the Province of Nova Scotia, Canada (the \"Borrower\") OF THE FIRST PART</p>
+            <p>   and</p>
+            <p><b>[LENDER]</b> (the "Lender") OF THE SECOND PART</p> 
+            <p>   and</p>
+            <p>DEVIN PODGORSKI ("Devin") OF THE THIRD PART</p>
+            <p>JAMES SUTTON ("James" and collectively, with Devin, the "Guarantors") OF THE FORTH PART</p>
+            <p>WHEREAS the Lender has agreed to provide financing to the Borrower (the "Loan");</p>
+            <p>AND WHEREAS the Guarantors have agreed to guarantee the Loan in accordance with the terms hereof;</p>
+            <p>THEREFORE in consideration of the mutual covenants and agreements herein contained, the sum of One Dollar ($1.00) and other good and valuable consideration, the receipt and sufficiency of which is hereby acknowledged, the parties covenant and agree as follows:</p>
+            <p>1. INTERPRETATION</p>
+            <p>(a) Definitions. In this Agreement, unless the context otherwise requires the following terms shall have the following meanings:</p>
+            <p>"Agreement" means this agreement and any amendments, schedules and supplements thereto that are agreed on by the parties in writing from time to time;</p>
+            <p>"Bitcoin Amount" means the amount of <b><t:slot name="htmlTransactionAmount" /></b> bitcoins, to be advanced by the Lender to the Borrower in accordance with the terms of this Agreement.</p>
+            <p>"Closing Date" means the date of this Agreement;</p>
+            <p>"Interest Rate" means an annual interest rate of 9.30 percent;</p>
+            <p>"Loan Amount" means the amount advanced by the Lender to the Borrower, expressed in Canadian Dollars and determined in accordance with Sections 2(b)(ii) and (iii) hereof; and</p>
+            <p>"Term" means twenty five years.</p>
+            <p>(b) Currency Conversion. Any conversion of bitcoin to Canadian Dollars, or Canadian Dollars to bitcoin, shall be done in accordance with Section 4 hereof.</p>
+            <p>2. LOAN TO THE BORROWER</p>
+            <p>(c) Agreement to Lend.  Subject to the terms and conditions of this Agreement, the Lender agrees to lend to the Borrower the Loan Amount.</p> 
+            <p>(d) Advance. The loan advance shall be made in accordance with the following terms:</p>
+            <p>(i) Advance. The Lender will advance the Bitcoin Amount to the Borrower, in a single advance on the Closing Date without set-off, holdbacks or other deductions.</p>
+            <p>(ii) Conversion to Loan Amount. The Borrower shall convert the Bitcoin Amount to Canadian Dollars within 2 business days of receipt thereof (the "Conversion Date").</p>
+            <p>(iii) Exchange Statement. Within 2 business days of the Conversion Date, the Borrower will provide an exchange statement to the Lender setting out the Loan Amount (expressed in Canadian Dollars), together with notice of the applicable bitcoin exchange rate at the time of conversion of the Bitcoin Amount (the "Exchange Statement"). The Loan Amount, as set out in the Exchange Statement, shall be conclusive evidence of the indebtedness of the Borrower to the Lender.</p> 
+            <p>3. PROMISE TO REPAY. The Borrower promises to repay the Loan Amount in accordance with the terms of this Agreement.</p>
+            <p>(e) Place of Payment.  All amounts due under this Agreement shall be paid to Lender by electronic transmission and shall be deemed to have been paid in Halifax, Province of Nova Scotia, Canada.</p>
+            <p>(f) Interest Adjustment Date: The Interest Adjustment Date shall be the first day of the month immediately following the Loan advance. In addition to any other payments required pursuant to section 3(c), interest from the Conversion Date to the Interest Adjustment Date shall be payable in bitcoin on the seventh business day of the first calendar month following the Interest Adjustment Date.</p>
+            <p>(g) Payment.  Equal monthly payments of principal and interest based on the Term shall be calculated in Canadian Dollars as of the first day of each calendar month (each such amount being a "Payment Amount"). Subject to this section 3, the Payment Amount shall be payable in bitcoin on the seventh business day of each calendar month commencing on the seventh business day of the calendar month immediately following the Interest Adjustment Date.</p>
+            <p>(h) Conversion. On the fifth business day of each month (each, a \"Repayment Conversion Date\") the Borrower shall convert the Payment Amount into bitcoin at the then current bitcoin exchange rate (the "Bitcoin Exchange Rate").</p>
+            <p>(i) Prepayment. The Borrower may prepay any or all of the Loan Amount at its absolute discretion provided that any such prepayment shall be made in bitcoin and shall be converted in accordance wit section 3 hereof (the "Prepayment Amount").</p>
+            <p>(j) Expenses. Any expenses incurred by the Borrower to convert any Payment Amount or Prepayment amount into bitcoin shall be for the expense of the Borrower.</p>
+            <p>(k) Reduction of Loan Amount. Following any payments hereunder, the Loan Amount shall be reduced  by the applicable Payment Amount or Prepayment Amount, as determined in Canadian Dollars at the applicable Repayment Conversion Date.</p>
+            <p>4. CONVERSION. Any conversion of Canadian Dollars into bitcoin or bitcoin into Canadian Dollars pursuant to this Agreement shall be completed in accordance with the following terms and conditions:</p>
+            <p>(l) Bitcoin Exchange Operator. The Borrower may determine, at its absolute discretion, which bitcoin exchange operator (the \"Bitcoin Exchange Operator\") completes the conversion of any amounts payable hereunder.</p>
+            <p>(m) Expenses. All expenses for any conversion shall be for the account of the Borrower.</p>
+            <p>(n) Determination Final. The Lender shall be deemed to accept (i) the posted exchange rate used by the Bitcoin Exchange Operator for the conversion of the Payment Amount to bitcoin; and (ii) any and all Exchange Fees, as determined by the Bitcoin Exchange Operator together with any third party fees reasonably necessary to complete the conversion of any payable amounts hereunder.</p>
+            <p>5. COVENANTS, REPRESENTATIONS AND WARRANTIES</p>
+            <p>(o) Borrower. The Borrower covenants and agrees with and represents and warrants to the Lender (and acknowledges and confirms that the Lender is relying on such covenants, agreements, representations and warranties in connection with entering this Agreement and in connection with the financing to be provided pursuant hereto by the Lender to the Borrower) that as of the date of this Agreement, and as of the Closing Date, and as of the time of the loan advance hereunder and throughout the period during which any part of the Loan Amount advanced to the Borrower remains outstanding as follows:</p>
+            <p>(i) The Borrower is and will continue to be a body corporate duly incorporated and organized and validly subsisting in good standing under the laws of the Province of Nova Scotia. The Borrower has and will continue to have the corporate power to own property and to carry on the Business, is and will be duly qualified as a company to do business and is and will be in good standing in each jurisdiction in which the nature of the business makes such qualification necessary.</p>
+            <p>(ii) The entering into of this Agreement and the carrying out of the transactions contemplated hereby have been duly authorized by all necessary corporate action and will not result in the violation of any of the terms and provisions of the constituting documents or articles of association of the Borrower or any indenture or other agreement, written or oral, to which the Borrower may be a party or otherwise bound.</p>
+            <p>(iii) The Borrower has all requisite power and authority which has been properly exercised to enter into this Agreement, to carry out the transactions herein provided for and to perform its obligations under this Agreement.</p>
+            <p>(iv) The Borrower shall take or cause to be taken all necessary or desirable actions, steps and corporate proceedings to approve or authorize validly and effectively the execution and delivery of this Agreement and all other arrangements and documents contemplated hereby and shall cause all necessary meetings of directors of the Borrower to be held for such purpose.</p>
+            <p>(v) The Borrower will duly and punctually pay or cause to be paid to the Lender the principal Loan Amount pursuant to and in accordance with the terms of this Agreement.</p>
+            <p>(p) Confidentiality. In the event that any governmental or quasi-governmental authority with jurisdiction over the Loan (a \"Governing Authority\") requires the disclosure of any information concerning any party hereto, the Parties agree to cooperative with such Governing Authority to the extent required by law, and agrees that no information required by such Governing Authority in the possession of the disclosing party will be confidential with respect to such Governing Authority.</p>
+            <p>(q) Survival of Representations, Warranties and Covenants. The obligations, representations and warranties contained in this Agreement, in any document to be executed and delivered pursuant to this Agreement and in any documents executed and delivered in connection with the completion of the transaction contemplated herein shall survive the closing of such transaction notwithstanding any investigations made by or on behalf of the parties hereto.</p>
+            <p>6. DEFAULT. Notwithstanding anything to the contrary contained herein, the principal Loan Amount advanced  shall, at the option of the Lender, become immediately due and payable in each and every of the following events:</p>
+            <p>(i) if the Borrower makes any default in the payment of any indebtedness or obligation to the Lender or defaults in repayment of the principal Loan Amount payable under this Agreement and such default is not remedied within ten (10) days of the Borrower receiving notice in writing from the Lender of the default;</p>
+            <p>(ii) if the Borrower fails to perform or observe any covenant or obligation contained herein, and such default is not remedied within ten (10) days of the Borrower receiving notice in writing from the Lender of the default;</p>
+            <p>(iii) if the Borrower becomes insolvent or bankrupt or subject to provisions of the Bankruptcy and Insolvency Act or goes into liquidation, either voluntarily or under an order by a court of competent jurisdiction, or makes a general assignment for the benefit of its creditors or otherwise acknowledges itself insolvent; and </p>
+            <p>(iv) if the Borrower abandons its undertaking or ceases or threatens to cease to carry on Business or threatens to commit any act of bankruptcy.</p>
+            <p>Provided that it shall not be an Event of Default if an inability to make any payment required pursuant to this Agreement is a result of an error incurred by a Bitcoin Exchange Operator. Should such a delay occur, the parties will negotiate alternative payment options. In the event that the parties are unable to agree on an alternative payment method, either Party may refer the matter to arbitration by providing the other Party with a notice to proceed to arbitrate ("Notice of Arbitration"). Upon either Party providing a Notice of Arbitration, the matter (or such matters as remain in dispute, if the Parties agree they have resolved some but not all of the original dispute) shall not later than thirty (30) days from issuance of the Notice of Arbitration be submitted to final and binding arbitration in accordance with the Nova Scotia Commercial Arbitration Act. Any matter in dispute that is submitted for arbitration shall be heard by a single arbitrator chosen by the Parties. The cost of the arbitration, excluding a Party's legal fees and disbursements shall, unless otherwise ordered by the arbitrator or the panel, be borne equally by the Parties. The Lender agrees that the Borrower may, at its discretion, include such other creditors of the Borrower as may be affected by the Bitcoin Exchange Operator error in the foregoing arbitration.</p> 
+            <p>7. GUARANTEE. The Guarantors hereby severally guarantee payment to the Lender of the Loan Amount provided that no sum in excess of one half of the Loan Amount then outstanding, and interest therein as herein provided, calculated from the date demand is made shall be recoverable from  may be recovered from any one of the Guarantors. The Borrower may release any one of the Guarantors without affecting the liability of the remaining Guarantor.</p>
+            <p>8. MISCELLANEOUS PROVISIONS</p>
+            <p>(r) Notices. All notices, requests, demands or other communications by the terms hereof required or permitted to be given by one party to another shall be given electronically at the last known address of any of the parties or as otherwise directed by the parties, in writing.</p>
+            <p>(s) Governing Law. This Agreement shall be interpreted in accordance with the laws of the Province of Nova Scotia and the laws of Canada applicable therein.</p>
+            <p>(t) Electronic Transmissions. This Agreement may be signed in counterparts, and by electronic transmission or facimilie.</p>
+            <p>(u) Time of Essence. Time shall be of the essence of this Agreement and of every part hereof and no extension or variation of this Agreement shall operate as a waiver of this provision.</p>
+            <p>(v) Survival. The representations and warranties herein, and the covenants to act by the parties post-closing shall survive the closing and loan advances contemplated in this Agreement.</p>
+            <p>(w) Entire Agreement. This Agreement shall constitute the entire agreement between the parties hereto with respect to all of the matters herein and this Agreement shall not be amended except by a memorandum in writing signed by all of the parties hereto and any amendment hereof shall be null and void and shall not be binding upon any party which has not given its consent as aforesaid.</p> 
+            <p>(x) Enurement. This Agreement shall enure to the benefit of and be binding upon the parties hereto and their respective heirs, executors, administrators, personal representatives, successors and assigns.</p>
+            <p>IN WITNESS WHEREOF the parties have executed this Agreement as of the day and year first above written.</p>
+            <p>SIGNED, SEALED AND DELIVERED in the presence of</p>
+            <p><b>BITCOIN REALTY MANAGEMENT LIMITED</b></p>
+            <p>Lender: <b><t:slot name="htmlLenderEmail" /></b></p>
+            <p>Bitcoin Address: <b><t:slot name="htmlLenderBitcoinAddress" /></b></p>
+            <p>GPG Signature: <b>[LENDER]</b></p>
+            <p>Devin Podgorski</p>
+            <p>James Sutton</p>
+        </div>
+        <div style="text-align: center;"><b>IN WITNESS WHEREOF</b> the parties have executed this Agreement as of the day and year first above written.</div>
+        <div style="text-align: center;">[Note: Date is automatically inserted into loan agreement]</div>
+        <br />
+        <div>
+            <t:transparent t:render="alert" />
+        </div>
+        <label class="checkbox">
+            <input type="checkbox" value="remember-me" name="isSignatureChecked" />I confirm that I have electronically signed this Loan Agreement, which has the same effect as signing a paper version of this aggreement.
+        </label>
+        <label class="checkbox">
+            <input type="checkbox" value="remember-me" name="isConsequencesChecked" />I understand the consequences of clicking here as my electronic signature.
+        </label>
+
+        <table>
+            <tr>
+                <td><b>SIGNED, SEALED AND DELIVERED</b> in presence of [ACCOUNT NAME SERVER]</td>
+                <td><b>BITCOIN REALTY MANAGEMENT LIMIT</b> Per: {} Name: {} Title: {}</td>
+            </tr>
+            <tr>
+                <td></td>
+                <td>Devin Podgorki, James Sutton</td>
+            </tr>
+        </table>
+
+        <p><b>Bitcoin Address:</b> <t:slot name="htmlBitcoinAddress" /></p>
+        <p><b>Statement:</b> <input type="text" name="contractStatement"><t:attr name="value"><t:slot name="htmlContractStatement" /></t:attr></input></p>
+        <p><b>Signature:</b> <input type="text" name="contractSignature"></input></p>
+        <button name="button" value="Finalize" class="btn btn-large btn-primary" type="submit">Finalize</button>
+    </form>
+</div>

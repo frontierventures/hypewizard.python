@@ -1,0 +1,21 @@
+<div id="emailVerifyPopup" class="colorbox-zone" xmlns:t="http://twistedmatrix.com/ns/twisted.web.template/0.1">
+    <form action="../sendToken" method="POST" enctype="application/x-www-form-urlencoded">
+        <div class="c12 inner-content">
+            <ul class="settings-list addnew-prod">
+                <li>
+                    <div class="c12">
+                        <div class="c8">
+                            <h1 class="c12">User Message</h1>
+                        </div>
+                    </div>
+                    <div class="c12">
+                        Please check your email for account verification instructions. 
+                    </div>
+                </li>
+                <li class="full center">
+                    <button class="button green medium" name="button" value="Change">Resend Instructions</button>
+                </li>
+            </ul>
+        </div>
+    </form>
+</div>

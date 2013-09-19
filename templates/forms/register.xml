@@ -1,0 +1,33 @@
+<div class="container" xmlns:t="http://twistedmatrix.com/ns/twisted.web.template/0.1" t:render="form">
+    <form class="form-register" action="../create_user" method="POST" enctype="application/x-www-form-urlencoded">
+        <h2 class="form-register-heading">Account Details</h2>
+        <div>
+            <t:transparent t:render="alert" />
+        </div>
+        <input type="text" class="input-block-level" placeholder="Email address" name="email">
+            <t:attr name="value"><t:slot name="htmlEmail" /></t:attr>
+        </input>
+        <input type="password" class="input-block-level" placeholder="Password" name="password">
+            <t:attr name="value"><t:slot name="htmlPassword" /></t:attr>
+        </input>
+        <input type="password" class="input-block-level" placeholder="Repeat Password" name="repeat_password">
+            <t:attr name="value"><t:slot name="htmlRepeatPassword" /></t:attr>
+        </input>
+        <input type="text" class="input-block-level" placeholder="Bitcoin Address" name="bitcoin_address">
+            <t:attr name="value"><t:slot name="htmlBitcoinAddress" /></t:attr>
+        </input>
+        <input type="text" class="input-block-level" placeholder="Twitter Name" name="twitter_name">
+            <t:attr name="value"><t:slot name="htmlTwitterName" /></t:attr>
+        </input>
+        <select name="niche">
+            <option t:render="niche_option">
+                <t:attr name="value"><t:slot name="value" /></t:attr>
+                <t:slot name="caption" />
+            </option>
+        </select>
+        <label class="checkbox">
+            <input type="checkbox" value="remember-me" name="is_terms_accepted"/> I agree to the <a href="../terms">Terms of Use</a> 
+        </label>
+        <button name="button" value="Register" class="btn btn-large btn-primary" type="submit">Register</button>
+    </form>
+</div>

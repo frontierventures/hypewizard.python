@@ -1,0 +1,4 @@
+<div class="container" xmlns:t="http://twistedmatrix.com/ns/twisted.web.template/0.1" t:render="details">
+    <h2 class="form-signin-heading">Profile Settings</h2>
+    <div><b>Bitcoin Address:</b> <t:slot name="htmlBitcoinAddress" /> <a href="../settings">Verify</a></div>
+</div>

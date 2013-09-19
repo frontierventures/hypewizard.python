@@ -1,0 +1,9 @@
+<div class="form-account" xmlns:t="http://twistedmatrix.com/ns/twisted.web.template/0.1" t:render="details">
+    <h1 class="form-account-heading">Account Summary</h1>
+    <div><a href="../history">Transaction History</a></div>
+    <div><b>Payment Address: </b><t:slot name="htmlPaymentAddress" /> <a href="../settings">Change</a></div>
+    <div><b>Loan Balance (CAD):</b> <t:slot name="htmlLoanBalanceFiat" /></div>
+    <div><b>Next Payment Date:</b> <t:slot name="htmlNextPaymentDate" /></div>
+    <div t:render="transaction"><a><t:attr name="href"><t:slot name="htmlContractUrl" /></t:attr><t:slot name="htmlContractName" /></a></div>
+    <a class="btn btn-large btn-primary" href="../lend">Lend</a>
+</div>

@@ -1,0 +1,28 @@
+<div id="becomeAffiliatePopup" class="colorbox-zone" xmlns:t="http://twistedmatrix.com/ns/twisted.web.template/0.1">
+    <div class="c12 inner-content">
+        <ul class="settings-list">
+            <form id="becomeAffiliateForm" action="../becomeAffiliate" method="POST" enctype="application/x-www-form-urlencoded" t:render="form">
+                <input type="hidden" name="publisherId"><t:attr name="value"><t:slot name="htmlPublisherId" /></t:attr></input>
+                <li>
+                    <div class="c12">
+                        <h1 class="c12">Revenue Sharing</h1>
+                    </div>
+                    <div class="c12">
+                        Please become familiar with the program before you join
+                    </div>
+                </li>
+                <li class="c12 terms">
+                    <input type="checkbox" name="isTermsChecked" id="checkbx" />
+                    <label for="checkbx">I agree to the <a href="../terms">Terms of Use</a></label>
+                </li>
+                <li id="sendMessage">
+                    <div id="messageNotification">
+                    </div>
+                    <div class="center">
+                        <input name="button" class="button green medium" type="submit" value="Join Program"></input>
+                    </div>
+                </li>
+            </form>
+        </ul>
+    </div>
+</div>

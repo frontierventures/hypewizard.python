@@ -1,0 +1,14 @@
+<div class="c12">
+    <div class="title-center">
+        <h3>Customer Reviews</h3>
+    </div>
+    <ul class="reviews c12">
+        <li>
+            <div class="c12 center">
+                <p>
+                <h3>No reviews found</h3>
+            </p>
+            </div>
+        </li>
+    </ul>
+</div>

@@ -1,0 +1,74 @@
+<div style="float: left; width 100%;" xmlns:t="http://twistedmatrix.com/ns/twisted.web.template/0.1">
+    <div style="margin: 5px 0px 0px 50px;" class="c2x">
+        <ul class="sidebar-menu">
+            <t:transparent t:render="menu" />            
+        </ul>
+    </div>
+    <div class="content" style="overflow: hidden; padding: 0px 50px 0px 50px;">
+        <div style="float:left; width:100%; margin: 15px 0px 5px 0px;">
+            <div style="float: left; padding: 0px;">
+                <h1>My Messages</h1>
+            </div>
+            <div style="float: right; padding: 0px 10px;">
+                <a class="button green medium addnew end">
+                    <t:attr name="href">../</t:attr>
+                    Create New Message<span>+</span>
+                </a>
+            </div>
+        </div>
+        <div style="float: left; width: 100%">
+            <form action="../deleteMessages" method="POST" enctype="application/x-www-form-urlencoded">
+                <table class="acctable your-products" style="margin: 0;">
+                    <thead>
+                        <tr>
+                            <th style="width: 52px;"></th>
+                            <th style="width: 85px;">Date</th>
+                            <th>Sender</th>
+                            <th>Subject</th>
+                            <th style="width: 100px;">Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr t:render="row">
+                            <td>
+                                <div class="terms">
+                                    <input type="checkbox" name="messageIds">
+                                        <t:attr name="id"><t:slot name="htmlId" /></t:attr>
+                                        <t:attr name="value"><t:slot name="htmlId" /></t:attr>
+                                    </input>
+                                    <label>
+                                        <t:attr name="for"><t:slot name="htmlId" /></t:attr>
+                                    </label>
+                                </div>
+                            </td>
+                            <td><t:slot name="htmlTimestamp" /></td>
+                            <td><t:slot name="htmlName" /></td>
+                            <td>
+                                <t:attr name="style"><t:slot name="htmlStyle" /></t:attr>
+                                <a href="../readMessage"> 
+                                    <t:attr name="id"><t:slot name="htmlId" /></t:attr>
+                                    <t:slot name="htmlSubject" />
+                                </a>
+                            </td>
+                            <td>
+                                <a t:render="action">
+                                    <t:attr name="id"><t:slot name="htmlId" /></t:attr>
+                                    <t:attr name="data-hint"><t:slot name="htmlHint" /></t:attr>
+                                    <t:attr name="class"><t:slot name="htmlClass" /></t:attr>
+                                    <t:attr name="href"><t:slot name="htmlUrl" /></t:attr>
+                                </a>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+                <div class="row c12" style="margin-top: 15px;">
+                    <div class="c5">
+                        <button class="button gray">Delete Selected Messages <i class="ticon delete"></i></button>
+                    </div>
+                    <div class="c7 end">
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
