@@ -1,4 +1,0 @@
-<div xmlns:t="http://twistedmatrix.com/ns/twisted.web.template/0.1" t:render="message">
-    <button type="button" class="close" data-dismiss="alert">&#215;</button>
-    <t:attr name="class"><t:slot name="htmlMessageClass" /></t:attr><t:slot name="htmlMessageText" />
-</div>
