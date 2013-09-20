@@ -15,6 +15,10 @@ $(document).ready(function(){
             if (response.action == 'create') {
                 return "#create_ask_popup";
             }
+            if (response.action == 'withdraw') {
+                $('input[name=ask_id]').val(response.ask.id);
+                return "#withdraw_ask_popup";
+            }
             if (response.action == 'engage') {
                 $('input[name=transaction_type]').val('engage_client');
                 $('input[name=ask_id]').val(response.ask.id);

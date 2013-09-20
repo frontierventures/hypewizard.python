@@ -15,6 +15,10 @@ $(document).ready(function(){
             if (response.action == 'create') {
                 return "#create_bid_popup";
             }
+            if (response.action == 'withdraw') {
+                $('input[name=bid_id]').val(response.bid.id);
+                return "#withdraw_bid_popup";
+            }
             if (response.action == 'engage') {
                 $('input[name=transaction_type]').val('engage_promoter');
                 $('input[name*=bid_id]').val(response.bid.id);

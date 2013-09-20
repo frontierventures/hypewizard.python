@@ -45,6 +45,11 @@ class GetAsks(Resource):
             order['twitter_name'] = ask.twitter_name
             order['twitter_status_id'] = ask.twitter_status_id
             order['cost'] = ask.cost
+
+            order['rule'] = 'none'
+            if ask.user_id != session_user['id']:
+                order['rule'] = 'limit'
+
             orders.append(order)
 
         response['orders'] = orders
@@ -75,6 +80,11 @@ class GetBids(Resource):
             order['twitter_name'] = bid.twitter_name
             order['twitter_status_id'] = bid.twitter_status_id
             order['cost'] = bid.cost
+
+            order['rule'] = 'none'
+            if bid.user_id != session_user['id']:
+                order['rule'] = 'limit'
+
             orders.append(order)
 
         response['orders'] = orders

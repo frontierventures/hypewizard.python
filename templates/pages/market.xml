@@ -36,6 +36,8 @@
         <t:transparent t:render="engage_client_popup" />
         <t:transparent t:render="engage_promoter_popup" />
         <t:transparent t:render="feature_disabled_popup" />
+        <t:transparent t:render="withdraw_ask_popup" />
+        <t:transparent t:render="withdraw_bid_popup" />
     </div>
     <!-- Le javascript
     ================================================== -->

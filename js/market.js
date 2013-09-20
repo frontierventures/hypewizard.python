@@ -39,8 +39,16 @@ function build_grid(kind) {
 };
 function add_ask_to_market(rule, ask) { 
     var action_url = '../feature_disabled?reason=not_authorized';
-    if (rule != 'limit')
+    var action_cell = '<td style="text-align:center"><a href="' + action_url + '">Engage Client</a></td>';
+
+    if (rule == 'none') {
         action_url = '../process_ask?action=engage&id=' + ask.id; 
+        action_cell = '<td style="text-align:center"><a href="' + action_url + '">Engage Client</a></td>';
+        if (ask.rule == 'none') {
+            action_url = '../process_ask?action=withdraw&id=' + ask.id; 
+            action_cell = '<td style="text-align:center"><a href="' + action_url + '">Withdraw</a></td>';
+        }
+    }
 
     $('.asks').append(
             '<tr>' + 
@@ -49,7 +57,7 @@ function add_ask_to_market(rule, ask) {
             '<td style="text-align:center"><a href="https://twitter.com/' + ask.twitter_name + '/status/' + ask.twitter_status_id + '">' + ask.twitter_status_id + '</td>' +
             '<td style="text-align:center">' + ask.campaign_type + '</td>' +
             '<td style="text-align:center">' + ask.cost + '</td>' +
-            '<td style="text-align:center"><a href="' + action_url + '">Engage Client</a></td>' +
+            action_cell + 
             '</tr>');
 };
 function add_bid_to_market(rule, bid) { 
@@ -66,9 +74,16 @@ function add_bid_to_market(rule, bid) {
     });
     
     var action_url = '../feature_disabled?reason=not_authorized';
-    if (rule != 'limit')
-        action_url = '../process_bid?action=engage&id=' + bid.id; 
+    var action_cell = '<td style="text-align:center"><a href="' + action_url + '">Engage Client</a></td>';
 
+    if (rule == 'none') {
+        action_url = '../process_bid?action=engage&id=' + bid.id; 
+        action_cell = '<td style="text-align:center"><a href="' + action_url + '">Engage Client</a></td>';
+        if (bid.rule == 'none') {
+            action_url = '../process_bid?action=withdraw&id=' + bid.id; 
+            action_cell =  '<td style="text-align:center"><a href="' + action_url + '">Withdraw</a></td>';
+        }
+    }
     $('.bids').append(
             '<tr>' + 
             '<td style="text-align:center">' + bid.niche + '</td>' +
@@ -76,6 +91,6 @@ function add_bid_to_market(rule, bid) {
             '<td style="text-align:center"> (S: ' + user.statuses_count + ', F: ' + user.followers_count + ')</td>' +
             '<td style="text-align:center">' + bid.campaign_type + '</td>' +
             '<td style="text-align:center">' + bid.cost + '</td>' +
-            '<td style="text-align:center"><a href="' + action_url + '">Engage Promoter</a></td>' +
+            action_cell + 
             '</tr>');
 };

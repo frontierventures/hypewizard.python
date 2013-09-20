@@ -2,7 +2,7 @@
     <form name="disapprove_offer_form" action="../disapprove_offer" method="POST" enctype="application/x-www-form-urlencoded" t:render="form">
         <input type="hidden" name="offer_id" />
         <div>
-            <h1>Disapprove offer?</h1>
+            <h1>Disapprove Offer?</h1>
             <div id="disapprove_offer_alert">
             </div>
             <div>

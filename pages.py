@@ -153,6 +153,14 @@ class Market(Page):
     def engage_client_popup(self, request, tag):
         return popups.EngageClient(self.session_user)
 
+    @renderer
+    def withdraw_ask_popup(self, request, tag):
+        return popups.WithdrawAsk(self.session_user)
+
+    @renderer
+    def withdraw_bid_popup(self, request, tag):
+        return popups.WithdrawBid(self.session_user)
+
 
 class Offers(Page):
     def __init__(self, pageTitle, template, filters):

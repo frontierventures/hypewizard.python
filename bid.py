@@ -20,6 +20,7 @@ def assemble(root):
     root.putChild('bid', Main())
     root.putChild('process_bid', Process())
     root.putChild('create_bid', Create())
+    root.putChild('withdraw_bid', Withdraw())
     return root
 
 
@@ -74,7 +75,15 @@ class Process(Resource):
                     'twitter_status_id': str(twitter_status_id)
                 } 
 
-        print response
+        if action == 'withdraw':
+            try:
+                bid_id = int(request.args.get('id')[0])
+            except:
+                return redirectTo('../', request)
+
+            response['bid'] = {
+                    'id': bid_id 
+                } 
 
         if action == 'engage':
             try:
@@ -151,6 +160,88 @@ class Create(Resource):
 
         new_bid = Bid(data)
         db.add(new_bid)
+        db.commit()
+
+        #plain = mailer.offerMemoPlain(seller)
+        #html = mailer.offerMemoHtml(seller)
+        #Email(mailer.noreply, seller_email, 'You have a new offer at Coingig.com!', plain, html).send()
+
+        return json.dumps(dict(response=1, text=definitions.MESSAGE_SUCCESS))
+
+
+class Withdraw(Resource):
+    def render(self, request):
+        print '%srequest.args: %s%s' % (config.color.RED, request.args, config.color.ENDC)
+
+        if not request.args:
+            return redirectTo('../', request)
+
+        session_user = SessionManager(request).get_session_user()
+        session_user['action'] = 'save_order'
+        
+        #try:
+        #    status_id = int(request.args.get('status_id')[0])
+        #except:
+        #    return redirectTo('../', request)
+
+        twitter_status_id = request.args.get('twitter_status_id')[0]
+        niche = request.args.get('niche')[0]
+        campaign_type = request.args.get('campaign_type')[0]
+        charge = int(request.args.get('price_per_retweet')[0])
+        #campaign_type = request.args.get('campaign_type')[0]
+        
+        ## Handle quantity input
+        #if not quantity:
+        #    return json.dumps(dict(response=0, text=definitions.QUANTITY[0]))
+
+        #try:
+        #    quantity = int(quantity)
+        #except:
+        #    return json.dumps(dict(response=0, text=definitions.QUANTITY[1]))
+
+        #if quantity < 0:
+        #    return json.dumps(dict(response=0, text=definitions.QUANTITY[2]))
+
+        ## Handle quantity input
+        #if not amount:
+        #    return json.dumps(dict(response=0, text=definitions.AMOUNT[0]))
+
+        #try:
+        #    amount = float(amount)
+        #except:
+        #    return json.dumps(dict(response=0, text=definitions.AMOUNT[1]))
+        #
+        ## Handle shipping_cost input
+        #if not shipping_cost:
+        #    return json.dumps(dict(response=0, text=definitions.SHIPPING_COST[0]))
+
+        #try:
+        #    shipping_cost = float(shipping_cost)
+        #except:
+        #    return json.dumps(dict(response=0, text=definitions.SHIPPING_COST[1]))
+
+
+        timestamp = config.create_timestamp()
+
+        data = {
+            'status': 'active',
+            'created_at': timestamp,
+            'updated_at': timestamp,
+            'twitter_name': session_user['twitter_name'],
+            'twitter_status_id': twitter_status_id,
+            'user_id': session_user['id'],
+            'cost': charge,
+            'campaign_type': campaign_type, 
+            'niche': niche
+        }
+
+        new_ask = Ask(data)
+        db.add(new_ask)
+
+        client = db.query(Profile).filter(Profile.user_id == session_user['id']).first()
+        client.available_balance -= charge
+        client.reserved_balance += charge
+
         db.commit()
 
         #plain = mailer.offerMemoPlain(seller)
