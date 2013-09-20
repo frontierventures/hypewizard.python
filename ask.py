@@ -118,38 +118,6 @@ class Create(Resource):
         campaign_type = request.args.get('campaign_type')[0]
         charge = int(request.args.get('price_per_retweet')[0])
         goal = int(request.args.get('goal')[0])
-        #campaign_type = request.args.get('campaign_type')[0]
-        
-        ## Handle quantity input
-        #if not quantity:
-        #    return json.dumps(dict(response=0, text=definitions.QUANTITY[0]))
-
-        #try:
-        #    quantity = int(quantity)
-        #except:
-        #    return json.dumps(dict(response=0, text=definitions.QUANTITY[1]))
-
-        #if quantity < 0:
-        #    return json.dumps(dict(response=0, text=definitions.QUANTITY[2]))
-
-        ## Handle quantity input
-        #if not amount:
-        #    return json.dumps(dict(response=0, text=definitions.AMOUNT[0]))
-
-        #try:
-        #    amount = float(amount)
-        #except:
-        #    return json.dumps(dict(response=0, text=definitions.AMOUNT[1]))
-        #
-        ## Handle shipping_cost input
-        #if not shipping_cost:
-        #    return json.dumps(dict(response=0, text=definitions.SHIPPING_COST[0]))
-
-        #try:
-        #    shipping_cost = float(shipping_cost)
-        #except:
-        #    return json.dumps(dict(response=0, text=definitions.SHIPPING_COST[1]))
-
 
         timestamp = config.create_timestamp()
 
@@ -171,8 +139,8 @@ class Create(Resource):
         db.add(new_ask)
 
         client = db.query(Profile).filter(Profile.user_id == session_user['id']).first()
-        client.available_balance -= charge * target
-        client.reserved_balance += charge * target
+        client.available_balance -= charge * goal
+        client.reserved_balance += charge * goal
 
         db.commit()
 

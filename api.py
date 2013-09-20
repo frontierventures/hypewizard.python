@@ -47,6 +47,9 @@ class GetAsks(Resource):
             order['cost'] = ask.cost
             order['target'] = ask.target
             order['goal'] = ask.goal
+            
+            print "\n" * 20
+            print order
 
             order['rule'] = 'none'
             if ask.user_id != session_user['id']:
