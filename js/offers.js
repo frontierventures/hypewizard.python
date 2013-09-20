@@ -25,4 +25,44 @@ $(document).ready(function(){
             }
         }      
     });
+    $('form[name*=approve_offer_form]').submit(function() { 
+        var response = {};
+        $.ajax({
+            data: $(this).serialize(),
+            type: $(this).attr('method'),
+            url: $(this).attr('action'),
+            dataType: 'json',
+            success: function(json) {
+                if (json.response == 0) {
+                    $('#approve_offer_alert').empty();
+                    $('#approve_offer_alert').append('<div class="alert alert-error" id="alert">' + json.text + '</div>');
+                    $.colorbox.resize();
+                } else {
+                    $.colorbox.close();
+                    window.location = '../offers'; 
+                }
+            }     
+        });
+        return false; 
+    }); 
+    $('form[name*=disapprove_offer_form]').submit(function() { 
+        var response = {};
+        $.ajax({
+            data: $(this).serialize(),
+            type: $(this).attr('method'),
+            url: $(this).attr('action'),
+            dataType: 'json',
+            success: function(json) {
+                if (json.response == 0) {
+                    $('#disapprove_offer_alert').empty();
+                    $('#disapprove_offer_alert').append('<div class="alert alert-error" id="alert">' + json.text + '</div>');
+                    $.colorbox.resize();
+                } else {
+                    $.colorbox.close();
+                    window.location = '../offers'; 
+                }
+            }     
+        });
+        return false; 
+    }); 
 });

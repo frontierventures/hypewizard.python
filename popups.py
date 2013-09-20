@@ -266,9 +266,11 @@ class FeatureDisabled(Element):
 
 
 templates = {
+        'approve_offer': 'templates/popups/approve_offer.xml',
         'claim_funds': 'templates/popups/claim_funds.xml',
         'create_ask': 'templates/popups/create_ask.xml',
         'create_bid': 'templates/popups/create_bid.xml',
+        'disapprove_offer': 'templates/popups/disapprove_offer.xml',
         'feature_disabled': 'templates/popups/feature_disabled.xml',
         'engage_client': 'templates/popups/engage_client.xml',
         'engage_promoter': 'templates/popups/engage_promoter.xml'

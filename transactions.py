@@ -148,53 +148,15 @@ class Table(Element):
 
 class Process(Resource):
     def render(self, request):
+        print '%srequest.args: %s%s' % (config.color.RED, request.args, config.color.ENDC)
         session_user = SessionManager(request).get_session_user()
 
+        response = {'error': True}
         try:
             action = request.args.get('action')[0]
         except:
             return redirectTo('../', request)
 
-        if action == 'approve':
-            try:
-                offer_id = int(request.args.get('id')[0])
-            except:
-                return redirectTo('../offers', request)
-
-            offer = db.query(Transaction).filter(Transaction.id == offer_id).first()
-            if offer.client_id != session_user['id']:
-                return redirectTo('../', request)
-
-            offer.status = 'approved'
-            db.commit()
-
-            return redirectTo('../offers', request)
-
-        if action in ['disapprove', 'withdraw']:
-            try:
-                offer_id = int(request.args.get('id')[0])
-            except:
-                return redirectTo('../offers', request)
-
-            offer = db.query(Transaction).filter(Transaction.id == offer_id).first()
-            if offer.client_id != session_user['id']:
-                return redirectTo('../', request)
-
-            offer.status = 'cancelled'
-
-            client = db.query(Profile).filter(Profile.user_id == offer.client_id).first()
-            client.offer_count -= 1
-            client.available_balance += offer.charge
-            client.reserved_balance -= offer.charge
-
-            promoter = db.query(Profile).filter(Profile.user_id == offer.promoter_id).first()
-            promoter.transaction_count -= 1
-            
-            db.commit()
-
-            return redirectTo('../offers', request)
-
-        response = {'error': True}
         if action == 'claim':
             try:
                 transaction_id = int(request.args.get('id')[0])

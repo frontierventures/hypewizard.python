@@ -19,6 +19,8 @@ import twitter_api
 def assemble(root):
     root.putChild('offers', Main())
     root.putChild('process_offer', Process())
+    root.putChild('approve_offer', Approve())
+    root.putChild('disapprove_offer', Disapprove())
     return root
 
 
@@ -146,46 +148,84 @@ class Process(Resource):
     def render(self, request):
         session_user = SessionManager(request).get_session_user()
 
+        response = {'error': True}
         try:
             action = request.args.get('action')[0]
         except:
             return redirectTo('../', request)
 
-        if action == 'approve':
-            try:
-                offer_id = int(request.args.get('id')[0])
-            except:
-                return redirectTo('../offers', request)
+        try:
+            offer_id = int(request.args.get('id')[0])
+        except:
+            return redirectTo('../', request)
 
-            offer = db.query(Transaction).filter(Transaction.id == offer_id).first()
-            if offer.client_id != session_user['id']:
-                return redirectTo('../', request)
+        response['error'] = False
+        response['action'] = action
 
-            offer.status = 'approved'
-            db.commit()
+        response['offer'] = {
+                'id': str(offer_id)
+            } 
 
+        return json.dumps(response)
+
+
+class Approve(Resource):
+    def render(self, request):
+        print '%srequest.args: %s%s' % (config.color.RED, request.args, config.color.ENDC)
+
+        session_user = SessionManager(request).get_session_user()
+        session_user['action'] = 'approve_offer'
+
+        try:
+            offer_id = int(request.args.get('offer_id')[0])
+        except:
             return redirectTo('../offers', request)
 
-        if action in ['disapprove', 'withdraw']:
-            try:
-                offer_id = int(request.args.get('id')[0])
-            except:
-                return redirectTo('../offers', request)
+        offer = db.query(Transaction).filter(Transaction.id == offer_id).first()
 
-            offer = db.query(Transaction).filter(Transaction.id == offer_id).first()
-            if offer.client_id != session_user['id']:
-                return redirectTo('../', request)
+        if offer.client_id != session_user['id']:
+            return redirectTo('../', request)
 
-            offer.status = 'cancelled'
+        is_confirmed = request.args.get('is_confirmed')[0]
+        if is_confirmed == 'no':
+            return json.dumps(dict(response=1, text=definitions.MESSAGE_SUCCESS))
 
-            client = db.query(Profile).filter(Profile.user_id == offer.client_id).first()
-            client.offer_count -= 1
-            client.available_balance += offer.charge
-            client.reserved_balance -= offer.charge
+        offer.status = 'approved'
+        db.commit()
 
-            promoter = db.query(Profile).filter(Profile.user_id == offer.promoter_id).first()
-            promoter.transaction_count -= 1
-            
-            db.commit()
+        return json.dumps(dict(response=1, text=definitions.MESSAGE_SUCCESS))
 
+
+class Disapprove(Resource):
+    def render(self, request):
+        print '%srequest.args: %s%s' % (config.color.RED, request.args, config.color.ENDC)
+
+        session_user = SessionManager(request).get_session_user()
+        session_user['action'] = 'disapprove'
+
+        try:
+            offer_id = int(request.args.get('offer_id')[0])
+        except:
             return redirectTo('../offers', request)
+
+        offer = db.query(Transaction).filter(Transaction.id == offer_id).first()
+
+        if offer.client_id != session_user['id']:
+            return redirectTo('../', request)
+
+        is_confirmed = request.args.get('is_confirmed')[0]
+        if is_confirmed == 'no':
+            return json.dumps(dict(response=1, text=definitions.MESSAGE_SUCCESS))
+
+        offer.status = 'cancelled'
+
+        client = db.query(Profile).filter(Profile.user_id == offer.client_id).first()
+        client.offer_count -= 1
+        client.available_balance += offer.charge
+        client.reserved_balance -= offer.charge
+
+        promoter = db.query(Profile).filter(Profile.user_id == offer.promoter_id).first()
+        promoter.transaction_count -= 1
+        
+        db.commit()
+        return json.dumps(dict(response=1, text=definitions.MESSAGE_SUCCESS))
