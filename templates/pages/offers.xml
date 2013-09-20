@@ -30,6 +30,10 @@
         <t:transparent t:render="offers_table" />            
     </div>
     <t:transparent t:render="footer" />            
+    <div style="display:none">
+        <t:transparent t:render="approve_offer_popup" />
+        <t:transparent t:render="disapprove_offer_popup" />
+    </div>
     <!-- Le javascript
     ================================================== -->
     <!-- Placed at the end of the document so the pages load faster -->
@@ -47,5 +51,6 @@
     <script type="text/javascript" src="js/bootstrap-collapse.js"></script>
     <script type="text/javascript" src="js/bootstrap-carousel.js"></script>
     <script type="text/javascript" src="js/bootstrap-typeahead.js"></script>
+    <script type="text/javascript" src="js/offers.js"></script>
 </body>
 </html>

@@ -96,7 +96,6 @@ class Process(Resource):
         response['error'] = False
         response['action'] = action
 
-
         if action == 'create':
             try:
                 twitter_status_id = int(request.args.get('status_id')[0])
@@ -154,7 +153,7 @@ class Create(Resource):
         twitter_status_id = request.args.get('twitter_status_id')[0]
         niche = request.args.get('niche')[0]
         campaign_type = request.args.get('campaign_type')[0]
-        price_per_retweet = request.args.get('price_per_retweet')[0]
+        charge = int(request.args.get('price_per_retweet')[0])
         #campaign_type = request.args.get('campaign_type')[0]
         
         ## Handle quantity input
@@ -197,13 +196,18 @@ class Create(Resource):
             'twitter_name': session_user['twitter_name'],
             'twitter_status_id': twitter_status_id,
             'user_id': session_user['id'],
-            'cost': price_per_retweet,
+            'cost': charge,
             'campaign_type': campaign_type, 
             'niche': niche
         }
 
         new_ask = Ask(data)
         db.add(new_ask)
+
+        client = db.query(Profile).filter(Profile.user_id == session_user['id']).first()
+        client.available_balance -= charge
+        client.reserved_balance += charge
+
         db.commit()
 
         #plain = mailer.offerMemoPlain(seller)

@@ -163,19 +163,13 @@ class Offers(Page):
     def offers_table(self, request, tag):
         return offers.Table(self.session_user, self.filters)
 
+    @renderer
+    def approve_offer_popup(self, request, tag):
+        return popups.ApproveOffer(self.session_user)
 
-#class Orders(Page):
-#    def __init__(self, pageTitle, template, filters):
-#        Page.__init__(self, pageTitle, template)
-#        self.filters = filters
-#
-#    #@renderer
-#    #def orders(self, request, tag):
-#    #    return orders.Orders(self.session_user, self.filters)
-#
-#    @renderer
-#    def create_order_popup(self, request, tag):
-#        return popups.CreateOrder()
+    @renderer
+    def disapprove_offer_popup(self, request, tag):
+        return popups.DisapproveOffer(self.session_user)
 
 
 class Register(Page):
@@ -196,6 +190,10 @@ class Transactions(Page):
     @renderer
     def transactions_table(self, request, tag):
         return transactions.Table(self.session_user, self.filters)
+
+    @renderer
+    def claim_funds_popup(self, request, tag):
+        return popups.ClaimFunds(self.session_user)
 
 
 templates = {

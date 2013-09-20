@@ -19,8 +19,8 @@
                     <th>Status</th>
                     <th>Create Date</th>
                     <th>Offer Id</th>
-                    <th>Twitter Name</th>
-                    <th>Status Id</th>
+                    <th>Promoter (Twitter Name)</th>
+                    <th>Twitter Status Id</th>
                     <th>Cost</th>
                     <th>Actions</th>
                 </tr>

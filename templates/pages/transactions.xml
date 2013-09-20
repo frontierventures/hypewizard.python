@@ -30,6 +30,9 @@
         <t:transparent t:render="transactions_table" />            
     </div>
     <t:transparent t:render="footer" />            
+    <div style="display:none">
+        <t:transparent t:render="claim_funds_popup" />
+    </div>
     <!-- Le javascript
     ================================================== -->
     <!-- Placed at the end of the document so the pages load faster -->
@@ -47,6 +50,6 @@
     <script type="text/javascript" src="js/bootstrap-collapse.js"></script>
     <script type="text/javascript" src="js/bootstrap-carousel.js"></script>
     <script type="text/javascript" src="js/bootstrap-typeahead.js"></script>
-    <script type="text/javascript" src="js/ask.js"></script>
+    <script type="text/javascript" src="js/transactions.js"></script>
 </body>
 </html>

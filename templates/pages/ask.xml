@@ -37,7 +37,6 @@
             <t:transparent t:render="twitter_summary" />            
         </div>
     </div>
-
     <t:transparent t:render="details" />            
     <div style="display:none">
         <t:transparent t:render="create_ask_popup" />

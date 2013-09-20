@@ -19,6 +19,8 @@ import twitter_api
 def assemble(root):
     root.putChild('transactions', Main())
     root.putChild('create_transaction', Create())
+    root.putChild('process_transaction', Process())
+    root.putChild('complete_transaction', Complete())
     return root
 
 
@@ -62,12 +64,8 @@ class Table(Element):
         self.session_user = session_user
         self.filters = filters
 
-        if filters['kind'] == 'promoter':
-            transactions = db.query(Transaction).filter(Transaction.promoter_id == session_user['id'])
+        transactions = db.query(Transaction).filter(Transaction.promoter_id == session_user['id'])
         
-        if filters['kind'] == 'client':
-            transactions = db.query(Transaction).filter(Transaction.client_id == session_user['id'])
-
         if filters['status'] == 'open':
             transactions = transactions.filter(Transaction.status.in_(['open', 'approved'])).order_by(Transaction.update_timestamp.desc())
         if filters['status'] == 'complete':
@@ -119,14 +117,7 @@ class Table(Element):
         for transaction in self.transactions:
             slots = {}
 
-            status = ''
-            if transaction.status == 'open':
-                status = 'Waiting approval'
-
-            if transaction.status == 'approved':
-                status = 'Ok to retweet'
-
-            slots['status'] = status 
+            slots['status'] = transaction.status 
             slots['create_timestamp'] = config.convert_timestamp(transaction.create_timestamp, config.STANDARD)
             slots['transaction_id'] = str(transaction.id)
             slots['promoter_twitter_name'] = transaction.promoter_twitter_name.encode('utf-8')
@@ -153,6 +144,71 @@ class Table(Element):
             slots['caption'] = button['caption']
             slots['url'] = button['url']
             yield tag.clone().fillSlots(**slots) 
+
+
+class Process(Resource):
+    def render(self, request):
+        session_user = SessionManager(request).get_session_user()
+
+        try:
+            action = request.args.get('action')[0]
+        except:
+            return redirectTo('../', request)
+
+        if action == 'approve':
+            try:
+                offer_id = int(request.args.get('id')[0])
+            except:
+                return redirectTo('../offers', request)
+
+            offer = db.query(Transaction).filter(Transaction.id == offer_id).first()
+            if offer.client_id != session_user['id']:
+                return redirectTo('../', request)
+
+            offer.status = 'approved'
+            db.commit()
+
+            return redirectTo('../offers', request)
+
+        if action in ['disapprove', 'withdraw']:
+            try:
+                offer_id = int(request.args.get('id')[0])
+            except:
+                return redirectTo('../offers', request)
+
+            offer = db.query(Transaction).filter(Transaction.id == offer_id).first()
+            if offer.client_id != session_user['id']:
+                return redirectTo('../', request)
+
+            offer.status = 'cancelled'
+
+            client = db.query(Profile).filter(Profile.user_id == offer.client_id).first()
+            client.offer_count -= 1
+            client.available_balance += offer.charge
+            client.reserved_balance -= offer.charge
+
+            promoter = db.query(Profile).filter(Profile.user_id == offer.promoter_id).first()
+            promoter.transaction_count -= 1
+            
+            db.commit()
+
+            return redirectTo('../offers', request)
+
+        response = {'error': True}
+        if action == 'claim':
+            try:
+                transaction_id = int(request.args.get('id')[0])
+            except:
+                return redirectTo('../transactions', request)
+
+            response['error'] = False
+            response['action'] = action
+
+            response['transaction'] = {
+                    'id': str(transaction_id)
+                } 
+
+            return json.dumps(response)
 
 
 class Create(Resource):
@@ -257,5 +313,41 @@ class Create(Resource):
         #plain = mailer.offerMemoPlain(seller)
         #html = mailer.offerMemoHtml(seller)
         #Email(mailer.noreply, seller_email, 'You have a new offer at Coingig.com!', plain, html).send()
+
+        return json.dumps(dict(response=1, text=definitions.MESSAGE_SUCCESS))
+
+
+class Complete(Resource):
+    def render(self, request):
+        print '%srequest.args: %s%s' % (config.color.RED, request.args, config.color.ENDC)
+
+        session_user = SessionManager(request).get_session_user()
+        session_user['action'] = 'complete_transaction'
+
+        is_confirmed = request.args.get('is_confirmed')[0]
+        if is_confirmed == 'no':
+            return json.dumps(dict(response=1, text=definitions.MESSAGE_SUCCESS))
+        
+        try:
+            transaction_id = int(request.args.get('transaction_id')[0])
+        except:
+            return redirectTo('../', request)
+        
+        transaction = db.query(Transaction).filter(Transaction.id == transaction_id).first()
+
+        if transaction.promoter_id != session_user['id']:
+            return redirectTo('../', request)
+        
+        transaction.status = 'complete'
+
+        client = db.query(Profile).filter(Profile.user_id == transaction.client_id).first()
+        client.offer_count -= 1
+        client.reserved_balance -= transaction.charge
+
+        promoter = db.query(Profile).filter(Profile.user_id == transaction.promoter_id).first()
+        promoter.transaction_count -= 1
+        promoter.available_balance += transaction.charge
+
+        db.commit()
 
         return json.dumps(dict(response=1, text=definitions.MESSAGE_SUCCESS))

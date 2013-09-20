@@ -10,6 +10,68 @@ from data import db
 import twitter_api
 
 
+class ApproveOffer(Element):
+    def __init__(self, session_user):
+        self.loader = XMLString(FilePath(templates['approve_offer']).getContent())
+        self.session_user = session_user
+
+    @renderer
+    def form(self, request, tag):
+        slots = {}
+        yield tag.clone().fillSlots(**slots)
+
+    @renderer
+    def is_confirmed_option(self, request, tag):
+        choices = {
+            'yes': 'Yes',
+            'no': 'No'
+            }
+
+        for key in choices.keys(): 
+            thisTagShouldBeSelected = False
+            #if key == propertyStatus:
+            #    thisTagShouldBeSelected = True
+
+            slots = {}
+            slots['value'] = key 
+            slots['caption'] = choices[key] 
+            newTag = tag.clone().fillSlots(**slots)
+            if thisTagShouldBeSelected:
+                newTag(selected='yes')
+            yield newTag
+
+
+class ClaimFunds(Element):
+    def __init__(self, session_user):
+        self.loader = XMLString(FilePath(templates['claim_funds']).getContent())
+        self.session_user = session_user
+
+    @renderer
+    def form(self, request, tag):
+        slots = {}
+        yield tag.clone().fillSlots(**slots)
+
+    @renderer
+    def is_confirmed_option(self, request, tag):
+        choices = {
+            'yes': 'Yes',
+            'no': 'No'
+            }
+
+        for key in choices.keys(): 
+            thisTagShouldBeSelected = False
+            #if key == propertyStatus:
+            #    thisTagShouldBeSelected = True
+
+            slots = {}
+            slots['value'] = key 
+            slots['caption'] = choices[key] 
+            newTag = tag.clone().fillSlots(**slots)
+            if thisTagShouldBeSelected:
+                newTag(selected='yes')
+            yield newTag
+
+
 class CreateAsk(Element):
     def __init__(self, session_user):
         self.loader = XMLString(FilePath(templates['create_ask']).getContent())
@@ -108,6 +170,37 @@ class CreateBid(Element):
             yield newTag
 
 
+class DisapproveOffer(Element):
+    def __init__(self, session_user):
+        self.loader = XMLString(FilePath(templates['disapprove_offer']).getContent())
+        self.session_user = session_user
+
+    @renderer
+    def form(self, request, tag):
+        slots = {}
+        yield tag.clone().fillSlots(**slots)
+
+    @renderer
+    def is_confirmed_option(self, request, tag):
+        choices = {
+            'yes': 'Yes',
+            'no': 'No'
+            }
+
+        for key in choices.keys(): 
+            thisTagShouldBeSelected = False
+            #if key == propertyStatus:
+            #    thisTagShouldBeSelected = True
+
+            slots = {}
+            slots['value'] = key 
+            slots['caption'] = choices[key] 
+            newTag = tag.clone().fillSlots(**slots)
+            if thisTagShouldBeSelected:
+                newTag(selected='yes')
+            yield newTag
+
+
 class EngageClient(Element):
     def __init__(self, session_user):
         self.loader = XMLString(FilePath(templates['engage_client']).getContent())
@@ -171,13 +264,9 @@ class FeatureDisabled(Element):
     def __init__(self):
         self.loader = XMLString(FilePath(templates['feature_disabled']).getContent())
 
-    #@renderr
-    #def form(self, request, tag):
-    #    slots = {}
-    #    yield tag.clone().fillSlots(**slots)
-
 
 templates = {
+        'claim_funds': 'templates/popups/claim_funds.xml',
         'create_ask': 'templates/popups/create_ask.xml',
         'create_bid': 'templates/popups/create_bid.xml',
         'feature_disabled': 'templates/popups/feature_disabled.xml',

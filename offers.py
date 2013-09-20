@@ -1,4 +1,3 @@
-
 #!/usr/bin/env python
 from twisted.web.resource import Resource
 from twisted.web.util import redirectTo
@@ -61,7 +60,7 @@ class Table(Element):
         offers = db.query(Transaction).filter(Transaction.client_id == session_user['id'])
 
         if filters['status'] == 'open':
-            offers = offers.filter(Transaction.status == 'open').order_by(Transaction.update_timestamp.desc())
+            offers = offers.filter(Transaction.status.in_(['open', 'approved'])).order_by(Transaction.update_timestamp.desc())
         if filters['status'] == 'complete':
             offers = offers.filter(Transaction.status == 'complete').order_by(Transaction.update_timestamp.desc())
 
@@ -190,5 +189,3 @@ class Process(Resource):
             db.commit()
 
             return redirectTo('../offers', request)
-
-
