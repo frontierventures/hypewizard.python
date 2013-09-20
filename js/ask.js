@@ -66,4 +66,24 @@ $(document).ready(function(){
         });
         return false; 
     }); 
+    $('form[name*=withdraw_ask]').submit(function() { 
+        var response = {};
+        $.ajax({
+            data: $(this).serialize(),
+            type: $(this).attr('method'),
+            url: $(this).attr('action'),
+            dataType: 'json',
+            success: function(json) {
+                if (json.response == 0) {
+                    $('#withdraw_ask_alert').empty();
+                    $('#withdraw_ask_alert').append('<div class="alert alert-error" id="alert">' + json.text + '</div>');
+                    $.colorbox.resize();
+                } else {
+                    $.colorbox.close();
+                    window.location = '../'; 
+                }
+            }     
+        });
+        return false; 
+    }); 
 });

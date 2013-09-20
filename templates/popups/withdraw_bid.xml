@@ -1,0 +1,19 @@
+<div id="withdraw_bid_popup" style='padding:10px; background:#fff;' xmlns:t="http://twistedmatrix.com/ns/twisted.web.template/0.1">
+    <form name="withdraw_bid_form" action="../withdraw_bid" method="POST" enctype="application/x-www-form-urlencoded" t:render="form">
+        <input type="hidden" name="bid_id" />
+        <div>
+            <h1>Withdraw Bid?</h1>
+            <div id="withdraw_bid_alert">
+            </div>
+            <div>
+                <select name="is_confirmed">
+                    <option t:render="is_confirmed_option">
+                        <t:attr name="value"><t:slot name="value" /></t:attr>
+                        <t:slot name="caption" />
+                    </option>
+                </select>
+            </div>
+            <button name="button" value="Submit" class="btn btn-large btn-primary" type="submit">Continue</button>
+        </div>
+    </form>
+</div>
