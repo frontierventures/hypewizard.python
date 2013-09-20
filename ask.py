@@ -195,9 +195,8 @@ class Create(Resource):
             'create_timestamp': timestamp,
             'update_timestamp': timestamp,
             'twitter_name': session_user['twitter_name'],
-            'status_id': twitter_status_id,
-            'seller_id': 0,
-            'buyer_id': session_user['id'],
+            'twitter_status_id': twitter_status_id,
+            'user_id': session_user['id'],
             'cost': price_per_retweet,
             'campaign_type': campaign_type, 
             'niche': niche

@@ -4,7 +4,7 @@ from twisted.web.util import redirectTo
 from twisted.web.template import Element, renderer, renderElement, XMLString
 from twisted.python.filepath import FilePath
 
-from data import Bid, Transaction
+from data import Ask, Bid, Profile, Transaction
 from data import db
 from sessions import SessionManager
 
@@ -163,8 +163,14 @@ class Create(Resource):
             return redirectTo('../', request)
 
         timestamp = config.create_timestamp()
-
+        #####################################
+        # Engage Client
+        #####################################
         if transaction_type == 'engage_client':
+            is_confirmed = request.args.get('is_confirmed')[0]
+            if is_confirmed == 'no':
+                return json.dumps(dict(response=1, text=definitions.MESSAGE_SUCCESS))
+           
             try:
                 ask_id = int(request.args.get('ask_id')[0])
             except:
@@ -178,12 +184,36 @@ class Create(Resource):
                 'update_timestamp': timestamp,
                 'client_twitter_name': ask.twitter_name,
                 'promoter_twitter_name': session_user['twitter_name'],
-                'twitter_status_id': ask.status_id,
+                'twitter_status_id': ask.twitter_status_id,
                 'client_id': ask.user_id,
                 'promoter_id': session_user['id'],
                 'charge': ask.cost 
             }
         
+        #####################################
+        # Engage Promoter
+        #####################################
+        if transaction_type == 'engage_promoter':
+            twitter_status_id = request.args.get('twitter_status_id')[0]
+            try:
+                bid_id = int(request.args.get('bid_id')[0])
+            except:
+                return redirectTo('../', request)
+            
+            bid = db.query(Bid).filter(Bid.id == bid_id).first()
+
+            data = {
+                'status': 'open',
+                'create_timestamp': timestamp,
+                'update_timestamp': timestamp,
+                'client_twitter_name': session_user['twitter_name'],
+                'promoter_twitter_name': bid.twitter_name,
+                'twitter_status_id': twitter_status_id,
+                'client_id': session_user['id'],
+                'promoter_id': bid.user_id,
+                'charge': bid.cost 
+            }
+
         #try:
         #    bid_id = int(request.args.get('bid_id')[0])
         #except:
@@ -205,8 +235,15 @@ class Create(Resource):
         #    'charge': bid.cost 
         #}
 
+
         new_transaction = Transaction(data)
         db.add(new_transaction)
+
+        profile = db.query(Profile).filter(Profile.user_id == session_user['id']).first()
+        profile.transaction_count += 1
+
+        session_user['transaction_count'] += 1
+
         db.commit()
 
         #plain = mailer.offerMemoPlain(seller)

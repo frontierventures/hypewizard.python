@@ -57,9 +57,8 @@ class Bid(Base):
     create_timestamp = Column(String)
     update_timestamp = Column(String)
     twitter_name = Column(String)
-    status_id = Column(String)
-    seller_id = Column(Integer)
-    buyer_id = Column(Integer)
+    twitter_status_id = Column(String)
+    user_id = Column(Integer)
     cost = Column(String)
     campaign_type = Column(String)
     niche = Column(String)
@@ -69,9 +68,8 @@ class Bid(Base):
         self.create_timestamp = data['create_timestamp']
         self.update_timestamp = data['update_timestamp']
         self.twitter_name = data['twitter_name']
-        self.status_id = data['status_id'] 
-        self.seller_id = data['seller_id']
-        self.buyer_id = data['buyer_id']
+        self.twitter_status_id = data['twitter_status_id'] 
+        self.user_id = data['user_id']
         self.cost = data['cost']
         self.campaign_type = data['campaign_type']
         self.niche = data['niche']
@@ -121,10 +119,12 @@ class Profile(Base):
     create_timestamp = Column(String)
     update_timestamp = Column(String)
     token = Column(String)
-    balance = Column(String)
+    available_balance = Column(Integer)
+    reserved_balance = Column(Integer)
     bitcoin_address = Column(String)
     twitter_name = Column(String)
     niche = Column(String)
+    transaction_count = Column(Integer)
 
     user_id = Column(Integer, ForeignKey('users.id'))
     user = relationship('User', backref=backref('profiles', order_by=id))
@@ -133,10 +133,12 @@ class Profile(Base):
         self.create_timestamp = data['create_timestamp']
         self.update_timestamp = data['update_timestamp']
         self.token = data['token']
-        self.balance = data['balance']
+        self.available_balance = data['available_balance']
+        self.reserved_balance = data['reserved_balance']
         self.bitcoin_address = data['bitcoin_address']
         self.twitter_name = data['twitter_name']
         self.niche = data['niche']
+        self.transaction_count = data['transaction_count']
 
 
 class Transaction(Base):
@@ -209,9 +211,69 @@ def reset(default):
                 'update_timestamp': timestamp,
                 'token': '',
                 'bitcoin_address': '',
-                'balance': 0,
+                'available_balance': 0,
+                'reserved_balance': 0,
                 'twitter_name': '',
-                'niche': ''
+                'niche': 'AA',
+                'transaction_count': 0 
+            }
+            profile = Profile(data)
+            user.profiles = [profile]
+
+            db.add(user)
+
+        user = db.query(User).filter(User.email == 'a@a.a').first()
+        if not user:
+            data = {
+                'status': 'available',
+                'level': 1,
+                'login_timestamp': timestamp,
+                'email': 'a@a.a',
+                'password': encryptor.hash_password('a'),
+                'is_email_verified': False,
+                'ip': 0
+            }
+            user = User(data)
+
+            data = {
+                'create_timestamp': timestamp,
+                'update_timestamp': timestamp,
+                'token': '',
+                'bitcoin_address': '',
+                'available_balance': 1000,
+                'reserved_balance': 0,
+                'twitter_name': 'coingig',
+                'niche': 'AA',
+                'transaction_count': 0 
+            }
+            profile = Profile(data)
+            user.profiles = [profile]
+
+            db.add(user)
+
+        user = db.query(User).filter(User.email == 'b@b.b').first()
+        if not user:
+            data = {
+                'status': 'available',
+                'level': 1,
+                'login_timestamp': timestamp,
+                'email': 'b@b.b',
+                'password': encryptor.hash_password('b'),
+                'is_email_verified': False,
+                'ip': 0
+            }
+            user = User(data)
+
+            data = {
+                'create_timestamp': timestamp,
+                'update_timestamp': timestamp,
+                'token': '',
+                'bitcoin_address': '',
+                'available_balance': 1000,
+                'reserved_balance': 0,
+                'twitter_name': 'hypewizard',
+                'niche': 'AA',
+                'transaction_count': 0 
             }
             profile = Profile(data)
             user.profiles = [profile]

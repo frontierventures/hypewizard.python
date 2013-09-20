@@ -149,9 +149,11 @@ def make_session(request, user_id):
     session_user['login_timestamp'] = user.login_timestamp
     session_user['status'] = user.status 
     session_user['is_email_verified'] = user.is_email_verified
-    session_user['balance'] = profile.balance
+    session_user['available_balance'] = profile.available_balance
+    session_user['reserved_balance'] = profile.reserved_balance
     session_user['twitter_name'] = profile.twitter_name
     session_user['bitcoin_address'] = profile.bitcoin_address
+    session_user['transaction_count'] = profile.transaction_count
 
     url = '../'
     if user.level in [1]:

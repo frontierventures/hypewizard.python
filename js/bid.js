@@ -16,6 +16,7 @@ $(document).ready(function(){
                 return "#create_bid_popup";
             }
             if (response.action == 'engage') {
+                $('input[name=transaction_type]').val('engage_promoter');
                 $('input[name*=bid_id]').val(response.bid.id);
                 return "#engage_promoter_popup";
             }
@@ -35,7 +36,7 @@ $(document).ready(function(){
                     $.colorbox.resize();
                 } else {
                     $.colorbox.close();
-                    window.location = '../'; 
+                    window.location = '../?kind=promoter'; 
                 }
             }     
         });

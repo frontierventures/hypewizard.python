@@ -177,9 +177,8 @@ class Create(Resource):
             'create_timestamp': timestamp,
             'update_timestamp': timestamp,
             'twitter_name': session_user['twitter_name'],
-            'status_id': 0,
-            'seller_id': session_user['id'] ,
-            'buyer_id': 0,
+            'twitter_status_id': 0,
+            'user_id': session_user['id'] ,
             'cost': price_per_retweet,
             'campaign_type': campaign_type, 
             'niche': niche

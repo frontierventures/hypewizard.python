@@ -128,9 +128,11 @@ class Create(Resource):
                 'last': '',
                 'token': token,
                 'bitcoin_address': bitcoin_address,
-                'balance': 0,
+                'available_balance': 0,
+                'reserved_balance': 0,
                 'twitter_name': twitter_name,
-                'niche': niche
+                'niche': niche,
+                'transaction_count': 0
                 }
             new_profile = Profile(data)
 

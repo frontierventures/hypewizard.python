@@ -10,13 +10,14 @@
             <div class="nav-collapse collapse">
                 <ul class="nav">
                     <li class="active"><a href="../account">Account</a></li>
-                    <li><a href="../transactions">Transactions</a></li>
+                    <li t:render="transaction_count"><a href="../transactions">Transactions (<t:slot name="count" />)</a></li>
                     <li><a href="../faq">FAQ</a></li>
                     <li><a href="../logout">Logout</a></li>
                 </ul>
                 <p class="navbar-text pull-right" t:render="info">
                     Twitter Name: <t:slot name="twitter_name" />
-                    Balance: <t:slot name="balance" />
+                    Available Balance: <t:slot name="available_balance" />
+                    Reserved Balance: <t:slot name="reserved_balance" />
                     Logged in as <a href="../profile" class="navbar-link"><t:slot name="email" /></a>
                 </p>
             </div><!--/.nav-collapse -->

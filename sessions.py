@@ -53,7 +53,7 @@ class SessionManager():
 
     def clear_session_user(self):
         sessionObject = ISessionObject(self.session)
-        sessionObject.user = {'id': 0, 'level': 1, 'twitter_name': ''}
+        sessionObject.user = {'id': 0, 'level': 1, 'twitter_name': '', 'transaction_count': 0}
         print "%ssession_user cleared%s" % (config.color.BLUE, config.color.ENDC)
 
     def getSessionStore(self):
@@ -201,7 +201,7 @@ class SessionObject(object):
     implements(ISessionObject)
 
     def __init__(self, session):
-        self.user = {'id': 0, 'level': 1, 'twitter_name': ''}
+        self.user = {'id': 0, 'level': 1, 'twitter_name': '', 'transaction_count': 0}
         seed = random.randint(0, sys.maxint)
         self.search = {'seed': seed, 'isTabOpen': False, 'query': '', 'sort': 'top', 'categoryId': '', 'index': 1}
         self.propertyDict = {'id': 0}
