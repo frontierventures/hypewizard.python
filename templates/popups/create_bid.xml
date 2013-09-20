@@ -6,7 +6,7 @@
             <div id="create_bid_alert">
             </div>
             <div>
-                <input type="text" placeholder="Price Per Retweet" name="price_per_retweet"/>
+                <input type="text" placeholder="Charge Per Retweet" name="price_per_retweet"/>
             </div>
             <div>
                 <select name="niche">

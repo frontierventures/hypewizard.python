@@ -35,9 +35,9 @@
                     <td style="text-align:center">
                         <a>
                             <t:attr name="href">
-                                <t:slot name="promoter_twitter_name_url" />
+                                <t:slot name="client_twitter_name_url" />
                             </t:attr>
-                            <t:slot name="promoter_twitter_name" />
+                            <t:slot name="client_twitter_name" />
                         </a>
                     </td>
                     <td style="text-align:center">

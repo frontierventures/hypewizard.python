@@ -121,7 +121,7 @@ class Table(Element):
             slots['statuses_count'] = str(user.statuses_count) 
             slots['followers_count'] = str(user.followers_count) 
             slots['twitter_status_id'] = str(offer.twitter_status_id) 
-            slots['twitter_status_id_url'] = 'http://www.twitter.com/%s/status/%s' % (offer.promoter_twitter_name, offer.twitter_status_id)
+            slots['twitter_status_id_url'] = 'http://www.twitter.com/%s/status/%s' % (offer.client_twitter_name, offer.twitter_status_id)
             slots['charge'] = str(offer.charge) 
             self.offer = offer
             yield tag.clone().fillSlots(**slots)
@@ -196,6 +196,8 @@ class Approve(Resource):
 
         timestamp = config.create_timestamp()
         
+        #ask = db.query(Ask).filter(Ask.id == ).first()
+
         offer.updated_at = timestamp 
         offer.status = 'approved'
         db.commit()

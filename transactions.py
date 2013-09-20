@@ -121,10 +121,10 @@ class Table(Element):
             slots['created_at'] = config.convert_timestamp(transaction.created_at, config.STANDARD)
             slots['updated_at'] = config.convert_timestamp(transaction.updated_at, config.STANDARD)
             slots['transaction_id'] = str(transaction.id)
-            slots['promoter_twitter_name'] = transaction.promoter_twitter_name.encode('utf-8')
-            slots['promoter_twitter_name_url'] = 'http://www.twitter.com/%s' % transaction.promoter_twitter_name
+            slots['client_twitter_name'] = transaction.client_twitter_name.encode('utf-8')
+            slots['client_twitter_name_url'] = 'http://www.twitter.com/%s' % transaction.client_twitter_name
             slots['twitter_status_id'] = str(transaction.twitter_status_id) 
-            slots['twitter_status_id_url'] = 'http://www.twitter.com/%s/status/%s' % (transaction.promoter_twitter_name, transaction.twitter_status_id)
+            slots['twitter_status_id_url'] = 'http://www.twitter.com/%s/status/%s' % (transaction.client_twitter_name, transaction.twitter_status_id)
             slots['charge'] = str(transaction.charge) 
             self.transaction = transaction
             yield tag.clone().fillSlots(**slots)
@@ -218,7 +218,8 @@ class Create(Resource):
                 'twitter_status_id': ask.twitter_status_id,
                 'client_id': ask.user_id,
                 'promoter_id': session_user['id'],
-                'charge': charge 
+                'charge': charge, 
+                'ask_id': ask_id
             }
 
             new_transaction = Transaction(data)
@@ -229,8 +230,6 @@ class Create(Resource):
 
             client = db.query(Profile).filter(Profile.user_id == ask.user_id).first()
             client.offer_count += 1 
-            client.available_balance -= charge
-            client.reserved_balance += charge
 
             db.commit()
         
@@ -313,6 +312,9 @@ class Complete(Resource):
         promoter = db.query(Profile).filter(Profile.user_id == transaction.promoter_id).first()
         promoter.transaction_count -= 1
         promoter.available_balance += transaction.charge
+
+        ask = db.query(Ask).filter(Ask.id == transaction.ask_id).first()
+        ask.target -= 1
 
         db.commit()
 

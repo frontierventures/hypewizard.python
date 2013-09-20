@@ -34,6 +34,7 @@ class Ask(Base):
     twitter_name = Column(String)
     twitter_status_id = Column(String)
     user_id = Column(Integer)
+    target = Column(Integer)
     cost = Column(Integer)
     campaign_type = Column(String)
     niche = Column(String)
@@ -45,6 +46,7 @@ class Ask(Base):
         self.twitter_name = data['twitter_name']
         self.twitter_status_id = data['twitter_status_id'] 
         self.user_id = data['user_id']
+        self.target = data['target']
         self.cost = data['cost']
         self.campaign_type = data['campaign_type']
         self.niche = data['niche']
@@ -73,7 +75,6 @@ class Bid(Base):
         self.cost = data['cost']
         self.campaign_type = data['campaign_type']
         self.niche = data['niche']
-
 
 class Log(Base):
     __tablename__ = "log"
@@ -180,6 +181,7 @@ class Transaction(Base):
     client_id = Column(Integer)
     promoter_id = Column(Integer)
     charge = Column(Integer)
+    ask_id = Column(Integer)
 
     def __init__(self, data):
         self.status = data['status']
@@ -191,6 +193,7 @@ class Transaction(Base):
         self.client_id = data['client_id']
         self.promoter_id = data['promoter_id']
         self.charge = data['charge']
+        self.ask_id = data['ask_id']
 
 
 class User(Base):
@@ -268,7 +271,7 @@ def reset(default):
                 'updated_at': timestamp,
                 'token': '',
                 'bitcoin_address': '',
-                'available_balance': 1000,
+                'available_balance': 10000,
                 'reserved_balance': 0,
                 'twitter_name': 'coingig',
                 'niche': 'AA',
@@ -298,7 +301,7 @@ def reset(default):
                 'updated_at': timestamp,
                 'token': '',
                 'bitcoin_address': '',
-                'available_balance': 1000,
+                'available_balance': 10000,
                 'reserved_balance': 0,
                 'twitter_name': 'hypewizard',
                 'niche': 'AA',

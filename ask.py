@@ -117,6 +117,7 @@ class Create(Resource):
         niche = request.args.get('niche')[0]
         campaign_type = request.args.get('campaign_type')[0]
         charge = int(request.args.get('price_per_retweet')[0])
+        target = int(request.args.get('target')[0])
         #campaign_type = request.args.get('campaign_type')[0]
         
         ## Handle quantity input
@@ -159,6 +160,7 @@ class Create(Resource):
             'twitter_name': session_user['twitter_name'],
             'twitter_status_id': twitter_status_id,
             'user_id': session_user['id'],
+            'target': target,
             'cost': charge,
             'campaign_type': campaign_type, 
             'niche': niche
@@ -168,8 +170,8 @@ class Create(Resource):
         db.add(new_ask)
 
         client = db.query(Profile).filter(Profile.user_id == session_user['id']).first()
-        client.available_balance -= charge
-        client.reserved_balance += charge
+        client.available_balance -= charge * target
+        client.reserved_balance += charge * target
 
         db.commit()
 
@@ -205,6 +207,10 @@ class Withdraw(Resource):
         
         ask.updated_at = timestamp 
         ask.status = 'withdrawn'
+
+        client = db.query(Profile).filter(Profile.user_id == session_user['id']).first()
+        client.available_balance += ask.cost * ask.target
+        client.reserved_balance -= ask.cost * ask.target
 
         db.commit()
         return json.dumps(dict(response=1, text=definitions.MESSAGE_SUCCESS))
