@@ -32,13 +32,18 @@ class Main(Resource):
         if session_user['id'] == 0:
             return redirectTo('../', request)
 
-        session_response = SessionManager(request).getSessionResponse()
-        
+        session_response = SessionManager(request).get_session_response()
+
         filters = {}
         try:
             filters['status'] = request.args.get('status')[0]
         except:
             filters['status'] = 'open'
+
+        try:
+            filters['kind'] = request.args.get('kind')[0]
+        except:
+            filters['kind'] = 'promoter'
 
         Page = pages.Transactions('Transactions', 'transactions', filters)
         Page.session_user = session_user
@@ -57,7 +62,12 @@ class Table(Element):
         self.session_user = session_user
         self.filters = filters
 
-        transactions = db.query(Transaction)
+        if filters['kind'] == 'promoter':
+            transactions = db.query(Transaction).filter(Transaction.promoter_id == session_user['id'])
+        
+        if filters['kind'] == 'client':
+            transactions = db.query(Transaction).filter(Transaction.client_id == session_user['id'])
+
         if filters['status'] == 'open':
             transactions = transactions.filter(Transaction.status == 'open').order_by(Transaction.update_timestamp.desc())
         if filters['status'] == 'complete':
@@ -144,60 +154,56 @@ class Create(Resource):
 
         session_user = SessionManager(request).get_session_user()
         session_user['action'] = 'create_transaction'
+
+        print "HERE" * 20
         
         try:
-            bid_id = int(request.args.get('bid_id')[0])
+            transaction_type = request.args.get('transaction_type')[0]
         except:
             return redirectTo('../', request)
 
-        twitter_status_id = request.args.get('twitter_status_id')[0]
-        #campaign_type = request.args.get('campaign_type')[0]
-        #campaign_type = request.args.get('campaign_type')[0]
-        
-        ## Handle quantity input
-        #if not quantity:
-        #    return json.dumps(dict(response=0, text=definitions.QUANTITY[0]))
-
-        #try:
-        #    quantity = int(quantity)
-        #except:
-        #    return json.dumps(dict(response=0, text=definitions.QUANTITY[1]))
-
-        #if quantity < 0:
-        #    return json.dumps(dict(response=0, text=definitions.QUANTITY[2]))
-
-        ## Handle quantity input
-        #if not amount:
-        #    return json.dumps(dict(response=0, text=definitions.AMOUNT[0]))
-
-        #try:
-        #    amount = float(amount)
-        #except:
-        #    return json.dumps(dict(response=0, text=definitions.AMOUNT[1]))
-        #
-        ## Handle shipping_cost input
-        #if not shipping_cost:
-        #    return json.dumps(dict(response=0, text=definitions.SHIPPING_COST[0]))
-
-        #try:
-        #    shipping_cost = float(shipping_cost)
-        #except:
-        #    return json.dumps(dict(response=0, text=definitions.SHIPPING_COST[1]))
-
-        bid = db.query(Bid).filter(Bid.id == bid_id).first()
-
         timestamp = config.create_timestamp()
-        data = {
-            'status': 'open',
-            'create_timestamp': timestamp,
-            'update_timestamp': timestamp,
-            'client_twitter_name': session_user['twitter_name'],
-            'promoter_twitter_name': bid.twitter_name,
-            'twitter_status_id': twitter_status_id,
-            'client_id': session_user['id'],
-            'promoter_id': bid.seller_id,
-            'charge': bid.cost 
-        }
+
+        if transaction_type == 'engage_client':
+            try:
+                ask_id = int(request.args.get('ask_id')[0])
+            except:
+                return redirectTo('../', request)
+            
+            ask = db.query(Ask).filter(Ask.id == ask_id).first()
+
+            data = {
+                'status': 'open',
+                'create_timestamp': timestamp,
+                'update_timestamp': timestamp,
+                'client_twitter_name': ask.twitter_name,
+                'promoter_twitter_name': session_user['twitter_name'],
+                'twitter_status_id': ask.status_id,
+                'client_id': ask.user_id,
+                'promoter_id': session_user['id'],
+                'charge': ask.cost 
+            }
+        
+        #try:
+        #    bid_id = int(request.args.get('bid_id')[0])
+        #except:
+        #    return redirectTo('../', request)
+
+        #twitter_status_id = request.args.get('twitter_status_id')[0]
+
+        #bid = db.query(Bid).filter(Bid.id == bid_id).first()
+
+        #data = {
+        #    'status': 'open',
+        #    'create_timestamp': timestamp,
+        #    'update_timestamp': timestamp,
+        #    'client_twitter_name': session_user['twitter_name'],
+        #    'promoter_twitter_name': bid.twitter_name,
+        #    'twitter_status_id': twitter_status_id,
+        #    'client_id': session_user['id'],
+        #    'promoter_id': bid.seller_id,
+        #    'charge': bid.cost 
+        #}
 
         new_transaction = Transaction(data)
         db.add(new_transaction)

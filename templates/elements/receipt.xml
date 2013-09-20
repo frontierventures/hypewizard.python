@@ -8,6 +8,6 @@
         <div style="text-align: center;">to complete this transaction.</div>
         <div style="text-align: center;"><a><t:attr name="href"><t:slot name="htmlContractUrl" /></t:attr>Contract Copy</a></div>
         <br />
-        <div style="text-align: center;">Thank you, Smart Property Group</div>
+        <div style="text-align: center;">Thank you, Hype Wizard</div>
     </div>
 </div>

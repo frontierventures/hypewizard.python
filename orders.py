@@ -26,7 +26,7 @@ class Main(Resource):
         print '%srequest.args: %s%s' % (config.color.RED, request.args, config.color.ENDC)
 
         session_user = SessionManager(request).get_session_user()
-        session_response = SessionManager(request).getSessionResponse()
+        session_response = SessionManager(request).get_session_response()
         
         filters = {}
         try:

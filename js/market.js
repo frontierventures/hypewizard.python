@@ -1,36 +1,41 @@
 $(document).ready(function(){
-    build_grid();
+    var kind = $('input[name*=kind]').val();
+    build_grid(kind);
 });
-function build_grid(columns) {
-    $('.asks').empty();
-    var response = {};
-    $.ajax({
-        url: '../get_asks',
-        async: false,
-        cache: false,
-        dataType: 'json',
-        fail: function() { response.error = false }, 
-        success: function(data) {
-            response = data;
-        }
-    });
-    for (var i = 0; i < response.orders.length; i++)
-        add_ask_to_market(response.rule, response.orders[i]);
+function build_grid(kind) {
+    if (kind == 'client') {
+        $('.asks').empty();
+        var response = {};
+        $.ajax({
+            url: '../get_asks',
+            async: false,
+            cache: false,
+            dataType: 'json',
+            fail: function() { response.error = false }, 
+            success: function(data) {
+                response = data;
+            }
+        });
+        for (var i = 0; i < response.orders.length; i++)
+            add_ask_to_market(response.rule, response.orders[i]);
+    }
 
-    $('.bids').empty();
-    var response = {};
-    $.ajax({
-        url: '../get_bids',
-        async: false,
-        cache: false,
-        dataType: 'json',
-        fail: function() { response.error = true }, 
-        success: function(data) {
-            response = data;
-        }
-    });
-    for (var i = 0; i < response.orders.length; i++)
-        add_bid_to_market(response.rule, response.orders[i]);
+    if (kind == 'promoter') {
+        $('.bids').empty();
+        var response = {};
+        $.ajax({
+            url: '../get_bids',
+            async: false,
+            cache: false,
+            dataType: 'json',
+            fail: function() { response.error = true }, 
+            success: function(data) {
+                response = data;
+            }
+        });
+        for (var i = 0; i < response.orders.length; i++)
+            add_bid_to_market(response.rule, response.orders[i]);
+    }
 };
 function add_ask_to_market(rule, ask) { 
     var action_url = '../feature_disabled?reason=not_authorized';

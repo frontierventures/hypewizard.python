@@ -39,7 +39,7 @@ class Main(Resource):
         if session_user['id'] >= 1:
             return redirectTo('../', request)
 
-        session_response = SessionManager(request).getSessionResponse()
+        session_response = SessionManager(request).get_session_response()
 
         Page = pages.Register('Register', 'register')
         Page.session_user = session_user

@@ -1,0 +1,32 @@
+<div class="container-fluid" xmlns:t="http://twistedmatrix.com/ns/twisted.web.template/0.1" t:render="view">
+    <div style="width: 100%;">
+        <h1>Promoters <a href="../?kind=client">Clients</a></h1>
+        <h2>
+            Promote Your Tweets with These Promoters 
+        </h2>
+    </div>
+    <div style="width: 100%;">
+        <input type="hidden" name="kind">
+            <t:attr name="value"><t:slot name="kind" /></t:attr>
+        </input>
+        
+        <table style="width: 100%">
+            <thead>
+                <tr>
+                    <th>Niche</th>
+                    <th>Twitter Name</th>
+                    <th>Statuses Count</th>
+                    <th>Followers Count</th>
+                    <th>Campaign Type</th>
+                    <th>Charge per Retweet</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody class="bids">
+            </tbody>
+        </table>
+    </div>
+    <div style="width: 100%;">
+        If you are seeking to earn <a><t:attr name="href"><t:slot name="url" /></t:attr>Post Your Bid</a>
+    </div>
+</div>

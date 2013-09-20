@@ -1,5 +1,6 @@
 <div id="engage_client_popup" style='padding:10px; background:#fff;' xmlns:t="http://twistedmatrix.com/ns/twisted.web.template/0.1">
     <form name="engage_client_form" action="../create_transaction" method="POST" enctype="application/x-www-form-urlencoded" t:render="form">
+        <input type="hidden" name="transaction_type" />
         <input type="hidden" name="ask_id" />
         <div>
             <h1>Are you sure?</h1>

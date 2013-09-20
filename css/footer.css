@@ -1,5 +1,6 @@
 /* Sticky footer styles
 -------------------------------------------------- */
+
 html,
 body {
     height: 100%;
@@ -34,17 +35,17 @@ body {
     }
 }
 
+
+
 /* Custom page CSS
 -------------------------------------------------- */
 /* Not required for template or sticky footer method. */
 
-#wrap > .container {
-    /* padding-top: 60px; */
+.container {
+    width: auto;
+    max-width: 680px;
 }
 .container .credit {
     margin: 20px 0;
 }
 
-code {
-    font-size: 80%;
-}

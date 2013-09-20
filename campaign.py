@@ -22,7 +22,7 @@ class Main(Resource):
         session_user = SessionManager(request).get_session_user()
         session_user['page'] = 'campaign'
 
-        session_response = SessionManager(request).getSessionResponse()
+        session_response = SessionManager(request).get_session_response()
 
         Page = pages.Campaign('Campaign', 'campaign')
         Page.session_user = session_user

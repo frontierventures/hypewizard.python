@@ -17,7 +17,8 @@ $(document).ready(function(){
                 return "#create_ask_popup";
             }
             if (response.action == 'engage') {
-                $('input[name=status_id]').val(response.ask.status_id);
+                $('input[name=transaction_type]').val('engage_client');
+                $('input[name=ask_id]').val(response.ask.id);
                 return "#engage_client_popup";
             }
         }      

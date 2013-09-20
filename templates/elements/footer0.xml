@@ -1,5 +1,5 @@
 <div id="footer" xmlns:t="http://twistedmatrix.com/ns/twisted.web.template/0.1">
-    <div class="container">
-        <p class="muted credit">&#169; Smart Property Group 2013</p>
+    <div class="container-fluid">
+        <p class="muted credit">&#169; Hype Wizard 2013</p>
     </div>
 </div>

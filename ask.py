@@ -28,7 +28,7 @@ class Main(Resource):
         print '%srequest.args: %s%s' % (config.color.RED, request.args, config.color.ENDC)
 
         session_user = SessionManager(request).get_session_user()
-        session_response = SessionManager(request).getSessionResponse()
+        session_response = SessionManager(request).get_session_response()
         
         if session_user['id'] == 0:
             return redirectTo('../', request)
@@ -108,17 +108,6 @@ class Process(Resource):
                     'twitter_status_id': str(twitter_status_id)
                 } 
 
-        #if action == 'create':
-        #    try:
-        #        status_id = int(request.args.get('status_id')[0])
-        #        print status_id
-        #    except:
-        #        return redirectTo('../', request)
-
-        #    response['ask'] = {
-        #            'status_id': str(status_id)
-        #        } 
-
         print response
 
         if action == 'fullfil':
@@ -144,7 +133,6 @@ class Process(Resource):
             response['ask'] = {
                     'id': ask_id 
                 } 
-            
         return json.dumps(response)
 
 

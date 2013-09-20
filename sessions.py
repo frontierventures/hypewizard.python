@@ -148,7 +148,7 @@ class SessionManager():
         sessionObject.address = {'id': 0}
         print "%ssessionAddress cleared%s" % (config.color.BLUE, config.color.ENDC)
 
-    def getSessionResponse(self):
+    def get_session_response(self):
         sessionObject = ISessionObject(self.session)
         return sessionObject.response
 

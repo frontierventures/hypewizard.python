@@ -42,7 +42,7 @@ class Main(Resource):
         if session_user['id'] >= 1:
             return redirectTo('../', request)
 
-        session_response = SessionManager(request).getSessionResponse()
+        session_response = SessionManager(request).get_session_response()
         if request.args.get('verify'):
             verify = request.args.get('verify')[0]
             if verify == 'ok':

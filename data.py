@@ -32,9 +32,8 @@ class Ask(Base):
     create_timestamp = Column(String)
     update_timestamp = Column(String)
     twitter_name = Column(String)
-    status_id = Column(String)
-    seller_id = Column(Integer)
-    buyer_id = Column(Integer)
+    twitter_status_id = Column(String)
+    user_id = Column(String)
     cost = Column(String)
     campaign_type = Column(String)
     niche = Column(String)
@@ -44,9 +43,8 @@ class Ask(Base):
         self.create_timestamp = data['create_timestamp']
         self.update_timestamp = data['update_timestamp']
         self.twitter_name = data['twitter_name']
-        self.status_id = data['status_id'] 
-        self.seller_id = data['seller_id']
-        self.buyer_id = data['buyer_id']
+        self.twitter_status_id = data['twitter_status_id'] 
+        self.user_id = data['user_id']
         self.cost = data['cost']
         self.campaign_type = data['campaign_type']
         self.niche = data['niche']
@@ -77,7 +75,6 @@ class Bid(Base):
         self.cost = data['cost']
         self.campaign_type = data['campaign_type']
         self.niche = data['niche']
-
 
 
 class Log(Base):
