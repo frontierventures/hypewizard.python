@@ -46,6 +46,7 @@ class GetAsks(Resource):
             order['twitter_status_id'] = ask.twitter_status_id
             order['cost'] = ask.cost
             order['target'] = ask.target
+            order['goal'] = ask.goal
 
             order['rule'] = 'none'
             if ask.user_id != session_user['id']:

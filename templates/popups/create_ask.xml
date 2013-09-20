@@ -14,8 +14,8 @@
                 </select>
             </div>
             <div>
-                <label for="quantity">Retweet Target:</label>
-                <input type="text" name="target"/>
+                <label for="quantity">Retweet Goal:</label>
+                <input type="text" name="goal"/>
             </div>
             <div>
                 <label for="quantity">Price for retweet:</label>

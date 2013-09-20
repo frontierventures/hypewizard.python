@@ -314,7 +314,7 @@ class Complete(Resource):
         promoter.available_balance += transaction.charge
 
         ask = db.query(Ask).filter(Ask.id == transaction.ask_id).first()
-        ask.target -= 1
+        ask.target += 1
 
         db.commit()
 

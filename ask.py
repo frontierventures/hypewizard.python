@@ -117,7 +117,7 @@ class Create(Resource):
         niche = request.args.get('niche')[0]
         campaign_type = request.args.get('campaign_type')[0]
         charge = int(request.args.get('price_per_retweet')[0])
-        target = int(request.args.get('target')[0])
+        goal = int(request.args.get('goal')[0])
         #campaign_type = request.args.get('campaign_type')[0]
         
         ## Handle quantity input
@@ -160,7 +160,8 @@ class Create(Resource):
             'twitter_name': session_user['twitter_name'],
             'twitter_status_id': twitter_status_id,
             'user_id': session_user['id'],
-            'target': target,
+            'target': 0,
+            'goal': goal,
             'cost': charge,
             'campaign_type': campaign_type, 
             'niche': niche

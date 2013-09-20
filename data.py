@@ -35,6 +35,7 @@ class Ask(Base):
     twitter_status_id = Column(String)
     user_id = Column(Integer)
     target = Column(Integer)
+    goal = Column(Integer)
     cost = Column(Integer)
     campaign_type = Column(String)
     niche = Column(String)
@@ -47,6 +48,7 @@ class Ask(Base):
         self.twitter_status_id = data['twitter_status_id'] 
         self.user_id = data['user_id']
         self.target = data['target']
+        self.target = data['goal']
         self.cost = data['cost']
         self.campaign_type = data['campaign_type']
         self.niche = data['niche']

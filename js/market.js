@@ -56,7 +56,7 @@ function add_ask_to_market(rule, ask) {
             '<td style="text-align:center"><a href="https://twitter.com/' + ask.twitter_name + '">' + ask.twitter_name + '</td>' +
             '<td style="text-align:center"><a href="https://twitter.com/' + ask.twitter_name + '/status/' + ask.twitter_status_id + '">' + ask.twitter_status_id + '</td>' +
             '<td style="text-align:center">' + ask.campaign_type + '</td>' +
-            '<td style="text-align:center">' + ask.target + '</td>' +
+            '<td style="text-align:center">' + ask.target + ' of ' + ask.goal + '</td>' +
             '<td style="text-align:center">' + ask.cost + '</td>' +
             action_cell + 
             '</tr>');
