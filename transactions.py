@@ -205,21 +205,6 @@ class Create(Resource):
             new_transaction = Transaction(data)
             db.add(new_transaction)
 
-            #data = {
-            #    'status': 'open',
-            #    'create_timestamp': timestamp,
-            #    'update_timestamp': timestamp,
-            #    'client_twitter_name': ask.twitter_name,
-            #    'promoter_twitter_name': session_user['twitter_name'],
-            #    'twitter_status_id': ask.twitter_status_id,
-            #    'client_id': ask.user_id,
-            #    'promoter_id': session_user['id'],
-            #    'charge': cost 
-            #}
-
-            #new_offer = Offer(data)
-            #db.add(new_offer)
-
             promoter = db.query(Profile).filter(Profile.user_id == session_user['id']).first()
             promoter.transaction_count += 1
 
@@ -245,7 +230,7 @@ class Create(Resource):
             charge = bid.cost
 
             data = {
-                'status': 'open',
+                'status': 'approved',
                 'create_timestamp': timestamp,
                 'update_timestamp': timestamp,
                 'client_twitter_name': session_user['twitter_name'],
@@ -253,29 +238,21 @@ class Create(Resource):
                 'twitter_status_id': twitter_status_id,
                 'client_id': session_user['id'],
                 'promoter_id': bid.user_id,
-                'charge': cost 
+                'charge': charge 
             }
 
-        #try:
-        #    bid_id = int(request.args.get('bid_id')[0])
-        #except:
-        #    return redirectTo('../', request)
+            new_transaction = Transaction(data)
+            db.add(new_transaction)
 
-        #twitter_status_id = request.args.get('twitter_status_id')[0]
+            promoter = db.query(Profile).filter(Profile.user_id == bid.user_id).first()
+            promoter.transaction_count += 1
 
-        #bid = db.query(Bid).filter(Bid.id == bid_id).first()
+            client = db.query(Profile).filter(Profile.user_id == session_user['id']).first()
+            client.offer_count += 1 
+            client.available_balance -= charge
+            client.reserved_balance += charge
 
-        #data = {
-        #    'status': 'open',
-        #    'create_timestamp': timestamp,
-        #    'update_timestamp': timestamp,
-        #    'client_twitter_name': session_user['twitter_name'],
-        #    'promoter_twitter_name': bid.twitter_name,
-        #    'twitter_status_id': twitter_status_id,
-        #    'client_id': session_user['id'],
-        #    'promoter_id': bid.seller_id,
-        #    'charge': bid.cost 
-        #}
+            db.commit()
 
         #plain = mailer.offerMemoPlain(seller)
         #html = mailer.offerMemoHtml(seller)

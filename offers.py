@@ -110,6 +110,7 @@ class Table(Element):
     def row(self, request, tag):
         for offer in self.offers:
             slots = {}
+            slots['status'] = offer.status 
             slots['create_timestamp'] = config.convert_timestamp(offer.create_timestamp, config.STANDARD)
             slots['offer_id'] = str(offer.id)
             slots['promoter_twitter_name'] = offer.promoter_twitter_name.encode('utf-8')

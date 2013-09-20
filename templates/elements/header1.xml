@@ -9,17 +9,16 @@
             <a class="brand" href="../">Hype Wizard</a>
             <div class="nav-collapse collapse">
                 <ul class="nav">
-                    <li class="active"><a href="../account">Account</a></li>
                     <li t:render="transaction_count"><a href="../transactions">Transactions (<t:slot name="count" />)</a></li>
                     <li t:render="offer_count"><a href="../offers">Offers (<t:slot name="count" />)</a></li>
                     <li><a href="../faq">FAQ</a></li>
-                    <li><a href="../logout">Logout</a></li>
+                    <li class="active"><a href="../logout">Logout</a></li>
                 </ul>
                 <p class="navbar-text pull-right" t:render="info">
-                    Twitter Name: <t:slot name="twitter_name" />
-                    Available Balance: <t:slot name="available_balance" />
-                    Reserved Balance: <t:slot name="reserved_balance" />
-                    Logged in as <a href="../profile" class="navbar-link"><t:slot name="email" /></a>
+                    <b>Twitter Name:</b> <t:slot name="twitter_name" />
+                    <b>Available Balance:</b> <t:slot name="available_balance" />
+                    <b>Reserved Balance:</b> <t:slot name="reserved_balance" />
+                    <b>Logged in as</b> <a href="../account" class="navbar-link"><t:slot name="email" /></a>
                 </p>
             </div><!--/.nav-collapse -->
         </div>
