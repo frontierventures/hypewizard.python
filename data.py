@@ -33,8 +33,8 @@ class Ask(Base):
     update_timestamp = Column(String)
     twitter_name = Column(String)
     twitter_status_id = Column(String)
-    user_id = Column(String)
-    cost = Column(String)
+    user_id = Column(Integer)
+    cost = Column(Integer)
     campaign_type = Column(String)
     niche = Column(String)
 
@@ -59,7 +59,7 @@ class Bid(Base):
     twitter_name = Column(String)
     twitter_status_id = Column(String)
     user_id = Column(Integer)
-    cost = Column(String)
+    cost = Column(Integer)
     campaign_type = Column(String)
     niche = Column(String)
 
@@ -90,27 +90,52 @@ class Log(Base):
         self.note = data['note']
 
 
-class Order(Base):
-    __tablename__ = 'orders'
-    id = Column(Integer, Sequence('order_id_seq'), primary_key=True)
+class Offer(Base):
+    __tablename__ = 'offers'
+    id = Column(Integer, Sequence('offer_id_seq'), primary_key=True)
     status = Column(String)
     create_timestamp = Column(String)
     update_timestamp = Column(String)
-    twitter_name = Column(String)
-    seller_id = Column(Integer)
-    buyer_id = Column(Integer)
-    cost = Column(String)
-    campaign_type = Column(String)
+    client_twitter_name = Column(String)
+    promoter_twitter_name = Column(String)
+    twitter_status_id = Column(String)
+    client_id = Column(Integer)
+    promoter_id = Column(Integer)
+    charge = Column(String)
 
     def __init__(self, data):
         self.status = data['status']
         self.create_timestamp = data['create_timestamp']
         self.update_timestamp = data['update_timestamp']
-        self.twitter_name = data['twitter_name']
-        self.seller_id = data['seller_id']
-        self.buyer_id = data['buyer_id']
-        self.cost = data['cost']
-        self.campaign_type = data['campaign_type']
+        self.client_twitter_name = data['client_twitter_name']
+        self.promoter_twitter_name = data['promoter_twitter_name']
+        self.twitter_status_id = data['twitter_status_id'] 
+        self.client_id = data['client_id']
+        self.promoter_id = data['promoter_id']
+        self.charge = data['charge']
+
+
+#class Order(Base):
+#    __tablename__ = 'orders'
+#    id = Column(Integer, Sequence('order_id_seq'), primary_key=True)
+#    status = Column(String)
+#    create_timestamp = Column(String)
+#    update_timestamp = Column(String)
+#    twitter_name = Column(String)
+#    seller_id = Column(Integer)
+#    buyer_id = Column(Integer)
+#    cost = Column(String)
+#    campaign_type = Column(String)
+#
+#    def __init__(self, data):
+#        self.status = data['status']
+#        self.create_timestamp = data['create_timestamp']
+#        self.update_timestamp = data['update_timestamp']
+#        self.twitter_name = data['twitter_name']
+#        self.seller_id = data['seller_id']
+#        self.buyer_id = data['buyer_id']
+#        self.cost = data['cost']
+#        self.campaign_type = data['campaign_type']
 
 
 class Profile(Base):
@@ -124,6 +149,7 @@ class Profile(Base):
     bitcoin_address = Column(String)
     twitter_name = Column(String)
     niche = Column(String)
+    offer_count = Column(Integer)
     transaction_count = Column(Integer)
 
     user_id = Column(Integer, ForeignKey('users.id'))
@@ -138,6 +164,7 @@ class Profile(Base):
         self.bitcoin_address = data['bitcoin_address']
         self.twitter_name = data['twitter_name']
         self.niche = data['niche']
+        self.offer_count = data['offer_count']
         self.transaction_count = data['transaction_count']
 
 
@@ -152,7 +179,7 @@ class Transaction(Base):
     twitter_status_id = Column(String)
     client_id = Column(Integer)
     promoter_id = Column(Integer)
-    charge = Column(String)
+    charge = Column(Integer)
 
     def __init__(self, data):
         self.status = data['status']
@@ -215,7 +242,8 @@ def reset(default):
                 'reserved_balance': 0,
                 'twitter_name': '',
                 'niche': 'AA',
-                'transaction_count': 0 
+                'transaction_count': 0, 
+                'offer_count': 0 
             }
             profile = Profile(data)
             user.profiles = [profile]
@@ -244,7 +272,8 @@ def reset(default):
                 'reserved_balance': 0,
                 'twitter_name': 'coingig',
                 'niche': 'AA',
-                'transaction_count': 0 
+                'transaction_count': 0,
+                'offer_count': 0
             }
             profile = Profile(data)
             user.profiles = [profile]
@@ -273,7 +302,8 @@ def reset(default):
                 'reserved_balance': 0,
                 'twitter_name': 'hypewizard',
                 'niche': 'AA',
-                'transaction_count': 0 
+                'transaction_count': 0, 
+                'offer_count': 0 
             }
             profile = Profile(data)
             user.profiles = [profile]

@@ -54,8 +54,8 @@ class Header(Element):
     def info(self, request, tag):
         slots = {}
         slots['email'] = self.user.email
-        slots['available_balance'] = self.profile.available_balance
-        slots['reserved_balance'] = self.profile.reserved_balance
+        slots['available_balance'] = str(self.profile.available_balance)
+        slots['reserved_balance'] = str(self.profile.reserved_balance)
         slots['twitter_name'] = self.profile.twitter_name
         return tag.fillSlots(**slots)
 
@@ -70,9 +70,15 @@ class Header(Element):
         return tag.fillSlots(**slots)
 
     @renderer
+    def offer_count(self, request, tag):
+        slots = {}
+        slots['count'] = str(self.profile.offer_count)
+        return tag.fillSlots(**slots)
+
+    @renderer
     def transaction_count(self, request, tag):
         slots = {}
-        slots['count'] = str(self.session_user['transaction_count'])
+        slots['count'] = str(self.profile.transaction_count)
         return tag.fillSlots(**slots)
 
 

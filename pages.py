@@ -9,7 +9,7 @@ import elements
 import faq
 import forms
 import market
-import orders
+import offers
 import popups
 import transactions
 
@@ -154,18 +154,28 @@ class Market(Page):
         return popups.EngageClient(self.session_user)
 
 
-class Orders(Page):
+class Offers(Page):
     def __init__(self, pageTitle, template, filters):
         Page.__init__(self, pageTitle, template)
         self.filters = filters
 
-    #@renderer
-    #def orders(self, request, tag):
-    #    return orders.Orders(self.session_user, self.filters)
-
     @renderer
-    def create_order_popup(self, request, tag):
-        return popups.CreateOrder()
+    def offers_table(self, request, tag):
+        return offers.Table(self.session_user, self.filters)
+
+
+#class Orders(Page):
+#    def __init__(self, pageTitle, template, filters):
+#        Page.__init__(self, pageTitle, template)
+#        self.filters = filters
+#
+#    #@renderer
+#    #def orders(self, request, tag):
+#    #    return orders.Orders(self.session_user, self.filters)
+#
+#    @renderer
+#    def create_order_popup(self, request, tag):
+#        return popups.CreateOrder()
 
 
 class Register(Page):
@@ -197,6 +207,7 @@ templates = {
         'home': 'templates/pages/home.xml',
         'login': 'templates/pages/login.xml',
         'market': 'templates/pages/market.xml',
+        'offers': 'templates/pages/offers.xml',
         'orders': 'templates/pages/orders.xml',
         'register': 'templates/pages/register.xml',
         'transactions': 'templates/pages/transactions.xml'

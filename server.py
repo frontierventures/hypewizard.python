@@ -16,7 +16,8 @@ import faq
 import login
 import logout
 import market
-import orders
+import offers
+#import orders
 import pages
 import register
 import transactions
@@ -33,7 +34,8 @@ root = account.assemble(root)
 root = bid.assemble(root)
 root = campaign.assemble(root)
 root = login.assemble(root)
-root = orders.assemble(root)
+root = offers.assemble(root)
+#root = orders.assemble(root)
 root = register.assemble(root)
 root = transactions.assemble(root)
 

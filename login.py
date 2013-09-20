@@ -154,6 +154,7 @@ def make_session(request, user_id):
     session_user['twitter_name'] = profile.twitter_name
     session_user['bitcoin_address'] = profile.bitcoin_address
     session_user['transaction_count'] = profile.transaction_count
+    session_user['offer_count'] = profile.offer_count
 
     url = '../'
     if user.level in [1]:

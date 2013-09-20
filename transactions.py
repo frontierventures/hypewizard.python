@@ -4,7 +4,7 @@ from twisted.web.util import redirectTo
 from twisted.web.template import Element, renderer, renderElement, XMLString
 from twisted.python.filepath import FilePath
 
-from data import Ask, Bid, Profile, Transaction
+from data import Ask, Bid, Profile, Offer, Transaction
 from data import db
 from sessions import SessionManager
 
@@ -69,7 +69,7 @@ class Table(Element):
             transactions = db.query(Transaction).filter(Transaction.client_id == session_user['id'])
 
         if filters['status'] == 'open':
-            transactions = transactions.filter(Transaction.status == 'open').order_by(Transaction.update_timestamp.desc())
+            transactions = transactions.filter(Transaction.status.in_(['open', 'approved'])).order_by(Transaction.update_timestamp.desc())
         if filters['status'] == 'complete':
             transactions = transactions.filter(Transaction.status == 'complete').order_by(Transaction.update_timestamp.desc())
 
@@ -118,6 +118,15 @@ class Table(Element):
     def row(self, request, tag):
         for transaction in self.transactions:
             slots = {}
+
+            status = ''
+            if transaction.status == 'open':
+                status = 'Waiting approval'
+
+            if transaction.status == 'approved':
+                status = 'Ok to retweet'
+
+            slots['status'] = status 
             slots['create_timestamp'] = config.convert_timestamp(transaction.create_timestamp, config.STANDARD)
             slots['transaction_id'] = str(transaction.id)
             slots['promoter_twitter_name'] = transaction.promoter_twitter_name.encode('utf-8')
@@ -131,11 +140,12 @@ class Table(Element):
     @renderer
     def action(self, request, tag):
         buttons = []
-
-        buttons.append({
-            'url': '../process_transaction?action=claim&id=%s' % self.transaction.id,
-            'caption': 'Claim Funds' 
-        })
+        
+        if self.transaction.status == 'approved':
+            buttons.append({
+                'url': '../process_transaction?action=claim&id=%s' % self.transaction.id,
+                'caption': 'Claim Funds' 
+            })
 
         for button in buttons:
             slots = {}
@@ -178,6 +188,8 @@ class Create(Resource):
             
             ask = db.query(Ask).filter(Ask.id == ask_id).first()
 
+            charge = ask.cost
+
             data = {
                 'status': 'open',
                 'create_timestamp': timestamp,
@@ -187,8 +199,36 @@ class Create(Resource):
                 'twitter_status_id': ask.twitter_status_id,
                 'client_id': ask.user_id,
                 'promoter_id': session_user['id'],
-                'charge': ask.cost 
+                'charge': charge 
             }
+
+            new_transaction = Transaction(data)
+            db.add(new_transaction)
+
+            #data = {
+            #    'status': 'open',
+            #    'create_timestamp': timestamp,
+            #    'update_timestamp': timestamp,
+            #    'client_twitter_name': ask.twitter_name,
+            #    'promoter_twitter_name': session_user['twitter_name'],
+            #    'twitter_status_id': ask.twitter_status_id,
+            #    'client_id': ask.user_id,
+            #    'promoter_id': session_user['id'],
+            #    'charge': cost 
+            #}
+
+            #new_offer = Offer(data)
+            #db.add(new_offer)
+
+            promoter = db.query(Profile).filter(Profile.user_id == session_user['id']).first()
+            promoter.transaction_count += 1
+
+            client = db.query(Profile).filter(Profile.user_id == ask.user_id).first()
+            client.offer_count += 1 
+            client.available_balance -= charge
+            client.reserved_balance += charge
+
+            db.commit()
         
         #####################################
         # Engage Promoter
@@ -202,6 +242,8 @@ class Create(Resource):
             
             bid = db.query(Bid).filter(Bid.id == bid_id).first()
 
+            charge = bid.cost
+
             data = {
                 'status': 'open',
                 'create_timestamp': timestamp,
@@ -211,7 +253,7 @@ class Create(Resource):
                 'twitter_status_id': twitter_status_id,
                 'client_id': session_user['id'],
                 'promoter_id': bid.user_id,
-                'charge': bid.cost 
+                'charge': cost 
             }
 
         #try:
@@ -234,17 +276,6 @@ class Create(Resource):
         #    'promoter_id': bid.seller_id,
         #    'charge': bid.cost 
         #}
-
-
-        new_transaction = Transaction(data)
-        db.add(new_transaction)
-
-        profile = db.query(Profile).filter(Profile.user_id == session_user['id']).first()
-        profile.transaction_count += 1
-
-        session_user['transaction_count'] += 1
-
-        db.commit()
 
         #plain = mailer.offerMemoPlain(seller)
         #html = mailer.offerMemoHtml(seller)

@@ -18,25 +18,25 @@ s3_password = ""
 s3_bucket = ""
 
 if mode == "prod":
-    db_connection_string = 'postgres://postgres:ABC123ABC@localhost/retweet'
+    db_connection_string = 'postgres://postgres:ABC123ABC@localhost/hypewizard'
     #s3_key = "AKIAINRPYCKNQ5QTEPKA"
     #s3_password = "vLYmFAXmLIeLqabqhEZyEBPQCctShmIjNRAa1DGG"
     #s3_bucket = 'coingig'
 
 elif mode == "dev":
-    db_connection_string = 'postgres://postgres:ABC123ABC@localhost/retweet'
+    db_connection_string = 'postgres://postgres:ABC123ABC@localhost/hypewizard'
     #s3_key = "AKIAINRPYCKNQ5QTEPKA"
     #s3_password = "vLYmFAXmLIeLqabqhEZyEBPQCctShmIjNRAa1DGG"
     #s3_bucket = 'coingig-dev'
 
 elif mode == "staging":
-    db_connection_string = 'postgres://postgres:ABC123ABC@localhost/retweet_dev'
+    db_connection_string = 'postgres://postgres:ABC123ABC@localhost/hypewizard_dev'
     #s3_key = "AKIAINRPYCKNQ5QTEPKA"
     #s3_password = "vLYmFAXmLIeLqabqhEZyEBPQCctShmIjNRAa1DGG"
     #s3_bucket = 'coingig-dev'
 
 elif mode == "remote_dev":
-    db_connection_string = 'postgres://postgres:ABC123ABC@www.retweet.com/retweet_dev'
+    db_connection_string = 'postgres://postgres:ABC123ABC@www.hypewizard.com/hypewizard_dev'
     #s3_key = "AKIAINRPYCKNQ5QTEPKA"
     #s3_password = "vLYmFAXmLIeLqabqhEZyEBPQCctShmIjNRAa1DGG"
     #s3_bucket = 'coingig-dev'
