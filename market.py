@@ -37,7 +37,7 @@ class Main(Resource):
         return renderElement(request, Page)
 
 
-class Market(Element):
+class Table(Element):
     def __init__(self, session_user, filters):
         self.session_user = session_user
         self.filters = filters

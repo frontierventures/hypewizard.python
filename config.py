@@ -19,27 +19,15 @@ s3_bucket = ""
 
 if mode == "prod":
     db_connection_string = 'postgres://postgres:ABC123ABC@localhost/hypewizard'
-    #s3_key = "AKIAINRPYCKNQ5QTEPKA"
-    #s3_password = "vLYmFAXmLIeLqabqhEZyEBPQCctShmIjNRAa1DGG"
-    #s3_bucket = 'coingig'
 
 elif mode == "dev":
     db_connection_string = 'postgres://postgres:ABC123ABC@localhost/hypewizard'
-    #s3_key = "AKIAINRPYCKNQ5QTEPKA"
-    #s3_password = "vLYmFAXmLIeLqabqhEZyEBPQCctShmIjNRAa1DGG"
-    #s3_bucket = 'coingig-dev'
 
 elif mode == "staging":
     db_connection_string = 'postgres://postgres:ABC123ABC@localhost/hypewizard_dev'
-    #s3_key = "AKIAINRPYCKNQ5QTEPKA"
-    #s3_password = "vLYmFAXmLIeLqabqhEZyEBPQCctShmIjNRAa1DGG"
-    #s3_bucket = 'coingig-dev'
 
 elif mode == "remote_dev":
     db_connection_string = 'postgres://postgres:ABC123ABC@www.hypewizard.com/hypewizard_dev'
-    #s3_key = "AKIAINRPYCKNQ5QTEPKA"
-    #s3_password = "vLYmFAXmLIeLqabqhEZyEBPQCctShmIjNRAa1DGG"
-    #s3_bucket = 'coingig-dev'
 
 class color:
     HEADER = '\033[1;45m'
@@ -70,8 +58,3 @@ def convert_timestamp(timestamp, formatting):
     utc = datetime.utcfromtimestamp(float(timestamp))
     timestamp = utc.strftime(formatting)
     return timestamp
-
-#cdn = 'https://s3.amazonaws.com/coingig/images'
-#cdnImages = 'https://s3.amazonaws.com/coingig/images'
-#cdnLogos = 'https://s3.amazonaws.com/coingig/logos'
-#cdnLogos = '../images/stores'

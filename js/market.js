@@ -73,8 +73,7 @@ function add_bid_to_market(rule, bid) {
             '<tr>' + 
             '<td style="text-align:center">' + bid.niche + '</td>' +
             '<td style="text-align:center"><a href="http://twitter.com/' + bid.twitter_name + '">' + bid.twitter_name + '</td>' +
-            '<td style="text-align:center">' + user.statuses_count + '</td>' +
-            '<td style="text-align:center">' + user.followers_count + '</td>' +
+            '<td style="text-align:center"> (S: ' + user.statuses_count + ', F: ' + user.followers_count + ')</td>' +
             '<td style="text-align:center">' + bid.campaign_type + '</td>' +
             '<td style="text-align:center">' + bid.cost + '</td>' +
             '<td style="text-align:center"><a href="' + action_url + '">Engage Promoter</a></td>' +

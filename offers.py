@@ -62,9 +62,9 @@ class Table(Element):
         offers = db.query(Transaction).filter(Transaction.client_id == session_user['id'])
 
         if filters['status'] == 'open':
-            offers = offers.filter(Transaction.status.in_(['open', 'approved'])).order_by(Transaction.update_timestamp.desc())
+            offers = offers.filter(Transaction.status.in_(['open', 'approved'])).order_by(Transaction.updated_at.desc())
         if filters['status'] == 'complete':
-            offers = offers.filter(Transaction.status == 'complete').order_by(Transaction.update_timestamp.desc())
+            offers = offers.filter(Transaction.status == 'complete').order_by(Transaction.updated_at.desc())
 
         if offers.count() == 0:
             template = 'templates/elements/no_offers_table.xml'
@@ -110,12 +110,16 @@ class Table(Element):
     @renderer
     def row(self, request, tag):
         for offer in self.offers:
+            user = twitter_api.get_user(offer.promoter_twitter_name)
             slots = {}
             slots['status'] = offer.status 
-            slots['create_timestamp'] = config.convert_timestamp(offer.create_timestamp, config.STANDARD)
+            slots['created_at'] = config.convert_timestamp(offer.created_at, config.STANDARD)
+            slots['updated_at'] = config.convert_timestamp(offer.updated_at, config.STANDARD)
             slots['offer_id'] = str(offer.id)
             slots['promoter_twitter_name'] = offer.promoter_twitter_name.encode('utf-8')
             slots['promoter_twitter_name_url'] = 'http://www.twitter.com/%s' % offer.promoter_twitter_name
+            slots['statuses_count'] = str(user.statuses_count) 
+            slots['followers_count'] = str(user.followers_count) 
             slots['twitter_status_id'] = str(offer.twitter_status_id) 
             slots['twitter_status_id_url'] = 'http://www.twitter.com/%s/status/%s' % (offer.promoter_twitter_name, offer.twitter_status_id)
             slots['charge'] = str(offer.charge) 
@@ -190,6 +194,9 @@ class Approve(Resource):
         if is_confirmed == 'no':
             return json.dumps(dict(response=1, text=definitions.MESSAGE_SUCCESS))
 
+        timestamp = config.create_timestamp()
+        
+        offer.updated_at = timestamp 
         offer.status = 'approved'
         db.commit()
 
@@ -217,6 +224,9 @@ class Disapprove(Resource):
         if is_confirmed == 'no':
             return json.dumps(dict(response=1, text=definitions.MESSAGE_SUCCESS))
 
+        timestamp = config.create_timestamp()
+        
+        offer.updated_at = timestamp 
         offer.status = 'cancelled'
 
         client = db.query(Profile).filter(Profile.user_id == offer.client_id).first()

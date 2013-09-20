@@ -34,7 +34,7 @@ class GetAsks(Resource):
             response['rule'] = 'limit'
 
         asks = db.query(Ask).filter(Ask.status == 'active')
-        asks = asks.order_by(Ask.create_timestamp.desc())
+        asks = asks.order_by(Ask.created_at.desc())
 
         orders = []
         for ask in asks: 
@@ -64,7 +64,7 @@ class GetBids(Resource):
             response['rule'] = 'limit'
 
         bids = db.query(Bid).filter(Bid.status == 'active')
-        bids = bids.order_by(Bid.create_timestamp.desc())
+        bids = bids.order_by(Bid.created_at.desc())
 
         orders = []
         for bid in bids: 
@@ -95,7 +95,7 @@ class GetMarketScore(Resource):
         user = twitter_api.get_user(twitter_name)
 
         profiles = db.query(Profile).filter(Profile.twitter_name == twitter_name)
-        profile = profiles.order_by(Profile.create_timestamp.desc()).first()
+        profile = profiles.order_by(Profile.created_at.desc()).first()
 
         record = {}
         record['score'] = 100

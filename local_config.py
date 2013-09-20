@@ -58,7 +58,7 @@ class color:
         self.ENDC = ''
 
 
-def create_timestamp():
+def created_at():
     return time.time()
 
 

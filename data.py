@@ -29,8 +29,8 @@ class Ask(Base):
     __tablename__ = 'asks'
     id = Column(Integer, Sequence('ask_id_seq'), primary_key=True)
     status = Column(String)
-    create_timestamp = Column(String)
-    update_timestamp = Column(String)
+    created_at = Column(String)
+    updated_at = Column(String)
     twitter_name = Column(String)
     twitter_status_id = Column(String)
     user_id = Column(Integer)
@@ -40,8 +40,8 @@ class Ask(Base):
 
     def __init__(self, data):
         self.status = data['status']
-        self.create_timestamp = data['create_timestamp']
-        self.update_timestamp = data['update_timestamp']
+        self.created_at = data['created_at']
+        self.updated_at = data['updated_at']
         self.twitter_name = data['twitter_name']
         self.twitter_status_id = data['twitter_status_id'] 
         self.user_id = data['user_id']
@@ -54,8 +54,8 @@ class Bid(Base):
     __tablename__ = 'bids'
     id = Column(Integer, Sequence('bid_id_seq'), primary_key=True)
     status = Column(String)
-    create_timestamp = Column(String)
-    update_timestamp = Column(String)
+    created_at = Column(String)
+    updated_at = Column(String)
     twitter_name = Column(String)
     twitter_status_id = Column(String)
     user_id = Column(Integer)
@@ -65,8 +65,8 @@ class Bid(Base):
 
     def __init__(self, data):
         self.status = data['status']
-        self.create_timestamp = data['create_timestamp']
-        self.update_timestamp = data['update_timestamp']
+        self.created_at = data['created_at']
+        self.updated_at = data['updated_at']
         self.twitter_name = data['twitter_name']
         self.twitter_status_id = data['twitter_status_id'] 
         self.user_id = data['user_id']
@@ -94,8 +94,8 @@ class Offer(Base):
     __tablename__ = 'offers'
     id = Column(Integer, Sequence('offer_id_seq'), primary_key=True)
     status = Column(String)
-    create_timestamp = Column(String)
-    update_timestamp = Column(String)
+    created_at = Column(String)
+    updated_at = Column(String)
     client_twitter_name = Column(String)
     promoter_twitter_name = Column(String)
     twitter_status_id = Column(String)
@@ -105,8 +105,8 @@ class Offer(Base):
 
     def __init__(self, data):
         self.status = data['status']
-        self.create_timestamp = data['create_timestamp']
-        self.update_timestamp = data['update_timestamp']
+        self.created_at = data['created_at']
+        self.updated_at = data['updated_at']
         self.client_twitter_name = data['client_twitter_name']
         self.promoter_twitter_name = data['promoter_twitter_name']
         self.twitter_status_id = data['twitter_status_id'] 
@@ -119,8 +119,8 @@ class Offer(Base):
 #    __tablename__ = 'orders'
 #    id = Column(Integer, Sequence('order_id_seq'), primary_key=True)
 #    status = Column(String)
-#    create_timestamp = Column(String)
-#    update_timestamp = Column(String)
+#    created_at = Column(String)
+#    updated_at = Column(String)
 #    twitter_name = Column(String)
 #    seller_id = Column(Integer)
 #    buyer_id = Column(Integer)
@@ -129,8 +129,8 @@ class Offer(Base):
 #
 #    def __init__(self, data):
 #        self.status = data['status']
-#        self.create_timestamp = data['create_timestamp']
-#        self.update_timestamp = data['update_timestamp']
+#        self.created_at = data['created_at']
+#        self.updated_at = data['updated_at']
 #        self.twitter_name = data['twitter_name']
 #        self.seller_id = data['seller_id']
 #        self.buyer_id = data['buyer_id']
@@ -141,8 +141,8 @@ class Offer(Base):
 class Profile(Base):
     __tablename__ = 'profiles'
     id = Column(Integer, Sequence('profile_id_seq'), primary_key=True)
-    create_timestamp = Column(String)
-    update_timestamp = Column(String)
+    created_at = Column(String)
+    updated_at = Column(String)
     token = Column(String)
     available_balance = Column(Integer)
     reserved_balance = Column(Integer)
@@ -156,8 +156,8 @@ class Profile(Base):
     user = relationship('User', backref=backref('profiles', order_by=id))
 
     def __init__(self, data):
-        self.create_timestamp = data['create_timestamp']
-        self.update_timestamp = data['update_timestamp']
+        self.created_at = data['created_at']
+        self.updated_at = data['updated_at']
         self.token = data['token']
         self.available_balance = data['available_balance']
         self.reserved_balance = data['reserved_balance']
@@ -172,8 +172,8 @@ class Transaction(Base):
     __tablename__ = 'transactions'
     id = Column(Integer, Sequence('transaction_id_seq'), primary_key=True)
     status = Column(String)
-    create_timestamp = Column(String)
-    update_timestamp = Column(String)
+    created_at = Column(String)
+    updated_at = Column(String)
     client_twitter_name = Column(String)
     promoter_twitter_name = Column(String)
     twitter_status_id = Column(String)
@@ -183,8 +183,8 @@ class Transaction(Base):
 
     def __init__(self, data):
         self.status = data['status']
-        self.create_timestamp = data['create_timestamp']
-        self.update_timestamp = data['update_timestamp']
+        self.created_at = data['created_at']
+        self.updated_at = data['updated_at']
         self.client_twitter_name = data['client_twitter_name']
         self.promoter_twitter_name = data['promoter_twitter_name']
         self.twitter_status_id = data['twitter_status_id'] 
@@ -234,8 +234,8 @@ def reset(default):
             user = User(data)
 
             data = {
-                'create_timestamp': timestamp,
-                'update_timestamp': timestamp,
+                'created_at': timestamp,
+                'updated_at': timestamp,
                 'token': '',
                 'bitcoin_address': '',
                 'available_balance': 0,
@@ -264,8 +264,8 @@ def reset(default):
             user = User(data)
 
             data = {
-                'create_timestamp': timestamp,
-                'update_timestamp': timestamp,
+                'created_at': timestamp,
+                'updated_at': timestamp,
                 'token': '',
                 'bitcoin_address': '',
                 'available_balance': 1000,
@@ -294,8 +294,8 @@ def reset(default):
             user = User(data)
 
             data = {
-                'create_timestamp': timestamp,
-                'update_timestamp': timestamp,
+                'created_at': timestamp,
+                'updated_at': timestamp,
                 'token': '',
                 'bitcoin_address': '',
                 'available_balance': 1000,

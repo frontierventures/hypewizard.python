@@ -17,7 +17,8 @@
             <thead>
                 <tr>
                     <th>Status</th>
-                    <th>Create Date</th>
+                    <th>Created At</th>
+                    <th>Updated At</th>
                     <th>Transaction Id</th>
                     <th>Client (Twitter Name)</th>
                     <th>Twitter Status Id</th>
@@ -28,7 +29,8 @@
             <tbody>
                 <tr t:render="row">
                     <td style="text-align:center"><t:slot name="status" /></td>
-                    <td style="text-align:center"><t:slot name="create_timestamp" /></td>
+                    <td style="text-align:center"><t:slot name="created_at" /></td>
+                    <td style="text-align:center"><t:slot name="updated_at" /></td>
                     <td style="text-align:center"><t:slot name="transaction_id" /></td>
                     <td style="text-align:center">
                         <a>

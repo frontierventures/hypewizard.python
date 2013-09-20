@@ -106,7 +106,7 @@ class Register(Resource):
 
             newUser = User(data)
             data = {            
-                'create_timestamp': timestamp,
+                'created_at': timestamp,
                 'updateTimestamp': timestamp,
                 'first': '',
                 'last': '',

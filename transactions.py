@@ -67,9 +67,9 @@ class Table(Element):
         transactions = db.query(Transaction).filter(Transaction.promoter_id == session_user['id'])
         
         if filters['status'] == 'open':
-            transactions = transactions.filter(Transaction.status.in_(['open', 'approved'])).order_by(Transaction.update_timestamp.desc())
+            transactions = transactions.filter(Transaction.status.in_(['open', 'approved'])).order_by(Transaction.updated_at.desc())
         if filters['status'] == 'complete':
-            transactions = transactions.filter(Transaction.status == 'complete').order_by(Transaction.update_timestamp.desc())
+            transactions = transactions.filter(Transaction.status == 'complete').order_by(Transaction.updated_at.desc())
 
         if transactions.count() == 0:
             template = 'templates/elements/no_transactions_table.xml'
@@ -118,7 +118,8 @@ class Table(Element):
             slots = {}
 
             slots['status'] = transaction.status 
-            slots['create_timestamp'] = config.convert_timestamp(transaction.create_timestamp, config.STANDARD)
+            slots['created_at'] = config.convert_timestamp(transaction.created_at, config.STANDARD)
+            slots['updated_at'] = config.convert_timestamp(transaction.updated_at, config.STANDARD)
             slots['transaction_id'] = str(transaction.id)
             slots['promoter_twitter_name'] = transaction.promoter_twitter_name.encode('utf-8')
             slots['promoter_twitter_name_url'] = 'http://www.twitter.com/%s' % transaction.promoter_twitter_name
@@ -210,8 +211,8 @@ class Create(Resource):
 
             data = {
                 'status': 'open',
-                'create_timestamp': timestamp,
-                'update_timestamp': timestamp,
+                'created_at': timestamp,
+                'updated_at': timestamp,
                 'client_twitter_name': ask.twitter_name,
                 'promoter_twitter_name': session_user['twitter_name'],
                 'twitter_status_id': ask.twitter_status_id,
@@ -249,8 +250,8 @@ class Create(Resource):
 
             data = {
                 'status': 'approved',
-                'create_timestamp': timestamp,
-                'update_timestamp': timestamp,
+                'created_at': timestamp,
+                'updated_at': timestamp,
                 'client_twitter_name': session_user['twitter_name'],
                 'promoter_twitter_name': bid.twitter_name,
                 'twitter_status_id': twitter_status_id,
@@ -299,7 +300,10 @@ class Complete(Resource):
 
         if transaction.promoter_id != session_user['id']:
             return redirectTo('../', request)
+
+        timestamp = config.create_timestamp()
         
+        transaction.updated_at = timestamp 
         transaction.status = 'complete'
 
         client = db.query(Profile).filter(Profile.user_id == transaction.client_id).first()

@@ -131,7 +131,7 @@ class Market(Page):
 
     @renderer
     def orders(self, request, tag):
-        return market.Market(self.session_user, self.filters)
+        return market.Table(self.session_user, self.filters)
 
     @renderer
     def create_ask_popup(self, request, tag):

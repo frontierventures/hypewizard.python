@@ -51,39 +51,6 @@ class Main(Resource):
         return renderElement(request, Page)
 
 
-class Details(Element):
-    def __init__(self, session_user, filters):
-        self.session_user = session_user
-        self.filters = filters
-
-        template = 'templates/elements/ask_details.xml'
-
-        self.loader = XMLString(FilePath(template).getContent())
-        self.statuses = twitter_api.get_statuses(self.session_user['twitter_name'])
-
-    @renderer
-    def row(self, request, tag):
-        for status in self.statuses:
-            slots = {}
-            slots['status_id'] = str(status.id)
-            slots['status_text'] = status.text.encode('utf-8')
-            self.status = status
-            yield tag.clone().fillSlots(**slots)
-
-    @renderer
-    def action(self, request, tag):
-        buttons = []
-        buttons.append({
-            'url': '../process_ask?action=create&status_id=%s' % self.status.id,
-            'caption': 'Start Re-tweet Campaign' 
-        })
-        for button in buttons:
-            slots = {}
-            slots['caption'] = button['caption']
-            slots['url'] = button['url']
-            yield tag.clone().fillSlots(**slots) 
-
-
 class Process(Resource):
     def render(self, request):
         response = {'error': True}
@@ -191,8 +158,8 @@ class Create(Resource):
 
         data = {
             'status': 'active',
-            'create_timestamp': timestamp,
-            'update_timestamp': timestamp,
+            'created_at': timestamp,
+            'updated_at': timestamp,
             'twitter_name': session_user['twitter_name'],
             'twitter_status_id': twitter_status_id,
             'user_id': session_user['id'],

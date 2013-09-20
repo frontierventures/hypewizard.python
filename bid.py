@@ -51,41 +51,6 @@ class Main(Resource):
         return renderElement(request, Page)
 
 
-class Details(Element):
-    def __init__(self, session_user, filters):
-        self.session_user = session_user
-        self.filters = filters
-
-        template = 'templates/elements/bid_details.xml'
-
-        self.loader = XMLString(FilePath(template).getContent())
-        self.twitter_user = twitter_api.get_user(self.session_user['twitter_name'])
-
-    @renderer
-    def twitter_info(self, request, tag):
-        slots = {}
-        slots['name'] = str(self.twitter_user.name)
-        slots['created_at'] = str(self.twitter_user.created_at)
-        slots['statuses_count'] = str(self.twitter_user.statuses_count)
-        slots['followers_count'] = str(self.twitter_user.followers_count)
-        slots['market_score'] = str(0)
-        #slots['status_text'] = status.text.encode('utf-8')
-        yield tag.clone().fillSlots(**slots)
-
-    @renderer
-    def action(self, request, tag):
-        buttons = []
-        buttons.append({
-            'url': '../process_bid?action=create&status_id=%s' % self.status.id,
-            'caption': 'create' 
-        })
-        for button in buttons:
-            slots = {}
-            slots['caption'] = button['caption']
-            slots['url'] = button['url']
-            yield tag.clone().fillSlots(**slots) 
-
-
 class Process(Resource):
     def render(self, request):
         response = {'error': True}
@@ -174,8 +139,8 @@ class Create(Resource):
 
         data = {
             'status': 'active',
-            'create_timestamp': timestamp,
-            'update_timestamp': timestamp,
+            'created_at': timestamp,
+            'updated_at': timestamp,
             'twitter_name': session_user['twitter_name'],
             'twitter_status_id': 0,
             'user_id': session_user['id'] ,

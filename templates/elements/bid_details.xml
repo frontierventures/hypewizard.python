@@ -1,5 +1,0 @@
-<div class="form-account" xmlns:t="http://twistedmatrix.com/ns/twisted.web.template/0.1" t:render="twitter_info">
-    <h1 class="form-account-heading">Re-Twitter Account Summary</h1>
-    <div><b>Market Score:</b> <t:slot name="market_score" /></div>
-    <div><a href="../process_bid?action=create">Create bid</a></div>
-</div>

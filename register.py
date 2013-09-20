@@ -122,8 +122,8 @@ class Create(Resource):
 
             new_user = User(data)
             data = {            
-                'create_timestamp': timestamp,
-                'update_timestamp': timestamp,
+                'created_at': timestamp,
+                'updated_at': timestamp,
                 'first': '',
                 'last': '',
                 'token': token,
