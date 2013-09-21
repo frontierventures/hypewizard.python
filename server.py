@@ -18,6 +18,7 @@ import market
 import offers
 import pages
 import register
+import terms
 import transactions
 import sys
 from sessions import SessionManager
@@ -37,6 +38,7 @@ root = transactions.assemble(root)
 
 root.putChild('', root)
 root.putChild('faq', faq.Main())
+root.putChild('terms', terms.Main())
 root.putChild('css', File('./css'))
 root.putChild('js', File('./js'))
 root.putChild('img', File('./img'))
