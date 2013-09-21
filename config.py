@@ -17,6 +17,11 @@ s3_key = ""
 s3_password = ""
 s3_bucket = ""
 
+CONSUMER_KEY = 'Ph8ahj5i3V4ZaT9HT334Yg' 
+CONSUMER_SECRET = 'hHzGGTG4zXuMdI6H7mxEMKzBLSmbacb4MXCDG5Rd3ps'
+ACCESS_TOKEN_KEY = '632058592-8ZTOQ3rr1EDyNbDNwJ10c0Iqr7jLeDkcXwvQn15l'
+ACCESS_TOKEN_SECRET = 'WWdAWQQA0FBDmGsHyvRue8yy2tBQhQ9cNXsnXk'
+
 if mode == "prod":
     db_connection_string = 'postgres://postgres:ABC123ABC@localhost/hypewizard'
 

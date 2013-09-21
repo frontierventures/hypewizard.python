@@ -1,13 +1,14 @@
 import json
 import time, datetime
 import twitter
+import config
 
 api = twitter.Api()
 
-api = twitter.Api(consumer_key='PZbYciNC8TS3LVxeHaBTg',
-                  consumer_secret='o4sKqGuCkuVnlTTiYe4FcHC82UtGprdZVGqjyMGz18',
-                  access_token_key='632058592-trS5QTBYedptP4AFik4w1mwFcId74EK5qBy1VbHE',
-                  access_token_secret='SUIZajSIznRzvPWNKUgkGPZnLlyXLTYq5YvLZVGrq4M')
+api = twitter.Api(consumer_key=config.CONSUMER_KEY,
+                  consumer_secret=config.CONSUMER_SECRET,
+                  access_token_key=config.ACCESS_TOKEN_KEY,
+                  access_token_secret=config.ACCESS_TOKEN_SECRET)
 
 def get_followers_count(twitter_name):
     user = api.GetUser(screen_name=twitter_name)
