@@ -14,7 +14,7 @@ class MyStreamer(TwythonStreamer):
         self.disconnect()
 
 
-stream = MyStreamer(config.CONSUMER_KEY, config.CONSUMER_SECRET, config.ACCESS_TOKEN_KEY, config.ACCESS_TOKEN_SECRET)
+stream = MyStreamer(config.CONSUMER_KEY, config.CONSUMER_SECRET, config.ACCESS_TOKEN, config.ACCESS_TOKEN_SECRET)
 #stream.statuses.filter(track='hypewizard')
 #stream.user(track='hypewizard')
 #stream.site(track='hypewizard')
