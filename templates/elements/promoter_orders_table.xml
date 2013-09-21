@@ -1,9 +1,11 @@
 <div class="container-fluid" xmlns:t="http://twistedmatrix.com/ns/twisted.web.template/0.1" t:render="view">
     <div style="width: 100%;">
-        <h1>Promoters <a href="../?kind=client">Clients</a></h1>
-        <h2>
-            Promote Your Tweets with These Promoters 
-        </h2>
+        <div class="span6">
+            <h1>Promoters</h1>
+        </div>
+        <div class="span6">
+            <h2><a href="../?kind=client">Clients</a></h2>
+        </div>
     </div>
     <div style="width: 100%;">
         <input type="hidden" name="kind">

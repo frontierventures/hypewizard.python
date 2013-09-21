@@ -185,7 +185,7 @@ class Withdraw(Resource):
         except:
             return redirectTo('../', request)
         
-        bid = db.query(Ask).filter(Ask.id == bid_id).first()
+        bid = db.query(Bid).filter(Bid.id == bid_id).first()
 
         if bid.user_id != session_user['id']:
             return redirectTo('../', request)

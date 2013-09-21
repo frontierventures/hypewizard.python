@@ -26,8 +26,13 @@ class Main(Resource):
             filters['kind'] = request.args.get('kind')[0]
         except:
             filters['kind'] = 'client'
+        
+        if filters['kind'] == 'client':
+            title = 'Promote Your Tweets with These Promoters' 
+        if filters['kind'] == 'promoter':
+            title = 'Earn by Promoting These Tweets for Our Clients' 
 
-        Page = pages.Market('Market', 'market', filters)
+        Page = pages.Market(title, 'market', filters)
         Page.session_user = session_user
         print "%ssession_user: %s%s" % (config.color.BLUE, session_user, config.color.ENDC)
         print "%ssession_response: %s%s" % (config.color.BLUE, session_response, config.color.ENDC)
