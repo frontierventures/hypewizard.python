@@ -15,7 +15,6 @@ class Client:
   def __init__(self):
     self.buffer = ""
     self.conn = pycurl.Curl()
-    self.conn = pycurl.Curl()
     self.conn.setopt(pycurl.URL, STREAM_URL)
     self.conn.setopt(pycurl.HTTPHEADER, [HEADER])
     self.conn.setopt(pycurl.POSTFIELDS, DATA)
