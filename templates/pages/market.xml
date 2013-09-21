@@ -9,6 +9,7 @@
         <!-- Le styles -->
         <link href="css/bootstrap.css" rel="stylesheet" />
         <link href="css/footer.css" rel="stylesheet" />
+        <link href="css/ui.css" rel="stylesheet" />
         <link href="css/bootstrap-responsive.css" rel="stylesheet" />
         <link href="css/colorbox.css" rel="stylesheet" />
 

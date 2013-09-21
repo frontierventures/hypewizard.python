@@ -1,33 +1,19 @@
 <div class="container-fluid" xmlns:t="http://twistedmatrix.com/ns/twisted.web.template/0.1" t:render="view">
     <div style="width: 100%;">
-        <div class="span6">
+        <div class="span4">
             <h1>Promoters</h1>
         </div>
-        <div class="span6">
+        <div class="span4">
             <h2><a href="../?kind=client">Clients</a></h2>
         </div>
+        <div class="span4">
+            <br />
+            If you are seeking to earn <a><t:attr name="href"><t:slot name="url" /></t:attr>Post Your Bid</a>
+        </div>
     </div>
-    <div style="width: 100%;">
+    <div style="width: 100%; float: left;" class="bids">
         <input type="hidden" name="kind">
             <t:attr name="value"><t:slot name="kind" /></t:attr>
         </input>
-        
-        <table style="width: 100%">
-            <thead>
-                <tr>
-                    <th>Niche</th>
-                    <th>Twitter Name</th>
-                    <th>Wizard Score</th>
-                    <th>Campaign Type</th>
-                    <th>Charge per Retweet</th>
-                    <th>Actions</th>
-                </tr>
-            </thead>
-            <tbody class="bids">
-            </tbody>
-        </table>
-    </div>
-    <div style="width: 100%;">
-        If you are seeking to earn <a><t:attr name="href"><t:slot name="url" /></t:attr>Post Your Bid</a>
     </div>
 </div>
