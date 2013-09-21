@@ -1,0 +1,15 @@
+Parsley==1.2
+SQLAlchemy==0.8.2
+Twisted==13.1.0
+anyjson==0.3.3
+argparse==1.2.1
+httplib2==0.8
+oauth2==1.5.211
+psycopg2==2.5.1
+python-dateutil==2.1
+python-twitter==1.0
+simplejson==3.3.0
+six==1.4.1
+tweetstream==1.1.1
+wsgiref==0.1.2
+zope.interface==4.0.5

@@ -11,6 +11,7 @@ import forms
 import market
 import offers
 import popups
+import terms
 import transactions
 
 
@@ -190,6 +191,17 @@ class Register(Page):
         return forms.Register(self.session_user, self.session_response)
 
 
+class Terms(Page):
+    def __init__(self, pageTitle, template, filters):
+        Page.__init__(self, pageTitle, template)
+        self.pageTitle = pageTitle
+        self.filters = filters
+
+    @renderer
+    def details(self, request, tag):
+        return terms.Details()
+
+
 class Transactions(Page):
     def __init__(self, pageTitle, template, filters):
         Page.__init__(self, pageTitle, template)
@@ -216,5 +228,6 @@ templates = {
         'offers': 'templates/pages/offers.xml',
         'orders': 'templates/pages/orders.xml',
         'register': 'templates/pages/register.xml',
+        'terms': 'templates/pages/terms.xml',
         'transactions': 'templates/pages/transactions.xml'
     }
