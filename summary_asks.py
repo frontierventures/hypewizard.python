@@ -16,7 +16,7 @@ import pages
 
 
 def assemble(root):
-    root.putChild('summary_orders', Main())
+    root.putChild('summary_asks', Main())
     #root.putChild('process_user', Process())
     #root.putChild('approve_user', Approve())
     #root.putChild('disapprove_user', Disapprove())
@@ -28,7 +28,7 @@ class Main(Resource):
         print '%srequest.args: %s%s' % (config.color.RED, request.args, config.color.ENDC)
 
         session_user = SessionManager(request).get_session_user()
-        session_user['action'] = 'summary_users'
+        session_user['action'] = 'summary_asks'
 
         if session_user['level'] != 0:
             return redirectTo('../', request)
@@ -41,7 +41,7 @@ class Main(Resource):
         except:
             filters['status'] = 'active'
 
-        Page = pages.SummaryUsers('%s Summary Users' % config.company_name, 'summary_users', filters)
+        Page = pages.SummaryAsks('%s Summary Asks' % config.company_name, 'summary_asks', filters)
         Page.session_user = session_user
 
         print "%ssession_user: %s%s" % (config.color.BLUE, session_user, config.color.ENDC)
@@ -58,19 +58,19 @@ class Table(Element):
         self.session_user = session_user
         self.filters = filters
 
-        users = db.query(User)
+        asks = db.query(User)
 
 
         if filters['status'] == 'active':
-            users = users.filter(User.status.in_(['active', 'approved'])).order_by(User.login_timestamp.desc())
+            asks = asks.filter(User.status.in_(['active', 'approved'])).order_by(User.login_timestamp.desc())
 
         if filters['status'] == 'deleted':
-            users = users.filter(User.status == 'deleted').order_by(User.login_timestamp.desc())
+            asks = asks.filter(User.status == 'deleted').order_by(User.login_timestamp.desc())
 
         if users.count() == 0:
-            template = 'templates/elements/empty_summary_users_table.xml'
+            template = 'templates/elements/empty_summary_asks_table.xml'
         else:
-            template = 'templates/elements/summary_users_table.xml'
+            template = 'templates/elements/summary_asks_table.xml'
 
         self.loader = XMLString(FilePath(template).getContent())
         self.users = users
@@ -83,12 +83,12 @@ class Table(Element):
         }
 
         slots = {}
-        slots['user_status'] = statuses[self.filters['status']]
-        slots['user_count'] = str(self.users.count())
+        slots['ask_status'] = statuses[self.filters['status']]
+        slots['ask_count'] = str(self.asks.count())
         yield tag.clone().fillSlots(**slots)
 
     @renderer
-    def user_status(self, request, tag):
+    def ask_status(self, request, tag):
         statuses = {
             'active': 'Active',
             'deleted': 'Deleted'
@@ -110,13 +110,11 @@ class Table(Element):
 
     @renderer
     def row(self, request, tag):
-        for user in self.users:
+        for ask in self.asks:
             slots = {}
-            slots['status'] = user.status 
-            slots['login_timestamp'] = config.convert_timestamp(user.login_timestamp, config.STANDARD)
-            slots['user_id'] = str(user.id)
-            slots['email'] = str(user.email)
-            slots['ip'] = str(user.ip)
+            slots['status'] = ask.status 
+            slots['created_at'] = config.convert_timestamp(ask.created_at, config.STANDARD)
+            slots['ask_id'] = str(ask.id)
             self.user = user
             yield tag.clone().fillSlots(**slots)
 
@@ -126,16 +124,15 @@ class Table(Element):
 
         if self.user.status == 'open':
             buttons.append({
-                'url': '../process_user?action=approve&id=%s' % self.user.id,
+                'url': '../process_ask?action=approve&id=%s' % self.ask.id,
                 'caption': 'Approve' 
             })
             buttons.append({
-                'url': '../process_user?action=disapprove&id=%s' % self.user.id,
+                'url': '../process_ask?action=disapprove&id=%s' % self.ask.id,
                 'caption': 'Disapprove' 
             })
 
         for button in buttons:
-            slots = {}
             slots = {}
             slots['caption'] = button['caption']
             slots['url'] = button['url']

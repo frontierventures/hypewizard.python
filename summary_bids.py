@@ -16,7 +16,7 @@ import pages
 
 
 def assemble(root):
-    root.putChild('summary_orders', Main())
+    root.putChild('summary_bids', Main())
     #root.putChild('process_user', Process())
     #root.putChild('approve_user', Approve())
     #root.putChild('disapprove_user', Disapprove())

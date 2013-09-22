@@ -226,7 +226,7 @@ def reset(default):
         user = db.query(User).filter(User.email == '0@0.0').first()
         if not user:
             data = {
-                'status': 'available',
+                'status': 'active',
                 'level': 0,
                 'login_timestamp': timestamp,
                 'email': '0@0.0',
@@ -256,7 +256,7 @@ def reset(default):
         user = db.query(User).filter(User.email == 'a@a.a').first()
         if not user:
             data = {
-                'status': 'available',
+                'status': 'active',
                 'level': 1,
                 'login_timestamp': timestamp,
                 'email': 'a@a.a',
@@ -286,7 +286,7 @@ def reset(default):
         user = db.query(User).filter(User.email == 'b@b.b').first()
         if not user:
             data = {
-                'status': 'available',
+                'status': 'active',
                 'level': 1,
                 'login_timestamp': timestamp,
                 'email': 'b@b.b',

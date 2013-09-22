@@ -13,6 +13,10 @@ import offers
 import popups
 import terms
 import transactions
+import summary_asks
+import summary_bids
+import summary_orders
+import summary_transactions
 import summary_users
 
 
@@ -217,6 +221,46 @@ class Transactions(Page):
         return popups.ClaimFunds(self.session_user)
 
 
+class SummaryAsks(Page):
+    def __init__(self, pageTitle, template, filters):
+        Page.__init__(self, pageTitle, template)
+        self.filters = filters
+
+    @renderer
+    def asks_table(self, request, tag):
+        return summary_asks.Table(self.session_user, self.filters)
+
+
+class SummaryBids(Page):
+    def __init__(self, pageTitle, template, filters):
+        Page.__init__(self, pageTitle, template)
+        self.filters = filters
+
+    @renderer
+    def bids_table(self, request, tag):
+        return summary_bids.Table(self.session_user, self.filters)
+
+
+class SummaryOrders(Page):
+    def __init__(self, pageTitle, template, filters):
+        Page.__init__(self, pageTitle, template)
+        self.filters = filters
+
+    @renderer
+    def orders_table(self, request, tag):
+        return summary_orders.Table(self.session_user, self.filters)
+
+
+class SummaryTransactions(Page):
+    def __init__(self, pageTitle, template, filters):
+        Page.__init__(self, pageTitle, template)
+        self.filters = filters
+
+    @renderer
+    def transactions_table(self, request, tag):
+        return summary_transactions.Table(self.session_user, self.filters)
+
+
 class SummaryUsers(Page):
     def __init__(self, pageTitle, template, filters):
         Page.__init__(self, pageTitle, template)
@@ -249,5 +293,9 @@ templates = {
         'register': 'templates/pages/register.xml',
         'terms': 'templates/pages/terms.xml',
         'transactions': 'templates/pages/transactions.xml',
+        'summary_asks': 'templates/pages/summary_asks.xml',
+        'summary_bids': 'templates/pages/summary_bids.xml',
+        'summary_orders': 'templates/pages/summary_orders.xml',
+        'summary_transactions': 'templates/pages/summary_transactions.xml',
         'summary_users': 'templates/pages/summary_users.xml'
     }
