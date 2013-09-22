@@ -47,7 +47,7 @@ class Main(Resource):
         except:
             filters['kind'] = 'promoter'
 
-        Page = pages.Transactions('Transactions', 'transactions', filters)
+        Page = pages.Transactions('%s Transactions' % config.company_name, 'transactions', filters)
         Page.session_user = session_user
 
         print "%ssession_user: %s%s" % (config.color.BLUE, session_user, config.color.ENDC)

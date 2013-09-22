@@ -17,7 +17,7 @@ class Main(Resource):
         session_user = SessionManager(request).get_session_user()
         session_user['page'] = 'terms'
 
-        Page = pages.Terms('Terms', 'terms', {})
+        Page = pages.Terms('%s Terms' % config.company_name, 'terms', {})
         Page.session_user = session_user
 
         print "%ssession_user: %s%s" % (config.color.YELLOW, session_user, config.color.ENDC)

@@ -48,7 +48,7 @@ class Main(Resource):
             if verify == 'ok':
                 session_response = {'class': 2, 'form': 0, 'text': definitions.VERIFY_SUCCESS}
 
-        Page = pages.Login('Smart Property Group - Login', 'login')
+        Page = pages.Login('%s Login' % config.company_name, 'login')
         Page.session_user = session_user
         Page.session_response = session_response
 

@@ -40,7 +40,8 @@ class Main(Resource):
         except:
             filters['status'] = 'pending'
 
-        Page = pages.Ask('Ask', 'ask', filters)
+        Page = pages.Ask('%s Ask' % config.company_name, 'ask', filters)
+        
         Page.session_user = session_user
 
         print "%ssession_user: %s%s" % (config.color.BLUE, session_user, config.color.ENDC)

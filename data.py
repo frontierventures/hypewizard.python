@@ -118,27 +118,25 @@ class Offer(Base):
         self.charge = data['charge']
 
 
-#class Order(Base):
-#    __tablename__ = 'orders'
-#    id = Column(Integer, Sequence('order_id_seq'), primary_key=True)
-#    status = Column(String)
-#    created_at = Column(String)
-#    updated_at = Column(String)
-#    twitter_name = Column(String)
-#    seller_id = Column(Integer)
-#    buyer_id = Column(Integer)
-#    cost = Column(String)
-#    campaign_type = Column(String)
-#
-#    def __init__(self, data):
-#        self.status = data['status']
-#        self.created_at = data['created_at']
-#        self.updated_at = data['updated_at']
-#        self.twitter_name = data['twitter_name']
-#        self.seller_id = data['seller_id']
-#        self.buyer_id = data['buyer_id']
-#        self.cost = data['cost']
-#        self.campaign_type = data['campaign_type']
+class Order(Base):
+    __tablename__ = 'orders'
+    id = Column(Integer, Sequence('order_id_seq'), primary_key=True)
+    status = Column(String)
+    created_at = Column(String)
+    updated_at = Column(String)
+    user_id = Column(Integer)
+    currency = Column(String)
+    fiat_amount = Column(String)
+    btc_amount = Column(String)
+
+    def __init__(self, data):
+        self.status = data['status']
+        self.created_at = data['created_at']
+        self.updated_at = data['updated_at']
+        self.user_id = data['user_id']
+        self.currency = data['currency']
+        self.fiat_amount = data['fiat_amount']
+        self.btc_amount = data['btc_amount']
 
 
 class Profile(Base):

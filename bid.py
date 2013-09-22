@@ -40,7 +40,7 @@ class Main(Resource):
         except:
             filters['status'] = 'pending'
 
-        Page = pages.Bid('Bid', 'bid', filters)
+        Page = pages.Bid('%s Bid' % config.company_name, 'bid', filters)
         Page.session_user = session_user
 
         print "%ssession_user: %s%s" % (config.color.BLUE, session_user, config.color.ENDC)

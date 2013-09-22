@@ -41,7 +41,7 @@ class Main(Resource):
 
         session_response = SessionManager(request).get_session_response()
 
-        Page = pages.Register('Register', 'register')
+        Page = pages.Register('%s Register' % config.company_name, 'register')
         Page.session_user = session_user
         Page.session_response = session_response
 

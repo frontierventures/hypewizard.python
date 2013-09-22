@@ -32,7 +32,7 @@ class Main(Resource):
         if session_user['id'] == 0:
             return redirectTo('../', request)
 
-        Page = pages.Account('Account', 'account')
+        Page = pages.Account('%s Account' % config.company_name, 'account')
         Page.session_user = session_user
 
         print "%ssession_user: %s%s" % (config.color.YELLOW, session_user, config.color.ENDC)

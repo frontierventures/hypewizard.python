@@ -42,7 +42,7 @@ class Main(Resource):
         except:
             filters['status'] = 'open'
 
-        Page = pages.Offers('Offers', 'offers', filters)
+        Page = pages.Offers('%s Offers' % config.company_name, 'offers', filters)
         Page.session_user = session_user
 
         print "%ssession_user: %s%s" % (config.color.BLUE, session_user, config.color.ENDC)

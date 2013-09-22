@@ -63,3 +63,5 @@ def convert_timestamp(timestamp, formatting):
     utc = datetime.utcfromtimestamp(float(timestamp))
     timestamp = utc.strftime(formatting)
     return timestamp
+
+company_name = "Hype Wizard"
