@@ -27,7 +27,7 @@
     <div id="wrap">
         <t:transparent t:render="header" />            
         <div id="push"></div>
-        <t:transparent t:render="users_table" />            
+        <t:transparent t:render="orders_table" />            
     </div>
     <t:transparent t:render="footer" />            
     <div style="display:none">

@@ -4,7 +4,7 @@ from twisted.web.util import redirectTo
 from twisted.web.template import Element, renderer, renderElement, XMLString
 from twisted.python.filepath import FilePath
 
-from data import Profile, User 
+from data import Order, Profile, User 
 from data import db
 from sessions import SessionManager
 
@@ -28,7 +28,7 @@ class Main(Resource):
         print '%srequest.args: %s%s' % (config.color.RED, request.args, config.color.ENDC)
 
         session_user = SessionManager(request).get_session_user()
-        session_user['action'] = 'summary_users'
+        session_user['action'] = 'summary_orders'
 
         if session_user['level'] != 0:
             return redirectTo('../', request)
@@ -41,7 +41,7 @@ class Main(Resource):
         except:
             filters['status'] = 'active'
 
-        Page = pages.SummaryUsers('%s Summary Users' % config.company_name, 'summary_users', filters)
+        Page = pages.SummaryOrders('%s Summary Orders' % config.company_name, 'summary_orders', filters)
         Page.session_user = session_user
 
         print "%ssession_user: %s%s" % (config.color.BLUE, session_user, config.color.ENDC)
@@ -58,22 +58,21 @@ class Table(Element):
         self.session_user = session_user
         self.filters = filters
 
-        users = db.query(User)
-
+        orders = db.query(Order)
 
         if filters['status'] == 'active':
-            users = users.filter(User.status.in_(['active', 'approved'])).order_by(User.login_timestamp.desc())
+            orders = orders.filter(Order.status.in_(['active', 'approved'])).order_by(Order.created_at.desc())
 
         if filters['status'] == 'deleted':
-            users = users.filter(User.status == 'deleted').order_by(User.login_timestamp.desc())
+            orders = orders.filter(Order.status == 'deleted').order_by(Order.login_timestamp.desc())
 
-        if users.count() == 0:
-            template = 'templates/elements/empty_summary_users_table.xml'
+        if orders.count() == 0:
+            template = 'templates/elements/empty_summary_orders_table.xml'
         else:
-            template = 'templates/elements/summary_users_table.xml'
+            template = 'templates/elements/summary_orders_table.xml'
 
         self.loader = XMLString(FilePath(template).getContent())
-        self.users = users
+        self.orders = orders
 
     @renderer
     def count(self, request, tag):
@@ -83,12 +82,12 @@ class Table(Element):
         }
 
         slots = {}
-        slots['user_status'] = statuses[self.filters['status']]
-        slots['user_count'] = str(self.users.count())
+        slots['order_status'] = statuses[self.filters['status']]
+        slots['order_count'] = str(self.orders.count())
         yield tag.clone().fillSlots(**slots)
 
     @renderer
-    def user_status(self, request, tag):
+    def order_status(self, request, tag):
         statuses = {
             'active': 'Active',
             'deleted': 'Deleted'
@@ -110,32 +109,29 @@ class Table(Element):
 
     @renderer
     def row(self, request, tag):
-        for user in self.users:
+        for order in self.orders:
             slots = {}
-            slots['status'] = user.status 
-            slots['login_timestamp'] = config.convert_timestamp(user.login_timestamp, config.STANDARD)
-            slots['user_id'] = str(user.id)
-            slots['email'] = str(user.email)
-            slots['ip'] = str(user.ip)
-            self.user = user
+            slots['status'] = order.status 
+            slots['created_at'] = config.convert_timestamp(order.created_at, config.STANDARD)
+            slots['order_id'] = str(order.id)
+            self.order = order
             yield tag.clone().fillSlots(**slots)
 
     @renderer
     def action(self, request, tag):
         buttons = []
 
-        if self.user.status == 'open':
+        if self.order.status == 'open':
             buttons.append({
-                'url': '../process_user?action=approve&id=%s' % self.user.id,
+                'url': '../process_order?action=approve&id=%s' % self.order.id,
                 'caption': 'Approve' 
             })
             buttons.append({
-                'url': '../process_user?action=disapprove&id=%s' % self.user.id,
+                'url': '../process_order?action=disapprove&id=%s' % self.order.id,
                 'caption': 'Disapprove' 
             })
 
         for button in buttons:
-            slots = {}
             slots = {}
             slots['caption'] = button['caption']
             slots['url'] = button['url']
@@ -190,7 +186,7 @@ class Approve(Resource):
 
         timestamp = config.create_timestamp()
         
-        #ask = db.query(Ask).filter(Ask.id == ).first()
+        #order = db.query(Order).filter(Order.id == ).first()
 
         user.updated_at = timestamp 
         user.status = 'approved'

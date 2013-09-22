@@ -4,7 +4,7 @@ from twisted.web.util import redirectTo
 from twisted.web.template import Element, renderer, renderElement, XMLString
 from twisted.python.filepath import FilePath
 
-from data import Profile, User 
+from data import Ask, Profile, User 
 from data import db
 from sessions import SessionManager
 
@@ -58,22 +58,21 @@ class Table(Element):
         self.session_user = session_user
         self.filters = filters
 
-        asks = db.query(User)
-
+        asks = db.query(Ask)
 
         if filters['status'] == 'active':
-            asks = asks.filter(User.status.in_(['active', 'approved'])).order_by(User.login_timestamp.desc())
+            asks = asks.filter(Ask.status.in_(['active', 'approved'])).order_by(Ask.created_at.desc())
 
         if filters['status'] == 'deleted':
-            asks = asks.filter(User.status == 'deleted').order_by(User.login_timestamp.desc())
+            asks = asks.filter(Ask.status == 'deleted').order_by(Ask.login_timestamp.desc())
 
-        if users.count() == 0:
+        if asks.count() == 0:
             template = 'templates/elements/empty_summary_asks_table.xml'
         else:
             template = 'templates/elements/summary_asks_table.xml'
 
         self.loader = XMLString(FilePath(template).getContent())
-        self.users = users
+        self.asks = asks
 
     @renderer
     def count(self, request, tag):
@@ -115,14 +114,14 @@ class Table(Element):
             slots['status'] = ask.status 
             slots['created_at'] = config.convert_timestamp(ask.created_at, config.STANDARD)
             slots['ask_id'] = str(ask.id)
-            self.user = user
+            self.ask = ask
             yield tag.clone().fillSlots(**slots)
 
     @renderer
     def action(self, request, tag):
         buttons = []
 
-        if self.user.status == 'open':
+        if self.ask.status == 'open':
             buttons.append({
                 'url': '../process_ask?action=approve&id=%s' % self.ask.id,
                 'caption': 'Approve' 

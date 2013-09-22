@@ -27,7 +27,7 @@
     <div id="wrap">
         <t:transparent t:render="header" />            
         <div id="push"></div>
-        <t:transparent t:render="users_table" />            
+        <t:transparent t:render="transactions_table" />            
     </div>
     <t:transparent t:render="footer" />            
     <div style="display:none">
@@ -49,6 +49,6 @@
     <script type="text/javascript" src="js/bootstrap-collapse.js"></script>
     <script type="text/javascript" src="js/bootstrap-carousel.js"></script>
     <script type="text/javascript" src="js/bootstrap-typeahead.js"></script>
-    <script type="text/javascript" src="js/offers.js"></script>
+    <script type="text/javascript" src="js/summary_transactions.js"></script>
 </body>
 </html>

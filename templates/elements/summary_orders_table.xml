@@ -1,0 +1,40 @@
+<div class="container-fluid" xmlns:t="http://twistedmatrix.com/ns/twisted.web.template/0.1">
+    <div style="width: 100%;">
+        <span style="float:left">
+            <h1 t:render="count"><t:slot name="order_status" /> Orders (<t:slot name="order_count" />)</h1>
+        </span>
+        <span style="float:right">
+            <select name="order_status" style="margin-top: 15px">
+                <option t:render="order_status">
+                    <t:attr name="value"><t:slot name="value" /></t:attr>
+                    <t:slot name="caption" />
+                </option>
+            </select>
+        </span>
+    </div>
+    <div>
+        <table style="width: 100%">
+            <thead>
+                <tr>
+                    <th>Status</th>
+                    <th>Create At</th>
+                    <th>Order Id</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr t:render="row">
+                    <td style="text-align:center"><t:slot name="status" /></td>
+                    <td style="text-align:center"><t:slot name="created_at" /></td>
+                    <td style="text-align:center"><t:slot name="order_id" /></td>
+                    <td style="text-align:center">
+                        <a t:render="action">
+                            <t:attr name="href"><t:slot name="url" /></t:attr>
+                            <t:slot name="caption" />
+                        </a>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>

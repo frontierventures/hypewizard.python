@@ -4,7 +4,7 @@ from twisted.web.util import redirectTo
 from twisted.web.template import Element, renderer, renderElement, XMLString
 from twisted.python.filepath import FilePath
 
-from data import Profile, User 
+from data import Transaction, Profile, User 
 from data import db
 from sessions import SessionManager
 
@@ -28,7 +28,7 @@ class Main(Resource):
         print '%srequest.args: %s%s' % (config.color.RED, request.args, config.color.ENDC)
 
         session_user = SessionManager(request).get_session_user()
-        session_user['action'] = 'summary_users'
+        session_user['action'] = 'summary_transactions'
 
         if session_user['level'] != 0:
             return redirectTo('../', request)
@@ -39,9 +39,9 @@ class Main(Resource):
         try:
             filters['status'] = request.args.get('status')[0]
         except:
-            filters['status'] = 'active'
+            filters['status'] = 'open'
 
-        Page = pages.SummaryUsers('%s Summary Users' % config.company_name, 'summary_users', filters)
+        Page = pages.SummaryTransactions('%s Summary Transactions' % config.company_name, 'summary_transactions', filters)
         Page.session_user = session_user
 
         print "%ssession_user: %s%s" % (config.color.BLUE, session_user, config.color.ENDC)
@@ -58,40 +58,39 @@ class Table(Element):
         self.session_user = session_user
         self.filters = filters
 
-        users = db.query(User)
+        transactions = db.query(Transaction)
 
+        if filters['status'] == 'open':
+            transactions = transactions.filter(Transaction.status.in_(['open', 'approved'])).order_by(Transaction.created_at.desc())
 
-        if filters['status'] == 'active':
-            users = users.filter(User.status.in_(['active', 'approved'])).order_by(User.login_timestamp.desc())
+        if filters['status'] == 'complete':
+            transactions = transactions.filter(Transaction.status == 'complete').order_by(Transaction.created_at.desc())
 
-        if filters['status'] == 'deleted':
-            users = users.filter(User.status == 'deleted').order_by(User.login_timestamp.desc())
-
-        if users.count() == 0:
-            template = 'templates/elements/empty_summary_users_table.xml'
+        if transactions.count() == 0:
+            template = 'templates/elements/empty_summary_transactions_table.xml'
         else:
-            template = 'templates/elements/summary_users_table.xml'
+            template = 'templates/elements/summary_transactions_table.xml'
 
         self.loader = XMLString(FilePath(template).getContent())
-        self.users = users
+        self.transactions = transactions
 
     @renderer
     def count(self, request, tag):
         statuses = {
-            'active': 'Active',
-            'deleted': 'Deleted'
+            'open': 'Open',
+            'complete': 'Complete'
         }
 
         slots = {}
-        slots['user_status'] = statuses[self.filters['status']]
-        slots['user_count'] = str(self.users.count())
+        slots['transaction_status'] = statuses[self.filters['status']]
+        slots['transaction_count'] = str(self.transactions.count())
         yield tag.clone().fillSlots(**slots)
 
     @renderer
-    def user_status(self, request, tag):
+    def transaction_status(self, request, tag):
         statuses = {
-            'active': 'Active',
-            'deleted': 'Deleted'
+            'open': 'Open',
+            'complete': 'Complete'
         }
 
         for key in statuses:
@@ -110,32 +109,29 @@ class Table(Element):
 
     @renderer
     def row(self, request, tag):
-        for user in self.users:
+        for transaction in self.transactions:
             slots = {}
-            slots['status'] = user.status 
-            slots['login_timestamp'] = config.convert_timestamp(user.login_timestamp, config.STANDARD)
-            slots['user_id'] = str(user.id)
-            slots['email'] = str(user.email)
-            slots['ip'] = str(user.ip)
-            self.user = user
+            slots['status'] = transaction.status 
+            slots['created_at'] = config.convert_timestamp(transaction.created_at, config.STANDARD)
+            slots['transaction_id'] = str(transaction.id)
+            self.transaction = transaction
             yield tag.clone().fillSlots(**slots)
 
     @renderer
     def action(self, request, tag):
         buttons = []
 
-        if self.user.status == 'open':
+        if self.transaction.status == 'open':
             buttons.append({
-                'url': '../process_user?action=approve&id=%s' % self.user.id,
+                'url': '../process_transaction?action=approve&id=%s' % self.transaction.id,
                 'caption': 'Approve' 
             })
             buttons.append({
-                'url': '../process_user?action=disapprove&id=%s' % self.user.id,
+                'url': '../process_transaction?action=disapprove&id=%s' % self.transaction.id,
                 'caption': 'Disapprove' 
             })
 
         for button in buttons:
-            slots = {}
             slots = {}
             slots['caption'] = button['caption']
             slots['url'] = button['url']
@@ -190,7 +186,7 @@ class Approve(Resource):
 
         timestamp = config.create_timestamp()
         
-        #ask = db.query(Ask).filter(Ask.id == ).first()
+        #transaction = db.query(Transaction).filter(Transaction.id == ).first()
 
         user.updated_at = timestamp 
         user.status = 'approved'

@@ -4,7 +4,7 @@ from twisted.web.util import redirectTo
 from twisted.web.template import Element, renderer, renderElement, XMLString
 from twisted.python.filepath import FilePath
 
-from data import Profile, User 
+from data import Bid, Profile, User 
 from data import db
 from sessions import SessionManager
 
@@ -28,7 +28,7 @@ class Main(Resource):
         print '%srequest.args: %s%s' % (config.color.RED, request.args, config.color.ENDC)
 
         session_user = SessionManager(request).get_session_user()
-        session_user['action'] = 'summary_users'
+        session_user['action'] = 'summary_bids'
 
         if session_user['level'] != 0:
             return redirectTo('../', request)
@@ -41,7 +41,7 @@ class Main(Resource):
         except:
             filters['status'] = 'active'
 
-        Page = pages.SummaryUsers('%s Summary Users' % config.company_name, 'summary_users', filters)
+        Page = pages.SummaryBids('%s Summary Bids' % config.company_name, 'summary_bids', filters)
         Page.session_user = session_user
 
         print "%ssession_user: %s%s" % (config.color.BLUE, session_user, config.color.ENDC)
@@ -58,22 +58,21 @@ class Table(Element):
         self.session_user = session_user
         self.filters = filters
 
-        users = db.query(User)
-
+        bids = db.query(Bid)
 
         if filters['status'] == 'active':
-            users = users.filter(User.status.in_(['active', 'approved'])).order_by(User.login_timestamp.desc())
+            bids = bids.filter(Bid.status.in_(['active', 'approved'])).order_by(Bid.created_at.desc())
 
         if filters['status'] == 'deleted':
-            users = users.filter(User.status == 'deleted').order_by(User.login_timestamp.desc())
+            bids = bids.filter(Bid.status == 'deleted').order_by(Bid.login_timestamp.desc())
 
-        if users.count() == 0:
-            template = 'templates/elements/empty_summary_users_table.xml'
+        if bids.count() == 0:
+            template = 'templates/elements/empty_summary_bids_table.xml'
         else:
-            template = 'templates/elements/summary_users_table.xml'
+            template = 'templates/elements/summary_bids_table.xml'
 
         self.loader = XMLString(FilePath(template).getContent())
-        self.users = users
+        self.bids = bids
 
     @renderer
     def count(self, request, tag):
@@ -83,12 +82,12 @@ class Table(Element):
         }
 
         slots = {}
-        slots['user_status'] = statuses[self.filters['status']]
-        slots['user_count'] = str(self.users.count())
+        slots['bid_status'] = statuses[self.filters['status']]
+        slots['bid_count'] = str(self.bids.count())
         yield tag.clone().fillSlots(**slots)
 
     @renderer
-    def user_status(self, request, tag):
+    def bid_status(self, request, tag):
         statuses = {
             'active': 'Active',
             'deleted': 'Deleted'
@@ -110,32 +109,29 @@ class Table(Element):
 
     @renderer
     def row(self, request, tag):
-        for user in self.users:
+        for bid in self.bids:
             slots = {}
-            slots['status'] = user.status 
-            slots['login_timestamp'] = config.convert_timestamp(user.login_timestamp, config.STANDARD)
-            slots['user_id'] = str(user.id)
-            slots['email'] = str(user.email)
-            slots['ip'] = str(user.ip)
-            self.user = user
+            slots['status'] = bid.status 
+            slots['created_at'] = config.convert_timestamp(bid.created_at, config.STANDARD)
+            slots['bid_id'] = str(bid.id)
+            self.bid = bid
             yield tag.clone().fillSlots(**slots)
 
     @renderer
     def action(self, request, tag):
         buttons = []
 
-        if self.user.status == 'open':
+        if self.bid.status == 'open':
             buttons.append({
-                'url': '../process_user?action=approve&id=%s' % self.user.id,
+                'url': '../process_bid?action=approve&id=%s' % self.bid.id,
                 'caption': 'Approve' 
             })
             buttons.append({
-                'url': '../process_user?action=disapprove&id=%s' % self.user.id,
+                'url': '../process_bid?action=disapprove&id=%s' % self.bid.id,
                 'caption': 'Disapprove' 
             })
 
         for button in buttons:
-            slots = {}
             slots = {}
             slots['caption'] = button['caption']
             slots['url'] = button['url']
@@ -190,7 +186,7 @@ class Approve(Resource):
 
         timestamp = config.create_timestamp()
         
-        #ask = db.query(Ask).filter(Ask.id == ).first()
+        #bid = db.query(Bid).filter(Bid.id == ).first()
 
         user.updated_at = timestamp 
         user.status = 'approved'
