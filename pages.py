@@ -13,6 +13,7 @@ import offers
 import popups
 import terms
 import transactions
+import summary_users
 
 
 class Page(Element):
@@ -216,6 +217,24 @@ class Transactions(Page):
         return popups.ClaimFunds(self.session_user)
 
 
+class SummaryUsers(Page):
+    def __init__(self, pageTitle, template, filters):
+        Page.__init__(self, pageTitle, template)
+        self.filters = filters
+
+    @renderer
+    def users_table(self, request, tag):
+        return summary_users.Table(self.session_user, self.filters)
+
+    #@renderer
+    #def approve_offer_popup(self, request, tag):
+    #    return popups.ApproveOffer(self.session_user)
+
+    #@renderer
+    #def disapprove_offer_popup(self, request, tag):
+    #    return popups.DisapproveOffer(self.session_user)
+
+
 templates = {
         'account': 'templates/pages/account.xml',
         'ask': 'templates/pages/ask.xml',
@@ -229,5 +248,6 @@ templates = {
         'orders': 'templates/pages/orders.xml',
         'register': 'templates/pages/register.xml',
         'terms': 'templates/pages/terms.xml',
-        'transactions': 'templates/pages/transactions.xml'
+        'transactions': 'templates/pages/transactions.xml',
+        'summary_users': 'templates/pages/summary_users.xml'
     }

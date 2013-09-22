@@ -20,6 +20,7 @@ import pages
 import register
 import terms
 import transactions
+import summary_users
 import sys
 from sessions import SessionManager
 
@@ -34,6 +35,7 @@ root = bid.assemble(root)
 root = login.assemble(root)
 root = offers.assemble(root)
 root = register.assemble(root)
+root = summary_users.assemble(root)
 root = transactions.assemble(root)
 
 root.putChild('', root)
