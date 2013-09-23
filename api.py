@@ -29,10 +29,6 @@ class GetAsks(Resource):
 
         session_user = SessionManager(request).get_session_user()
 
-        response['rule'] = 'none'
-        if session_user['id'] == 0:
-            response['rule'] = 'limit'
-
         asks = db.query(Ask).filter(Ask.status == 'active')
         asks = asks.order_by(Ask.created_at.desc())
 
@@ -66,13 +62,22 @@ class GetAsks(Resource):
             order['cost'] = ask.cost
             order['target'] = ask.target
             order['goal'] = ask.goal
-            
-            print "\n" * 20
-            print order
+           
+            order['engage'] = {
+                'is_allowed': True
+            }
 
-            order['rule'] = 'none'
-            if ask.user_id != session_user['id']:
-                order['rule'] = 'limit'
+            if ask.user_id == session_user['id']:
+                order['engage']['is_allowed'] = False
+                order['engage']['reason'] = 'different_user'
+
+            if session_user['status'] == 'unverified':
+                order['engage']['is_allowed'] = False
+                order['engage']['reason'] = 'unverified'
+
+            if session_user['id'] == 0:
+                order['engage']['is_allowed'] = False
+                order['engage']['reason'] = 'unauthorized'
 
             orders.append(order)
 
@@ -88,9 +93,10 @@ class GetBids(Resource):
 
         session_user = SessionManager(request).get_session_user()
 
-        response['rule'] = 'none'
-        if session_user['id'] == 0:
-            response['rule'] = 'limit'
+        #response['rule'] = 'none'
+
+        #if session_user['id'] == 0:
+        #    response['rule'] = 'limit'
 
         bids = db.query(Bid).filter(Bid.status == 'active')
         bids = bids.order_by(Bid.created_at.desc())
@@ -115,6 +121,22 @@ class GetBids(Resource):
                 order['rule'] = 'limit'
 
             orders.append(order)
+           
+            order['engage'] = {
+                'is_allowed': True
+            }
+
+            if bid.user_id == session_user['id']:
+                order['engage']['is_allowed'] = False
+                order['engage']['reason'] = 'different_user'
+
+            if session_user['status'] == 'unverified':
+                order['engage']['is_allowed'] = False
+                order['engage']['reason'] = 'unverified'
+
+            if session_user['id'] == 0:
+                order['engage']['is_allowed'] = False
+                order['engage']['reason'] = 'unauthorized'
 
         response['orders'] = orders
         response['error'] = False

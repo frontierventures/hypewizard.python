@@ -1,6 +1,34 @@
 $(document).ready(function(){
     var kind = $('input[name*=kind]').val();
     build_grid(kind);
+
+    $('a[href*=feature_disabled]').colorbox({
+        inline:true,           
+        href: function() {              
+            var APIurl = $(this).attr('href'); 
+            $.ajax({
+                url: APIurl, 
+                async: false,
+                cache: false,
+                dataType: 'json',
+                success: function(data) {
+                    response = data;
+                }
+            });
+            if (response.reason == 'unauthorized') {
+                $('#feature_disabled_alert').empty();
+                $('#feature_disabled_alert').append('<div class="alert alert-error" id="alert">' + response.message + '</div>');
+                $.colorbox.resize();
+                return "#feature_disabled_popup";
+            }
+            if (response.reason == 'unverified') {
+                $('#feature_disabled_alert').empty();
+                $('#feature_disabled_alert').append('<div class="alert alert-error" id="alert">' + response.message + '</div>');
+                $.colorbox.resize();
+                return "#feature_disabled_popup";
+            }
+        }      
+    });
 });
 function build_grid(kind) {
     if (kind == 'client') {
@@ -38,16 +66,24 @@ function build_grid(kind) {
     }
 };
 function add_ask_to_market(rule, ask) { 
-    var action_url = '../feature_disabled?reason=not_authorized';
-    var action_cell = '<div style="text-align:center"><a href="' + action_url + '">Engage Client</a></div>';
+    if (!ask.engage.is_allowed && ask.engage.reason == 'different_user') {
+        action_url = '../process_ask?action=withdraw&id=' + ask.id; 
+        action_cell = '<div style="text-align:center"><a href="' + action_url + '">Withdraw</a></div>';
+    }
 
-    if (rule == 'none') {
+    if (!ask.engage.is_allowed && ask.engage.reason == 'unverified') {
+        var action_url = '../feature_disabled?reason=unverified';
+        var action_cell = '<div style="text-align:center"><a href="' + action_url + '">Engage Client</a></div>';
+    }
+
+    if (!ask.engage.is_allowed && ask.engage.reason == 'unauthorized') {
+        var action_url = '../feature_disabled?reason=unauthorized';
+        var action_cell = '<div style="text-align:center"><a href="' + action_url + '">Engage Client</a></div>';
+    }
+
+    if (ask.engage.is_allowed) {
         action_url = '../process_ask?action=engage&id=' + ask.id; 
         action_cell = '<div style="text-align:center"><a href="' + action_url + '">Engage Client</a></div>';
-        if (ask.rule == 'none') {
-            action_url = '../process_ask?action=withdraw&id=' + ask.id; 
-            action_cell = '<div style="text-align:center"><a href="' + action_url + '">Withdraw</a></div>';
-        }
     }
 
     $('.asks').append(
@@ -59,7 +95,7 @@ function add_ask_to_market(rule, ask) {
             '<div style="text-align:center">' + ask.target + ' of ' + ask.goal + '</div>' +
             '<div style="text-align:center">' + ask.cost + '</div>' +
             action_cell + 
-            '</div>');
+            '</div>'); 
 };
 function add_bid_to_market(rule, bid) { 
     var user = {};
@@ -73,18 +109,26 @@ function add_bid_to_market(rule, bid) {
             user = data;
         }
     });
-    
-    var action_url = '../feature_disabled?reason=not_authorized';
-    var action_cell = '<div style="text-align:center"><a href="' + action_url + '">Engage Client</a></div>';
-
-    if (rule == 'none') {
-        action_url = '../process_bid?action=engage&id=' + bid.id; 
-        action_cell = '<div style="text-align:center"><a href="' + action_url + '">Engage Client</a></div>';
-        if (bid.rule == 'none') {
-            action_url = '../process_bid?action=withdraw&id=' + bid.id; 
-            action_cell =  '<div style="text-align:center"><a href="' + action_url + '">Withdraw</a></div>';
-        }
+    if (!bid.engage.is_allowed && bid.engage.reason == 'different_user') {
+        action_url = '../process_bid?action=withdraw&id=' + bid.id; 
+        action_cell = '<div style="text-align:center"><a href="' + action_url + '">Withdraw</a></div>';
     }
+
+    if (!bid.engage.is_allowed && bid.engage.reason == 'unverified') {
+        var action_url = '../feature_disabled?reason=unverified';
+        var action_cell = '<div style="text-align:center"><a href="' + action_url + '">Engage Promoter</a></div>';
+    }
+
+    if (!bid.engage.is_allowed && bid.engage.reason == 'unauthorized') {
+        var action_url = '../feature_disabled?reason=unauthorized';
+        var action_cell = '<div style="text-align:center"><a href="' + action_url + '">Engage Promoter</a></div>';
+    }
+
+    if (bid.engage.is_allowed) {
+        action_url = '../process_bid?action=engage&id=' + bid.id; 
+        action_cell = '<div style="text-align:center"><a href="' + action_url + '">Engage Promoter</a></div>';
+    }
+    
     $('.bids').append(
             '<div class="block">' + 
             '<div style="text-align:center">' + bid.niche + '</div>' +

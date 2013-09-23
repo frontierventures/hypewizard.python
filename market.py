@@ -14,6 +14,11 @@ import forms
 import pages
 
 
+def assemble(root):
+    root.putChild('feature_disabled', Process())
+    return root
+
+
 class Main(Resource):
     def render(self, request):
         print '%srequest.args: %s%s' % (config.color.RED, request.args, config.color.ENDC)
@@ -57,15 +62,40 @@ class Table(Element):
 
     @renderer
     def view(self, request, tag):
+        if self.filters['kind'] == 'client':
+            url = '../process_ask?action=create' 
+
+        if self.filters['kind'] == 'promoter':
+            url = '../process_bid?action=create' 
 
         slots = {}
-        slots['url'] = '../feature_disabled?reason=not_authorized'
         slots['kind'] = self.filters['kind']
 
-        if self.session_user['id'] != 0:
-            if self.filters['kind'] == 'client':
-                slots['url'] = '../process_ask?action=create' 
+        if self.session_user['status'] == 'unverified':
+            url = '../feature_disabled?reason=unverified'
 
-            if self.filters['kind'] == 'promoter':
-                slots['url'] = '../process_bid?action=create' 
+        if self.session_user['id'] == 0:
+            url = '../feature_disabled?reason=unauthorized'
+
+        slots['url'] = url
+
         yield tag.clone().fillSlots(**slots) 
+
+
+class Process(Resource):
+    def render(self, request):
+        try:
+            reason = request.args.get('reason')[0]
+        except:
+            return redirectTo('../', request)
+        
+        response = {}
+        response['reason'] = reason
+
+        if reason == 'unauthorized':
+            response['message'] = 'You must be logged in to do this.'
+
+        if reason == 'unverified':
+            response['message'] = 'Please verify your email first.'
+
+        return json.dumps(response)

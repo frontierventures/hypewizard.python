@@ -118,6 +118,15 @@ class Create(Resource):
         if response['error']:
             return json.dumps(response) 
 
+        bids = db.query(Bid).filter(Bid.user_id == session_user['id'])
+        bid = bids.filter(Bid.status == 'active').first()
+
+        if bid:
+            response = {}
+            response['error'] = True
+            response['message'] = 'You already have a bid on the market.' 
+            return json.dumps(response) 
+
         timestamp = config.create_timestamp()
 
         data = {

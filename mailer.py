@@ -110,17 +110,22 @@ def offer_approved_memo_html():
 
 
 def password_reset_memo_plain(email, password):
-    plain = """Account Details\nEmail:  %s\nTemporary Password: %s\nCoingig Team""" % (email, password)
+    plain = """
+    Account Details\n
+    Email: %s\n
+    Temporary Password: %s\n
+    Hype Wizard Team
+    """ % (email, password)
     return plain
 
 
 def password_reset_memo_html(email, password):
-    html = """\
+    html = """
     <html>
     <p><h2>Account Details</h2></p>
     <p><b>Email:</b> %s</p>
     <p><b>Temporary Password:</b> %s</p>
-    <p><b>Coingig Team</b></p>
+    <p><b>Hype Wizard</b></p>
     </html>
     """ % (email, password)
     return html

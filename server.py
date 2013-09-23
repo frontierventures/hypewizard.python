@@ -34,6 +34,7 @@ from sessions import SessionManager
 log.startLogging(sys.stdout)
 
 root = market.Main()
+root = market.assemble(root)
 root = api.assemble(root)
 root = ask.assemble(root)
 root = account.assemble(root)

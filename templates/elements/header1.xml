@@ -11,6 +11,7 @@
                 <ul class="nav">
                     <li t:render="transaction_count"><a href="../transactions">Transactions (<t:slot name="count" />)</a></li>
                     <li t:render="offer_count"><a href="../offers">Offers (<t:slot name="count" />)</a></li>
+                    <li><a href="../account">Account</a></li>
                     <li><a href="../faq">FAQ</a></li>
                     <li class="active"><a href="../logout">Logout</a></li>
                 </ul>
