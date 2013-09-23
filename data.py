@@ -154,6 +154,7 @@ class Profile(Base):
     reserved_balance = Column(Integer)
     bitcoin_address = Column(String)
     twitter_name = Column(String)
+    twitter_id = Column(Integer)
     niche = Column(String)
     offer_count = Column(Integer)
     transaction_count = Column(Integer)
@@ -169,6 +170,7 @@ class Profile(Base):
         self.reserved_balance = data['reserved_balance']
         self.bitcoin_address = data['bitcoin_address']
         self.twitter_name = data['twitter_name']
+        self.twitter_id = data['twitter_id']
         self.niche = data['niche']
         self.offer_count = data['offer_count']
         self.transaction_count = data['transaction_count']
@@ -251,6 +253,7 @@ def reset(default):
                 'available_balance': 0,
                 'reserved_balance': 0,
                 'twitter_name': '',
+                'twitter_id': 0,
                 'niche': 'AA',
                 'transaction_count': 0, 
                 'offer_count': 0 
@@ -281,6 +284,7 @@ def reset(default):
                 'available_balance': 10000,
                 'reserved_balance': 0,
                 'twitter_name': 'coingig',
+                'twitter_id': 1129728541,
                 'niche': 'AA',
                 'transaction_count': 0,
                 'offer_count': 0
@@ -311,6 +315,7 @@ def reset(default):
                 'available_balance': 10000,
                 'reserved_balance': 0,
                 'twitter_name': 'hypewizard',
+                'twitter_id': 0,
                 'niche': 'AA',
                 'transaction_count': 0, 
                 'offer_count': 0 
@@ -341,6 +346,7 @@ def reset(default):
                 'available_balance': 0,
                 'reserved_balance': 0,
                 'twitter_name': 'twitter',
+                'twitter_id': 0,
                 'niche': 'AA',
                 'transaction_count': 0, 
                 'offer_count': 0 

@@ -19,6 +19,8 @@
                     <th>Status</th>
                     <th>Create At</th>
                     <th>Order Id</th>
+                    <th>Fiat Amount</th>
+                    <th>BTC Amount</th>
                     <th>Actions</th>
                 </tr>
             </thead>
@@ -27,6 +29,8 @@
                     <td style="text-align:center"><t:slot name="status" /></td>
                     <td style="text-align:center"><t:slot name="created_at" /></td>
                     <td style="text-align:center"><t:slot name="order_id" /></td>
+                    <td style="text-align:center"><t:slot name="fiat_amount" /></td>
+                    <td style="text-align:center"><t:slot name="btc_amount" /></td>
                     <td style="text-align:center">
                         <a t:render="action">
                             <t:attr name="href"><t:slot name="url" /></t:attr>

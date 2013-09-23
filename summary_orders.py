@@ -39,7 +39,7 @@ class Main(Resource):
         try:
             filters['status'] = request.args.get('status')[0]
         except:
-            filters['status'] = 'active'
+            filters['status'] = 'open'
 
         Page = pages.SummaryOrders('%s Summary Orders' % config.company_name, 'summary_orders', filters)
         Page.session_user = session_user
@@ -60,8 +60,8 @@ class Table(Element):
 
         orders = db.query(Order)
 
-        if filters['status'] == 'active':
-            orders = orders.filter(Order.status.in_(['active', 'approved'])).order_by(Order.created_at.desc())
+        if filters['status'] == 'opon':
+            orders = orders.filter(Order.status.in_(['open', 'approved'])).order_by(Order.created_at.desc())
 
         if filters['status'] == 'deleted':
             orders = orders.filter(Order.status == 'deleted').order_by(Order.updated_at.desc())
@@ -77,7 +77,7 @@ class Table(Element):
     @renderer
     def count(self, request, tag):
         statuses = {
-            'active': 'Active',
+            'open': 'Open',
             'deleted': 'Deleted'
         }
 
@@ -89,7 +89,7 @@ class Table(Element):
     @renderer
     def order_status(self, request, tag):
         statuses = {
-            'active': 'Active',
+            'open': 'Open',
             'deleted': 'Deleted'
         }
 
@@ -114,6 +114,8 @@ class Table(Element):
             slots['status'] = order.status 
             slots['created_at'] = config.convert_timestamp(order.created_at, config.STANDARD)
             slots['order_id'] = str(order.id)
+            slots['fiat_amount'] = str(order.fiat_amount)
+            slots['btc_amount'] = str(order.btc_amount)
             self.order = order
             yield tag.clone().fillSlots(**slots)
 

@@ -22,8 +22,18 @@ def get_statuses(twitter_name):
     return statuses
 
 def get_user(twitter_name):
-    user = api.GetUser(screen_name=twitter_name)
-    return user
+    response = {
+        'error': False
+    }
+    try:
+        user = api.GetUser(screen_name=twitter_name)
+        response['user'] = user
+    except twitter.TwitterError, error:
+        response['error'] = True
+        response['message'] = error[0][0]['message']
+        #print error
+
+    return response
 
 def convert_twitter_timestamp(created_at):
     timestamp = time.strftime('%Y-%m-%d %H:%M:%S', time.strptime(created_at,'%a %b %d %H:%M:%S +0000 %Y'))
@@ -36,6 +46,10 @@ def get_status(status_id):
 def get_retweets(status_id):
     statuses = api.GetRetweets(status_id, count=100, trim_user=False) 
     return statuses
+
+
+#print get_user('coingigsdjfksjdkfjsdkfjksdjfksjdkfjskdjfks')
+#print get_user('coingig')
 
 status_id = '380866222369144832' # Client Status Id 
 screen_name = 'hypewizard'
@@ -63,7 +77,7 @@ def is_promotional_period_over(status_id, screen_name):
             if delta < 86400:
                 print "You have about %s to go until the end of promotion." % int(24 - delta / 3600)
 
-is_promotional_period_over(status_id, screen_name)
+#is_promotional_period_over(status_id, screen_name)
 
         
 #dt = parse("Tue, 22 Jul 2008 08:17:41 +0200")

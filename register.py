@@ -20,6 +20,7 @@ import mailer
 import pages
 import random
 import sys
+import twitter_api
 
 Email = mailer.Email
 
@@ -103,6 +104,10 @@ class Create(Resource):
         if error.bitcoinAddress(request, bitcoin_address):
             return redirectTo('../register', request)
 
+        response = twitter_api.get_user(twitter_name)
+        if response['error']:
+            return redirectTo('../register', request)
+
         if not request.args.get('is_terms_accepted'):
             SessionManager(request).setSessionResponse({'class': 1, 'form': 0, 'text': definitions.TERMS[0]})
             return redirectTo('../register', request)
@@ -124,16 +129,16 @@ class Create(Resource):
                 }
 
             new_user = User(data)
+
             data = {            
                 'created_at': timestamp,
                 'updated_at': timestamp,
-                'first': '',
-                'last': '',
                 'token': token,
                 'bitcoin_address': bitcoin_address,
                 'available_balance': 0,
                 'reserved_balance': 0,
                 'twitter_name': twitter_name,
+                'twitter_id': response['user'].id,
                 'niche': niche,
                 'transaction_count': 0,
                 'offer_count': 0

@@ -10,6 +10,8 @@ from data import db
 
 import definitions
 
+noreply = 'noreply@hypewhiz.com'
+
 class Email():
     def __init__(self, sender, receiver, subject, plain, html):
         self.sender = sender
