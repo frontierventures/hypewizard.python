@@ -8,6 +8,8 @@ from sessions import SessionManager
 
 import twitter_api
 import config
+import definitions
+import encryptor
 import error
 import json
 import locale
@@ -15,7 +17,7 @@ import pages
 
 from data import db
 from sqlalchemy.sql import and_
-from data import Profile
+from data import Profile, User
 from sessions import SessionManager
 
 
@@ -111,6 +113,6 @@ class Change(Resource):
         response = {}
         response['error'] = False
         response['message'] = definitions.MESSAGE_SUCCESS
-        response['url'] = '../' 
+        response['url'] = '../account' 
 
         return json.dumps(response) 
