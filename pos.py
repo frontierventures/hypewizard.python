@@ -47,7 +47,7 @@ class Deposit(Resource):
             'updated_at': timestamp,
             'user_id': session_user['id'],
             'currency': 'USD',
-            'fiat_amount': 0,
+            'fiat_amount': float(fiat_amount),
             'btc_amount': deposit_amount,
         }
 
