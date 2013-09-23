@@ -9,13 +9,6 @@ from email.Utils import COMMASPACE, formatdate
 from data import db
 
 import definitions
-import decimal
-D = decimal.Decimal
-
-noreply = ''
-fromNoReply = ''
-ordersBox = ''
-
 
 class Email():
     def __init__(self, sender, receiver, subject, plain, html):
@@ -27,7 +20,7 @@ class Email():
 
     def send(self):
         msg = MIMEMultipart('alternative')
-        msg['From'] = 'Smart Property Group <noreply@sptrust.co>'
+        msg['From'] = 'Hype Wizard <noreply@hypewhiz.com>'
         msg['To'] = self.receiver
         msg['Date'] = formatdate(localtime=True)
         msg['Subject'] = self.subject
@@ -42,8 +35,7 @@ class Email():
             smtp = SMTP('smtp.mailgun.org', 587)
             smtp.ehlo()
             smtp.starttls()
-            #need pass
-            smtp.login('noreply@sptrust.co', 'noreply123noreply')
+            smtp.login('noreply@hypewhiz.com', 'noreply123noreply')
             smtp.sendmail(self.sender, self.receiver, msg.as_string())
             smtp.quit()
 
@@ -56,10 +48,11 @@ class Email():
 def verificationPlain(url):
     plain = """
     Thank you for registering!\n
-    You can now take the steps to become a Smart Property Group lender!\n
+    You can now take the steps to become a Hype Wizard user!\n
     Please visit the link below to confirm you are the owner of this email address.\n
     %s\n
     Smart Property Group 
+    Hype Wizard Team
     """ % url
     return plain
 
@@ -68,82 +61,82 @@ def verificationHtml(url):
     html = """
     <html>
     <p><b>Thank you for registering!</b></p>
-    <p>You can now take the steps to become a Smart Property Group lender!</p>
+    <p>You can now take the steps to become a Hype Wizard user!</p>
     <p>Please visit the link below to confirm you are the owner of this email address.</p>
     <p>%s</p>
-    <p><b>Smart Property Group</b></p>
+    <p><b>Hype Wizard Team</b></p>
     </html>
     """ % url
     return html
 
 
-def transactionPendingMemoPlain(transaction):
-    plain = """
-    Congratulatuons! Your Smart Property Group transcation was successul!\n
-    Transaction Id: %s\n
-    Transaction Amount: %s\n
-    Transaction Bitcoin Address: %s\n
-    Smart Property Group 
-    """ % (transaction.id, transaction.amount, transaction.bitcoinAddress)
-    return plain
-
-
-def transactionPendingMemoHtml(transaction):
-    html = """
-    <html>
-    <p><b>Congratulations! Your Smart Property Group transaction was successful!</b></p>
-    <p><b>Transaction Id:</b> %s</p>
-    <p><b>Transaction Amount:</b> %s</p>
-    <p><b>Transaction Bitcoin Address:</b> %s</p>
-    <p><b>Smart Property Group</b></p>
-    </html>
-    """ % (transaction.id, transaction.amount, transaction.bitcoinAddress)
-    return html
-
-
-def transactionApprovalMemoPlain(transaction):
-    plain = """
-    Congratulatuons! Your Smart Property Group transaction was successul!\n
-    Transaction Id: %s\n
-    Transaction Amount: %s\n
-    Transaction Bitcoin Address: %s\n
-    Smart Property Group 
-    """ % (transaction.id, transaction.amount, transaction.bitcoinAddress)
-    return plain
-
-
-def transactionApprovalMemoHtml(transaction):
-    html = """
-    <html>
-    <p><b>Congratulations! Your Smart Property Group transaction was successful!</b></p>
-    <p><b>Transaction Id:</b> %s</p>
-    <p><b>Transaction Amount:</b> %s</p>
-    <p><b>Transaction Bitcoin Address:</b> %s</p>
-    <p><b>Smart Property Group</b></p>
-    </html>
-    """ % (transaction.id, transaction.amount, transaction.bitcoinAddress)
-    return html
-
-
-def transactionCancelationMemoPlain(transaction):
-    plain = """
-    Your Smart Property Group transaction was canceled!\n
-    Transaction Id: %s\n
-    Transaction Amount: %s\n
-    Transaction Bitcoin Address: %s (invalid)\n
-    Smart Property Group 
-    """ % (transaction.id, transaction.amount, transaction.bitcoinAddress)
-    return plain
-
-
-def transactionCancelationMemoHtml(transaction):
-    html = """
-    <html>
-    <p><b>Your Smart Property Group transaction was canceled!</b></p>
-    <p><b>Transaction Id:</b> %s</p>
-    <p><b>Transaction Amount:</b> %s</p>
-    <p><b>Transaction Bitcoin Address:</b> %s (invalid)</p>
-    <p><b>Smart Property Group</b></p>
-    </html>
-    """ % (transaction.id, transaction.amount, transaction.bitcoinAddress)
-    return html
+#def transactionPendingMemoPlain(transaction):
+#    plain = """
+#    Congratulatuons! Your Smart Property Group transcation was successul!\n
+#    Transaction Id: %s\n
+#    Transaction Amount: %s\n
+#    Transaction Bitcoin Address: %s\n
+#    Smart Property Group 
+#    """ % (transaction.id, transaction.amount, transaction.bitcoinAddress)
+#    return plain
+#
+#
+#def transactionPendingMemoHtml(transaction):
+#    html = """
+#    <html>
+#    <p><b>Congratulations! Your Smart Property Group transaction was successful!</b></p>
+#    <p><b>Transaction Id:</b> %s</p>
+#    <p><b>Transaction Amount:</b> %s</p>
+#    <p><b>Transaction Bitcoin Address:</b> %s</p>
+#    <p><b>Smart Property Group</b></p>
+#    </html>
+#    """ % (transaction.id, transaction.amount, transaction.bitcoinAddress)
+#    return html
+#
+#
+#def transactionApprovalMemoPlain(transaction):
+#    plain = """
+#    Congratulatuons! Your Smart Property Group transaction was successul!\n
+#    Transaction Id: %s\n
+#    Transaction Amount: %s\n
+#    Transaction Bitcoin Address: %s\n
+#    Smart Property Group 
+#    """ % (transaction.id, transaction.amount, transaction.bitcoinAddress)
+#    return plain
+#
+#
+#def transactionApprovalMemoHtml(transaction):
+#    html = """
+#    <html>
+#    <p><b>Congratulations! Your Smart Property Group transaction was successful!</b></p>
+#    <p><b>Transaction Id:</b> %s</p>
+#    <p><b>Transaction Amount:</b> %s</p>
+#    <p><b>Transaction Bitcoin Address:</b> %s</p>
+#    <p><b>Smart Property Group</b></p>
+#    </html>
+#    """ % (transaction.id, transaction.amount, transaction.bitcoinAddress)
+#    return html
+#
+#
+#def transactionCancelationMemoPlain(transaction):
+#    plain = """
+#    Your Smart Property Group transaction was canceled!\n
+#    Transaction Id: %s\n
+#    Transaction Amount: %s\n
+#    Transaction Bitcoin Address: %s (invalid)\n
+#    Smart Property Group 
+#    """ % (transaction.id, transaction.amount, transaction.bitcoinAddress)
+#    return plain
+#
+#
+#def transactionCancelationMemoHtml(transaction):
+#    html = """
+#    <html>
+#    <p><b>Your Smart Property Group transaction was canceled!</b></p>
+#    <p><b>Transaction Id:</b> %s</p>
+#    <p><b>Transaction Amount:</b> %s</p>
+#    <p><b>Transaction Bitcoin Address:</b> %s (invalid)</p>
+#    <p><b>Smart Property Group</b></p>
+#    </html>
+#    """ % (transaction.id, transaction.amount, transaction.bitcoinAddress)
+#    return html

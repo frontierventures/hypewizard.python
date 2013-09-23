@@ -16,16 +16,19 @@ import encryptor
 import error
 import hashlib
 import login
+import mailer
 import pages
 import random
 import sys
 
-#Email = mailer.Email
+Email = mailer.Email
 
 
 def assemble(root):
-    root.putChild('register', Main())
     root.putChild('create_user', Create())
+    root.putChild('register', Main())
+    root.putChild('resend_token', Resend())
+    root.putChild('verify_ownership', Verify())
     return root
 
 
@@ -142,14 +145,67 @@ class Create(Resource):
             db.add(new_user)
             db.commit()
 
-            #url = 'http://www.sptrust.co/verifyEmail?id=%s&token=%s' % (str(new_user.id), token)
+            url = 'http://www.hypewhiz.com/verify_email?id=%s&token=%s' % (str(new_user.id), token)
 
-            #plain = mailer.verificationPlain(url)
-            #html = mailer.verificationHtml(url)
-            #Email(mailer.noreply, email, 'Getting Started', plain, html).send()
+            plain = mailer.verificationPlain(url)
+            html = mailer.verificationHtml(url)
+            Email(mailer.noreply, email, 'Getting Started with Hype Wizard', plain, html).send()
 
             #activity.push_to_socket(self.echoFactory, '%s**** registered' % email[0])
             activity.push_to_database(new_user.id, session_user['action'], '')
 
             url = login.make_session(request, new_user.id)
             return redirectTo(url, request)
+
+
+class Verify(Resource):
+    def render(self, request):
+        print '%srequest.args: %s%s' % (config.color.RED, request.args, config.color.ENDC)
+
+        if not request.args:
+            return redirectTo('../', request)
+
+        try:
+            user_id = int(request.args.get('id')[0])
+        except:
+            return redirectTo('../', request)
+
+        try:
+            token = request.args.get('token')[0]
+        except:
+            return redirectTo('../', request)
+
+        profile = db.query(Profile).filter(Profile.user_id == user_id).first()
+        if not profile:
+            return redirectTo('../', request)
+
+        if profile.token == token:
+            user = db.query(User).filter(User.id == user_id).first()
+            user.status = 'verified' 
+            profile.token = ''
+            db.commit()
+
+            sessions.disconnect(request, userId)
+            SessionManager(request).setSessionResponse({'class': 2, 'form': 0, 'text': definitions.VERIFY_SUCCESS})
+            return redirectTo('../login?verify=ok', request)
+        else:
+            return redirectTo('../', request)
+
+
+class Resend(Resource):
+    def render(self, request):
+        print '%srequest.args: %s%s' % (config.color.RED, request.args, config.color.ENDC)
+
+        sessionUser = SessionManager(request).getSessionUser()
+        userId = sessionUser['id']
+
+        user = db.query(User).filter(User.id == user_id).first()
+        profile = db.query(Profile).filter(Profile.user_id == user_id).first()
+
+        url = 'http://www.coingig.com/verify_ownership?id=%s&token=%s' % (str(user_id), profile.token)
+        plain = mailer.verificationPlain(url)
+        html = mailer.verificationHtml(url)
+        Email(mailer.noreply, user.email, 'Getting Started with Hype Wizard', plain, html).send()
+
+        #SessionManager(request).setSessionResponse({'class': 2, 'form': 0, 'text': definitions.UNDEF})
+        return redirectTo('../', request)

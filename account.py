@@ -40,39 +40,6 @@ class Main(Resource):
         return renderElement(request, Page)
 
 
-class Table(Element):
-    def __init__(self, session_user, filters):
-        self.session_user = session_user
-        self.filters = filters
-
-        template = 'templates/elements/ask_details.xml'
-
-        self.loader = XMLString(FilePath(template).getContent())
-        self.statuses = twitter_api.get_statuses(self.session_user['twitter_name'])
-
-    @renderer
-    def row(self, request, tag):
-        for status in self.statuses:
-            slots = {}
-            slots['status_id'] = str(status.id)
-            slots['status_text'] = status.text.encode('utf-8')
-            self.status = status
-            yield tag.clone().fillSlots(**slots)
-
-    @renderer
-    def action(self, request, tag):
-        buttons = []
-        buttons.append({
-            'url': '../process_ask?action=create&status_id=%s' % self.status.id,
-            'caption': 'Start Re-tweet Campaign' 
-        })
-        for button in buttons:
-            slots = {}
-            slots['caption'] = button['caption']
-            slots['url'] = button['url']
-            yield tag.clone().fillSlots(**slots) 
-
-
 class Details(Element):
     def __init__(self, session_user):
         self.session_user = session_user
@@ -85,10 +52,15 @@ class Details(Element):
             template = 'templates/elements/unverified_account.xml'
 
         self.loader = XMLString(FilePath(template).getContent())
+        self.twitter_user = twitter_api.get_user(self.session_user['twitter_name'])
 
     @renderer
     def details(self, request, tag):
         slots = {}
-        slots['slot_twitter_name'] = self.profile.twitter_name
-        slots['slot_twitter_followers_count'] = str(twitter_api.get_followers_count(self.profile.twitter_name))
+        slots['name'] = str(self.twitter_user.name)
+        slots['created_at'] = str(self.twitter_user.created_at)
+        slots['statuses_count'] = str(self.twitter_user.statuses_count)
+        slots['followers_count'] = str(self.twitter_user.followers_count)
+        slots['market_score'] = str(0)
+        #slots['status_text'] = status.text.encode('utf-8')
         yield tag.clone().fillSlots(**slots)

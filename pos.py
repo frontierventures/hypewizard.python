@@ -8,11 +8,17 @@ from data import Order
 from data import db
 from sessions import SessionManager
 
+from coinbase import api
+
+#import coinbase
 import config
+import decimal
 import definitions
 import json
 import forms
 import pages
+
+D = decimal.Decimal
 
 
 def assemble(root):
@@ -30,6 +36,10 @@ class Deposit(Resource):
         deposit_amount = request.args.get('deposit_amount')[0]
 
         timestamp = config.create_timestamp()
+            
+        rates = api.get_rates()
+
+        fiat_amount = D(deposit_amount) * D(rates['buy'])
 
         data = {
             'status': 'open',
@@ -38,7 +48,7 @@ class Deposit(Resource):
             'user_id': session_user['id'],
             'currency': 'USD',
             'fiat_amount': 0,
-            'btc_amount': 0,
+            'btc_amount': deposit_amount,
         }
 
         new_order = Order(data)
@@ -46,3 +56,8 @@ class Deposit(Resource):
         db.commit()
 
         return json.dumps(dict(response=1, text=definitions.MESSAGE_SUCCESS))
+
+from coinbase import CoinbaseAccount
+
+if __name__ == '__main__':
+    api.get_rates_test()

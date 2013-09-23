@@ -1,4 +1,4 @@
-<div class="container" xmlns:t="http://twistedmatrix.com/ns/twisted.web.template/0.1">
+<div class="container-fluid" xmlns:t="http://twistedmatrix.com/ns/twisted.web.template/0.1">
     <div style="width: 100%;">
         <span style="float:left">
             <h1 t:render="count"><t:slot name="order_status" /> Orders (<t:slot name="order_count" />)</h1>
@@ -16,28 +16,25 @@
         <table style="width: 100%">
             <thead>
                 <tr>
-                    <th>Create Date</th>
-                    <th>OrderId</th>
-                    <th>Twitter Name</th>
-                    <th>Status Id</th>
-                    <th>Cost</th>
-                    <th>Campaign Type</th>
+                    <th>Status</th>
+                    <th>Created At</th>
+                    <th>Updated At</th>
+                    <th>Order Id</th>
+                    <th>Amount (BTC)</th>
                     <th>Actions</th>
                 </tr>
             </thead>
             <tbody>
                 <tr t:render="row">
-                    <td style="text-align:center"><t:slot name="create_timestamp" /></td>
+                    <td style="text-align:center"><t:slot name="status" /></td>
+                    <td style="text-align:center"><t:slot name="created_at" /></td>
+                    <td style="text-align:center"><t:slot name="updated_at" /></td>
                     <td style="text-align:center"><t:slot name="order_id" /></td>
-                    <td style="text-align:center"><t:slot name="twitter_name" /></td>
-                    <td style="text-align:center"><t:slot name="status_id" /></td>
-                    <td style="text-align:center"><t:slot name="cost" /></td>
-                    <td style="text-align:center"><t:slot name="campaign_type" /></td>
+                    <td style="text-align:center"><t:slot name="btc_amount" /></td>
                     <td style="text-align:center">
                         <a t:render="action">
-                            <t:attr name="data-hint"><t:slot name="hint" /></t:attr>
-                            <t:attr name="class"><t:slot name="class" /></t:attr>
                             <t:attr name="href"><t:slot name="url" /></t:attr>
+                            <t:slot name="caption" />
                         </a>
                     </td>
                 </tr>

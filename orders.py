@@ -63,7 +63,7 @@ class Table(Element):
             orders = orders.filter(Order.status == 'complete').order_by(Order.updated_at.desc())
 
         if orders.count() == 0:
-            template = 'templates/elements/no_orders_table.xml'
+            template = 'templates/elements/empty_orders_table.xml'
         else:
             template = 'templates/elements/orders_table.xml'
 
@@ -106,7 +106,6 @@ class Table(Element):
     @renderer
     def row(self, request, tag):
         for order in self.orders:
-            user = twitter_api.get_user(order.promoter_twitter_name)
             slots = {}
             slots['status'] = order.status 
             slots['created_at'] = config.convert_timestamp(order.created_at, config.STANDARD)

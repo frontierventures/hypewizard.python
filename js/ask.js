@@ -64,7 +64,7 @@ $(document).ready(function(){
                     $.colorbox.resize();
                 } else {
                     $.colorbox.close();
-                    window.location = '../'; 
+                    window.location = '../orders'; 
                 }
             }     
         });

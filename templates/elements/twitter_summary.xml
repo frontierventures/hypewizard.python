@@ -1,5 +1,6 @@
 <div xmlns:t="http://twistedmatrix.com/ns/twisted.web.template/0.1" t:render="twitter_info">
     <h1>Twitter Account Summary</h1>
+    <div><a href="../orders">Order History</a></div>
     <div><b>Name:</b> <t:slot name="name" /></div>
     <div><b>Registation Timestamp:</b> <t:slot name="created_at" /></div>
     <div><b>Number of Tweets:</b> <t:slot name="statuses_count" /></div>

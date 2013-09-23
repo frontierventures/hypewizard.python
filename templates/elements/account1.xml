@@ -1,5 +1,0 @@
-<div class="form-account" xmlns:t="http://twistedmatrix.com/ns/twisted.web.template/0.1" t:render="details">
-    <h1 class="form-account-heading">Account Summary</h1>
-    <div>Email address not verified.</div>
-    <div><a href="../sendToken">Resend Verification Instructions</a></div>
-</div>

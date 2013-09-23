@@ -31,7 +31,7 @@
         <div id="push"></div>
         <div class="row container-fluid">
             <div class="span6">
-                <t:transparent t:render="twitter_summary" />            
+                <t:transparent t:render="details" />            
             </div>
             <div class="span6">
             </div>

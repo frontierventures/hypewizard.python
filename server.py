@@ -16,6 +16,7 @@ import login
 import logout
 import market
 import offers
+import orders
 import pages
 import pos
 import register
@@ -39,6 +40,7 @@ root = account.assemble(root)
 root = bid.assemble(root)
 root = login.assemble(root)
 root = offers.assemble(root)
+root = orders.assemble(root)
 root = pos.assemble(root)
 root = register.assemble(root)
 root = summary_asks.assemble(root)

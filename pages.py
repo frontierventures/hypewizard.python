@@ -10,6 +10,7 @@ import faq
 import forms
 import market
 import offers
+import orders
 import popups
 import terms
 import transactions
@@ -47,9 +48,9 @@ class Account(Page):
         Page.__init__(self, pageTitle, template)
         self.pageTitle = pageTitle
 
-    @renderer
-    def twitter_summary(self, request, tag):
-        return elements.TwitterSummary(self.session_user)
+    #@renderer
+    #def twitter_summary(self, request, tag):
+    #    return elements.TwitterSummary(self.session_user)
 
     @renderer
     def details(self, request, tag):
@@ -188,6 +189,16 @@ class Offers(Page):
     @renderer
     def disapprove_offer_popup(self, request, tag):
         return popups.DisapproveOffer(self.session_user)
+
+
+class Orders(Page):
+    def __init__(self, pageTitle, template, filters):
+        Page.__init__(self, pageTitle, template)
+        self.filters = filters
+
+    @renderer
+    def orders_table(self, request, tag):
+        return orders.Table(self.session_user, self.filters)
 
 
 class Register(Page):
