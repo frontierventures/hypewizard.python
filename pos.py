@@ -8,9 +8,8 @@ from data import Order
 from data import db
 from sessions import SessionManager
 
-from coinbase import api
 
-#import coinbase
+import coinbase
 import config
 import decimal
 import definitions
@@ -19,6 +18,8 @@ import forms
 import pages
 
 D = decimal.Decimal
+from coinbase import api
+coinbase_api = api 
 
 
 def assemble(root):
@@ -37,7 +38,7 @@ class Deposit(Resource):
 
         timestamp = config.create_timestamp()
             
-        rates = api.get_rates()
+        rates = coinbase_api.get_rates()
 
         fiat_amount = D(deposit_amount) * D(rates['buy'])
 
@@ -49,10 +50,28 @@ class Deposit(Resource):
             'currency': 'USD',
             'fiat_amount': float(fiat_amount),
             'btc_amount': deposit_amount,
+            'code': '' 
         }
 
         new_order = Order(data)
         db.add(new_order)
+        db.commit()
+
+        data = {
+            "name": "Hype Wizard Credit - %s BTC" % deposit_amount,
+            "price_string": "%s" % deposit_amount,
+            "price_currency_iso": "USD",
+            "custom": "%s" % new_order.id,
+            "callback_url": "http://www.example.com/my_custom_button_callback",
+            "description": "Spendable Hype Wizard credit",
+            "type": "buy_now",
+            "style": "custom_large"
+        }
+
+        code = coinbase_api.create_invoice(data)
+
+        order = db.query(Order).filter(Order.order_id == new_order.id)
+        order.code = code
         db.commit()
 
         return json.dumps(dict(response=1, text=definitions.MESSAGE_SUCCESS))
