@@ -5,7 +5,7 @@ from twisted.web.template import flattenString
 from twisted.web.template import Element, renderer, renderElement, XMLString
 from twisted.python.filepath import FilePath
 
-from data import Profile, TwitterName, User
+from data import Profile, TwitterUserData, User
 from data import db
 from sessions import SessionManager
 
@@ -168,9 +168,10 @@ class Create(Resource):
             data = {            
                 'twitter_id': twitter_user.id,
                 'twitter_name': twitter_name,
+                'twitter_image': twitter_user.profile_image_url,
             }
-            new_twitter_name = TwitterName(data)
-            new_user.twitter_names = [new_twitter_name]
+            new_twitter_user = TwitterUserData(data)
+            new_user.twitter_user_data = [new_twitter_user]
 
             db.add(new_user)
             db.commit()

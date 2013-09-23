@@ -38,7 +38,6 @@ def get_user_by_id(twitter_id):
     user = api.GetUser(user_id=twitter_id)
     return user
 
-
 def convert_twitter_timestamp(created_at):
     timestamp = time.strftime('%Y-%m-%d %H:%M:%S', time.strptime(created_at,'%a %b %d %H:%M:%S +0000 %Y'))
     return timestamp
@@ -52,9 +51,15 @@ def get_retweets(status_id):
     return statuses
 
 
-#print get_user('coingigsdjfksjdkfjsdkfjksdjfksjdkfjskdjfks')
-#print get_user('hypewizard')
-#print get_user('twitter')['user']
+def get_retweet():
+    status = api.GetStatus(status_id, trim_user=True, include_my_retweet=True, include_entities=True)
+    return status
+    
+
+    #account = CoinbaseAccount(api_key=API_KEY)
+    #test_get_rates(account=account)
+    #test_create_invoice(account=account)
+    #print twitter_api.get_followers_count('coingig')
 
 status_id = '380866222369144832' # Client Status Id 
 screen_name = 'hypewizard'

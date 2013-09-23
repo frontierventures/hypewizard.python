@@ -94,6 +94,7 @@ def verify_email_memo_html(url):
 def offer_created_memo_plain():
     plain = """
     You have received an offer to promote your tweet.\n
+    Please login to review promoter wizard score.\n
     Hype Wizard Team
     """ 
     return plain
@@ -103,29 +104,30 @@ def offer_created_memo_html():
     html = """
     <html>
     <p>You have received an offer to promote your tweet.</p>
+    <p>Please login to review promoter wizard score.</p>
     <p><b>Hype Wizard Team</b></p>
     </html>
     """
     return html
 
 
-def offer_approved_memo_plain():
+def offer_approved_memo_plain(offer):
     plain = """
     Your Hype Wizard offer has been approved.\n
-    Please retweet for your client before you can claim reserved funds.\n
+    Please retweet status #%s for your client before you can claim reserved funds.\n
     Hype Wizard Team
-    """ 
+    """ % offer.twitter_status_id 
     return plain
 
 
-def offer_approved_memo_html():
+def offer_approved_memo_html(offer):
     html = """
     <html>
     <p>Your Hype Wizard offer has been approved.</p>
-    <p>Please retweet for you client before you can claim reserved funds.</p>
+    <p>Please retweet status #%s for your client before you can claim reserved funds.</p>
     <p><b>Hype Wizard Team</b></p>
     </html>
-    """
+    """ % offer.twitter_status_id 
     return html
 
 

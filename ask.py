@@ -4,7 +4,7 @@ from twisted.web.util import redirectTo
 from twisted.web.template import Element, renderer, renderElement, XMLString
 from twisted.python.filepath import FilePath
 
-from data import Ask, Profile, User
+from data import Ask, Profile, User, Tweet
 from data import db
 from sessions import SessionManager
 
@@ -157,6 +157,19 @@ class Create(Resource):
         client.reserved_balance += float(D(charge) * D(goal))
 
         db.commit()
+
+        #####################################
+        # Need to check if API caused error 
+        #####################################
+        tweet = twitter_api.get_status(twitter_status_id) 
+        data = {
+            'twitter_status_id': twitter_status_id,
+            'created_at': tweet.created_at.encode('utf-8'),
+            'text': tweet.text.encode('utf-8')
+        }
+        print data
+        new_tweet = Tweet(data)
+        db.add(new_tweet)
 
         response = {}
         response['error'] = False

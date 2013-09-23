@@ -54,7 +54,7 @@ class SessionManager():
     def clear_session_user(self):
         session_object = ISessionObject(self.session)
         session_object.user = {
-                'status': 'unverified', 
+                'is_email_verified': False, 
                 'id': 0, 
                 'level': 1, 
                 'twitter_name': '', 
@@ -139,7 +139,7 @@ class SessionObject(object):
 
     def __init__(self, session):
         self.user = {
-                'status': 'unverified', 
+                'is_email_verified': False, 
                 'id': 0, 
                 'level': 1, 
                 'twitter_name': '', 

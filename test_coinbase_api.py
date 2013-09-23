@@ -13,7 +13,7 @@ def test_create_invoice(account):
     data = {
         "name": "test",
         "price_string": "1.23",
-        "price_currency_iso": "USD",
+        "price_currency_iso": "BTC",
         "custom": "Order123",
         "callback_url": "http://www.example.com/my_custom_button_callback",
         "description": "Sample description",

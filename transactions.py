@@ -4,7 +4,7 @@ from twisted.web.util import redirectTo
 from twisted.web.template import Element, renderer, renderElement, XMLString
 from twisted.python.filepath import FilePath
 
-from data import Ask, Bid, Profile, Offer, Transaction, TwitterName, User
+from data import Ask, Bid, Profile, Offer, Transaction, TwitterUserData, User
 from data import db
 from sessions import SessionManager
 
@@ -125,7 +125,7 @@ class Table(Element):
             slots['updated_at'] = config.convert_timestamp(transaction.updated_at, config.STANDARD)
             slots['transaction_id'] = str(transaction.id)
             
-            item = db.query(TwitterName).filter(TwitterName.twitter_id == transaction.client_twitter_id).first()
+            item = db.query(TwitterUserData).filter(TwitterUserData.twitter_id == transaction.client_twitter_id).first()
             slots['client_twitter_name'] = item.twitter_name.encode('utf-8')
 
             slots['client_twitter_name_url'] = 'http://www.twitter.com/%s' % item.twitter_name
@@ -316,6 +316,10 @@ class Complete(Resource):
 
         if transaction.promoter_id != session_user['id']:
             return redirectTo('../', request)
+
+        #####################################
+        # Check Retweet Maturity
+        #####################################
 
         timestamp = config.create_timestamp()
         

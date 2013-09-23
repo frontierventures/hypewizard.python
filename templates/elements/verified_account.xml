@@ -8,6 +8,11 @@
     <div class="span6" style="text-align: center;">
         <h1>Twitter Account </h1>
         <div><b>Name:</b> <t:slot name="name" /></div>
+        <div>
+            <img>
+            <t:attr name="src"><t:slot name="twitter_image" /></t:attr>
+            </img>
+        </div>
         <div><b>Registation Timestamp:</b> <t:slot name="created_at" /></div>
         <div><b>Number of Tweets:</b> <t:slot name="statuses_count" /></div>
         <div><b>Number of Followers:</b> <t:slot name="followers_count" /></div>

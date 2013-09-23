@@ -7,7 +7,7 @@ import functions
 import json
 import twitter_api
 
-from data import Ask, Bid, Profile, TwitterName, Tweet 
+from data import Ask, Bid, Profile, TwitterUserData, Tweet 
 from data import db
 from sqlalchemy.sql import and_
 from sqlalchemy.sql import func
@@ -39,7 +39,7 @@ class GetAsks(Resource):
             order['niche'] = definitions.niches[ask.niche]
             order['campaign_type'] = definitions.campaign_types[ask.campaign_type]
 
-            item = db.query(TwitterName).filter(TwitterName.twitter_id == ask.twitter_id).first()
+            item = db.query(TwitterUserData).filter(TwitterUserData.twitter_id == ask.twitter_id).first()
             order['twitter_name'] = item.twitter_name 
             
             tweet = db.query(Tweet).filter(Tweet.twitter_status_id == ask.twitter_status_id).first()
@@ -48,6 +48,7 @@ class GetAsks(Resource):
                 twitter_status = twitter_api.get_status(ask.twitter_status_id) 
                 data = {
                     'twitter_status_id': ask.twitter_status_id,
+                    'created_at': twitter_status.created_at.encode('utf-8'),
                     'text': twitter_status.text.encode('utf-8')
                 }
                 new_tweet = Tweet(data)
@@ -110,7 +111,7 @@ class GetBids(Resource):
 
             order['twitter_id'] = bid.twitter_id 
 
-            item = db.query(TwitterName).filter(TwitterName.twitter_id == bid.twitter_id).first()
+            item = db.query(TwitterUserData).filter(TwitterUserData.twitter_id == bid.twitter_id).first()
             order['twitter_name'] = item.twitter_name 
 
             order['twitter_status_id'] = bid.twitter_status_id

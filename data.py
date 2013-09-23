@@ -206,28 +206,32 @@ class Transaction(Base):
         self.bid_id = data['bid_id']
 
 
-class TwitterName(Base):
-    __tablename__ = 'twitter_names'
+class TwitterUserData(Base):
+    __tablename__ = 'twitter_user_data'
     id = Column(Integer, Sequence('twitter_name_id_seq'), primary_key=True)
     twitter_id = Column(Integer)
     twitter_name = Column(String)
+    twitter_image = Column(String)
 
     user_id = Column(Integer, ForeignKey('users.id'))
-    user = relationship('User', backref=backref('twitter_names', order_by=id))
+    user = relationship('User', backref=backref('twitter_user_data', order_by=id))
 
     def __init__(self, data):
         self.twitter_id = data['twitter_id'] 
         self.twitter_name = data['twitter_name'] 
+        self.twitter_image = data['twitter_image'] 
 
 
 class Tweet(Base):
     __tablename__ = 'tweets'
     id = Column(Integer, Sequence('tweet_id_seq'), primary_key=True)
     twitter_status_id = Column(String)
+    created_at = Column(String)
     text = Column(String)
 
     def __init__(self, data):
         self.twitter_status_id = data['twitter_status_id'] 
+        self.created_at = data['created_at'] 
         self.text = data['text'] 
 
 
@@ -290,8 +294,10 @@ def reset(default):
             data = {            
                 'twitter_id': 0,
                 'twitter_name': '',
+                'twitter_image': 'https://si0.twimg.com/profile_images/378800000485472101/27c7a9dc98a6aaaa1e208c242bcb3666_normal.png',
             }
-            new_twitter_name = TwitterName(data)
+            twitter_user = TwitterUserData(data)
+            user.twitter_user_data = [twitter_user]
 
             db.add(user)
 
@@ -327,9 +333,10 @@ def reset(default):
             data = {            
                 'twitter_id': 1129728541,
                 'twitter_name': 'coingig',
+                'twitter_image': 'https://si0.twimg.com/profile_images/378800000485472101/27c7a9dc98a6aaaa1e208c242bcb3666_normal.png',
             }
-            twitter_name = TwitterName(data)
-            user.twitter_names = [twitter_name]
+            twitter_user = TwitterUserData(data)
+            user.twitter_user_data = [twitter_user]
 
             db.add(user)
 
@@ -365,9 +372,10 @@ def reset(default):
             data = {            
                 'twitter_id': 632058592,
                 'twitter_name': 'hypewizard',
+                'twitter_image': 'https://si0.twimg.com/profile_images/378800000485472101/27c7a9dc98a6aaaa1e208c242bcb3666_normal.png',
             }
-            twitter_name = TwitterName(data)
-            user.twitter_names = [twitter_name]
+            twitter_user = TwitterUserData(data)
+            user.twitter_user_data = [twitter_user]
 
             db.add(user)
 
@@ -403,9 +411,10 @@ def reset(default):
             data = {            
                 'twitter_id': 783214,
                 'twitter_name': 'twitter',
+                'twitter_image': 'https://si0.twimg.com/profile_images/378800000485472101/27c7a9dc98a6aaaa1e208c242bcb3666_normal.png',
             }
-            twitter_name = TwitterName(data)
-            user.twitter_names = [twitter_name]
+            twitter_user = TwitterUserData(data)
+            user.twitter_user_data = [twitter_user]
 
             db.add(user)
 

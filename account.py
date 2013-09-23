@@ -17,7 +17,7 @@ import pages
 
 from data import db
 from sqlalchemy.sql import and_
-from data import Profile, User
+from data import Profile, TwitterUserData, User
 from sessions import SessionManager
 
 Email = mailer.Email
@@ -62,6 +62,8 @@ class Details(Element):
         self.loader = XMLString(FilePath(template).getContent())
         self.twitter_user = twitter_api.get_user_by_id(self.session_user['twitter_id'])
 
+        self.twitter_user_data = db.query(TwitterUserData).filter(TwitterUserData.twitter_id == self.session_user['twitter_id']).first()
+
     @renderer
     def details(self, request, tag):
         slots = {}
@@ -69,6 +71,7 @@ class Details(Element):
         slots['created_at'] = str(self.twitter_user.created_at)
         slots['statuses_count'] = str(self.twitter_user.statuses_count)
         slots['followers_count'] = str(self.twitter_user.followers_count)
+        slots['twitter_image'] = str(self.twitter_user_data.twitter_image)
         slots['market_score'] = str(0)
         #slots['status_text'] = status.text.encode('utf-8')
         yield tag.clone().fillSlots(**slots)

@@ -65,7 +65,7 @@ class Deposit(Resource):
         data = {
             "name": "Hype Wizard Credit - %s BTC" % deposit_amount,
             "price_string": "%s" % deposit_amount,
-            "price_currency_iso": "USD",
+            "price_currency_iso": "BTC",
             "custom": "%s" % new_order.id,
             "callback_url": "http://www.example.com/my_custom_button_callback",
             "description": "Spendable Hype Wizard credit",

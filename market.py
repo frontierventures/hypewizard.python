@@ -71,7 +71,7 @@ class Table(Element):
         slots = {}
         slots['kind'] = self.filters['kind']
 
-        if self.session_user['status'] == 'unverified':
+        if not self.session_user['is_email_verified']:
             url = '../feature_disabled?reason=unverified'
 
         if self.session_user['id'] == 0:

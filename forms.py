@@ -92,11 +92,11 @@ class Register(Element):
             twitter_name = session_user['twitter_name']
 
         slots = {}
-        slots['htmlEmail'] = email
-        slots['htmlPassword'] = new_password
-        slots['htmlRepeatPassword'] = new_password_repeat
-        slots['htmlBitcoinAddress'] = bitcoin_address
-        slots['htmlTwitterName'] = twitter_name
+        slots['email'] = email
+        slots['new_password'] = new_password
+        slots['new_password_repeat'] = new_password_repeat
+        slots['bitcoin_address'] = bitcoin_address
+        slots['twitter_name'] = twitter_name
         yield tag.fillSlots(**slots)
 
     @renderer

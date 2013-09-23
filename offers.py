@@ -4,7 +4,7 @@ from twisted.web.util import redirectTo
 from twisted.web.template import Element, renderer, renderElement, XMLString
 from twisted.python.filepath import FilePath
 
-from data import Ask, Bid, Profile, Transaction, TwitterName, User
+from data import Ask, Bid, Profile, Transaction, TwitterUserData, User
 from data import db
 from sessions import SessionManager
 
@@ -121,7 +121,7 @@ class Table(Element):
             slots['updated_at'] = config.convert_timestamp(offer.updated_at, config.STANDARD)
             slots['offer_id'] = str(offer.id)
 
-            item = db.query(TwitterName).filter(TwitterName.twitter_id == offer.promoter_twitter_id).first()
+            item = db.query(TwitterUserData).filter(TwitterUserData.twitter_id == offer.promoter_twitter_id).first()
             slots['promoter_twitter_name'] = item.twitter_name.encode('utf-8')
 
             slots['promoter_twitter_name_url'] = 'http://www.twitter.com/%s' % item.twitter_name
@@ -211,8 +211,8 @@ class Approve(Resource):
 
         promoter = db.query(User).filter(User.id == offer.promoter_id).first()
 
-        plain = mailer.offer_approved_memo_plain()
-        html = mailer.offer_approved_memo_html()
+        plain = mailer.offer_approved_memo_plain(offer)
+        html = mailer.offer_approved_memo_html(offer)
 
         Email(mailer.noreply, promoter.email, 'Your Hype Wizard offer has been approved!', plain, html).send()
 
