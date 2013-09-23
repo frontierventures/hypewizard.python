@@ -4,7 +4,7 @@ from twisted.web.util import redirectTo
 from twisted.web.template import Element, renderer, renderElement, XMLString
 from twisted.python.filepath import FilePath
 
-from data import Ask, Bid, Profile, Transaction
+from data import Ask, Bid, Profile, Transaction, TwitterName
 from data import db
 from sessions import SessionManager
 
@@ -110,18 +110,22 @@ class Table(Element):
     @renderer
     def row(self, request, tag):
         for offer in self.offers:
-            user = twitter_api.get_user(offer.promoter_twitter_name)
+            user = twitter_api.get_user_by_id(offer.promoter_twitter_id)
+
             slots = {}
             slots['status'] = offer.status 
             slots['created_at'] = config.convert_timestamp(offer.created_at, config.STANDARD)
             slots['updated_at'] = config.convert_timestamp(offer.updated_at, config.STANDARD)
             slots['offer_id'] = str(offer.id)
-            slots['promoter_twitter_name'] = offer.promoter_twitter_name.encode('utf-8')
-            slots['promoter_twitter_name_url'] = 'http://www.twitter.com/%s' % offer.promoter_twitter_name
+
+            item = db.query(TwitterName).filter(TwitterName.twitter_id == offer.promoter_twitter_id).first()
+            slots['promoter_twitter_name'] = item.twitter_name.encode('utf-8')
+
+            slots['promoter_twitter_name_url'] = 'http://www.twitter.com/%s' % item.twitter_name
             slots['statuses_count'] = str(user.statuses_count) 
             slots['followers_count'] = str(user.followers_count) 
             slots['twitter_status_id'] = str(offer.twitter_status_id) 
-            slots['twitter_status_id_url'] = 'http://www.twitter.com/%s/status/%s' % (offer.client_twitter_name, offer.twitter_status_id)
+            slots['twitter_status_id_url'] = 'http://www.twitter.com/%s/status/%s' % (item.twitter_name, offer.twitter_status_id)
             slots['charge'] = str(offer.charge) 
             self.offer = offer
             yield tag.clone().fillSlots(**slots)

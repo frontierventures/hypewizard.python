@@ -5,7 +5,7 @@ from twisted.web.template import flattenString
 from twisted.web.template import Element, renderer, renderElement, XMLString
 from twisted.python.filepath import FilePath
 
-from data import Profile, User
+from data import Profile, TwitterName, User
 from data import db
 from sessions import SessionManager
 
@@ -28,6 +28,7 @@ Email = mailer.Email
 def assemble(root):
     root.putChild('create_user', Create())
     root.putChild('register', Main())
+    root.putChild('reset_password', Resend())
     root.putChild('resend_token', Resend())
     root.putChild('verify_ownership', Verify())
     return root
@@ -108,6 +109,8 @@ class Create(Resource):
         if response['error']:
             return redirectTo('../register', request)
 
+        twitter_user = response['user']
+
         if not request.args.get('is_terms_accepted'):
             SessionManager(request).setSessionResponse({'class': 1, 'form': 0, 'text': definitions.TERMS[0]})
             return redirectTo('../register', request)
@@ -138,7 +141,7 @@ class Create(Resource):
                 'available_balance': 0,
                 'reserved_balance': 0,
                 'twitter_name': twitter_name,
-                'twitter_id': response['user'].id,
+                'twitter_id': twitter_user.id,
                 'niche': niche,
                 'transaction_count': 0,
                 'offer_count': 0
@@ -146,6 +149,13 @@ class Create(Resource):
             new_profile = Profile(data)
 
             new_user.profiles = [new_profile]
+
+            data = {            
+                'twitter_id': twitter_user.id,
+                'twitter_name': twitter_name,
+            }
+            new_twitter_name = TwitterName(data)
+            new_user.twitter_names = [new_twitter_name]
 
             db.add(new_user)
             db.commit()

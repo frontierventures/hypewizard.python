@@ -31,7 +31,7 @@ class Ask(Base):
     status = Column(String)
     created_at = Column(String)
     updated_at = Column(String)
-    twitter_name = Column(String)
+    twitter_id = Column(Integer)
     twitter_status_id = Column(String)
     user_id = Column(Integer)
     target = Column(Integer)
@@ -44,7 +44,7 @@ class Ask(Base):
         self.status = data['status']
         self.created_at = data['created_at']
         self.updated_at = data['updated_at']
-        self.twitter_name = data['twitter_name']
+        self.twitter_id = data['twitter_id'] 
         self.twitter_status_id = data['twitter_status_id'] 
         self.user_id = data['user_id']
         self.target = data['target']
@@ -60,6 +60,7 @@ class Bid(Base):
     status = Column(String)
     created_at = Column(String)
     updated_at = Column(String)
+    twitter_id = Column(Integer)
     twitter_name = Column(String)
     twitter_status_id = Column(String)
     user_id = Column(Integer)
@@ -72,7 +73,7 @@ class Bid(Base):
         self.status = data['status']
         self.created_at = data['created_at']
         self.updated_at = data['updated_at']
-        self.twitter_name = data['twitter_name']
+        self.twitter_id = data['twitter_id'] 
         self.twitter_status_id = data['twitter_status_id'] 
         self.user_id = data['user_id']
         self.tally = data['tally']
@@ -182,8 +183,8 @@ class Transaction(Base):
     status = Column(String)
     created_at = Column(String)
     updated_at = Column(String)
-    client_twitter_name = Column(String)
-    promoter_twitter_name = Column(String)
+    client_twitter_id = Column(Integer)
+    promoter_twitter_id = Column(Integer)
     twitter_status_id = Column(String)
     client_id = Column(Integer)
     promoter_id = Column(Integer)
@@ -195,14 +196,39 @@ class Transaction(Base):
         self.status = data['status']
         self.created_at = data['created_at']
         self.updated_at = data['updated_at']
-        self.client_twitter_name = data['client_twitter_name']
-        self.promoter_twitter_name = data['promoter_twitter_name']
+        self.client_twitter_id = data['client_twitter_id']
+        self.promoter_twitter_id = data['promoter_twitter_id']
         self.twitter_status_id = data['twitter_status_id'] 
         self.client_id = data['client_id']
         self.promoter_id = data['promoter_id']
         self.charge = data['charge']
         self.ask_id = data['ask_id']
         self.bid_id = data['bid_id']
+
+
+class TwitterName(Base):
+    __tablename__ = 'twitter_names'
+    id = Column(Integer, Sequence('twitter_name_id_seq'), primary_key=True)
+    twitter_id = Column(Integer)
+    twitter_name = Column(String)
+
+    user_id = Column(Integer, ForeignKey('users.id'))
+    user = relationship('User', backref=backref('twitter_names', order_by=id))
+
+    def __init__(self, data):
+        self.twitter_id = data['twitter_id'] 
+        self.twitter_name = data['twitter_name'] 
+
+
+class Tweet(Base):
+    __tablename__ = 'tweets'
+    id = Column(Integer, Sequence('tweet_id_seq'), primary_key=True)
+    twitter_status_id = Column(String)
+    text = Column(String)
+
+    def __init__(self, data):
+        self.twitter_status_id = data['twitter_status_id'] 
+        self.text = data['text'] 
 
 
 class User(Base):
@@ -261,6 +287,12 @@ def reset(default):
             profile = Profile(data)
             user.profiles = [profile]
 
+            data = {            
+                'twitter_id': 0,
+                'twitter_name': '',
+            }
+            new_twitter_name = TwitterName(data)
+
             db.add(user)
 
         user = db.query(User).filter(User.email == 'a@a.a').first()
@@ -292,6 +324,13 @@ def reset(default):
             profile = Profile(data)
             user.profiles = [profile]
 
+            data = {            
+                'twitter_id': 1129728541,
+                'twitter_name': 'coingig',
+            }
+            twitter_name = TwitterName(data)
+            user.twitter_names = [twitter_name]
+
             db.add(user)
 
         user = db.query(User).filter(User.email == 'b@b.b').first()
@@ -315,13 +354,20 @@ def reset(default):
                 'available_balance': 10000,
                 'reserved_balance': 0,
                 'twitter_name': 'hypewizard',
-                'twitter_id': 0,
+                'twitter_id': 632058592,
                 'niche': 'AA',
                 'transaction_count': 0, 
                 'offer_count': 0 
             }
             profile = Profile(data)
             user.profiles = [profile]
+
+            data = {            
+                'twitter_id': 632058592,
+                'twitter_name': 'hypewizard',
+            }
+            twitter_name = TwitterName(data)
+            user.twitter_names = [twitter_name]
 
             db.add(user)
 
@@ -346,13 +392,20 @@ def reset(default):
                 'available_balance': 0,
                 'reserved_balance': 0,
                 'twitter_name': 'twitter',
-                'twitter_id': 0,
+                'twitter_id': 783214,
                 'niche': 'AA',
                 'transaction_count': 0, 
                 'offer_count': 0 
             }
             profile = Profile(data)
             user.profiles = [profile]
+
+            data = {            
+                'twitter_id': 783214,
+                'twitter_name': 'twitter',
+            }
+            twitter_name = TwitterName(data)
+            user.twitter_names = [twitter_name]
 
             db.add(user)
 
@@ -364,3 +417,4 @@ def reset(default):
 #flood(863)
 
 reset(True)
+

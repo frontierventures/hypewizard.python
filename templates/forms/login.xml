@@ -11,7 +11,7 @@
             <t:attr name="value"><t:slot name="htmlPassword" /></t:attr>
         </input>
         <label class="checkbox">
-            <input type="checkbox" value="remember-me" /> Remember Me
+            <input type="checkbox" value="remember-me" /><span>Remember Me</span><span><a href="../reset_password">Reset Password</a></span>
         </label>
         <button name="button" value="Login" class="btn btn-large btn-primary" type="submit">Sign In</button>
     </form>

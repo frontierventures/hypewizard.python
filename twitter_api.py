@@ -32,8 +32,12 @@ def get_user(twitter_name):
         response['error'] = True
         response['message'] = error[0][0]['message']
         #print error
-
     return response
+
+def get_user_by_id(twitter_id):
+    user = api.GetUser(user_id=twitter_id)
+    return user
+
 
 def convert_twitter_timestamp(created_at):
     timestamp = time.strftime('%Y-%m-%d %H:%M:%S', time.strptime(created_at,'%a %b %d %H:%M:%S +0000 %Y'))
@@ -49,7 +53,8 @@ def get_retweets(status_id):
 
 
 #print get_user('coingigsdjfksjdkfjsdkfjksdjfksjdkfjskdjfks')
-#print get_user('coingig')
+#print get_user('hypewizard')
+#print get_user('twitter')['user']
 
 status_id = '380866222369144832' # Client Status Id 
 screen_name = 'hypewizard'

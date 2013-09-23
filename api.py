@@ -7,7 +7,7 @@ import functions
 import json
 import twitter_api
 
-from data import Ask, Bid, Profile 
+from data import Ask, Bid, Profile, TwitterName, Tweet 
 from data import db
 from sqlalchemy.sql import and_
 from sqlalchemy.sql import func
@@ -42,8 +42,27 @@ class GetAsks(Resource):
             order['id'] = ask.id
             order['niche'] = definitions.niches[ask.niche]
             order['campaign_type'] = definitions.campaign_types[ask.campaign_type]
-            order['twitter_name'] = ask.twitter_name
+
+            item = db.query(TwitterName).filter(TwitterName.twitter_id == ask.twitter_id).first()
+            order['twitter_name'] = item.twitter_name 
+            
+            tweet = db.query(Tweet).filter(Tweet.twitter_status_id == ask.twitter_status_id).first()
+
+            if not tweet:
+                twitter_status = twitter_api.get_status(ask.twitter_status_id) 
+                data = {
+                    'twitter_status_id': ask.twitter_status_id,
+                    'text': twitter_status.text.encode('utf-8')
+                }
+                new_tweet = Tweet(data)
+                db.add(new_tweet)
+
+                order['twitter_status_text'] = twitter_status.text.encode('utf-8')
+            else:
+                order['twitter_status_text'] = tweet.text
+
             order['twitter_status_id'] = ask.twitter_status_id
+
             order['cost'] = ask.cost
             order['target'] = ask.target
             order['goal'] = ask.goal
@@ -82,7 +101,12 @@ class GetBids(Resource):
             order['id'] = bid.id
             order['niche'] = definitions.niches[bid.niche]
             order['campaign_type'] = definitions.campaign_types[bid.campaign_type]
-            order['twitter_name'] = bid.twitter_name
+
+            order['twitter_id'] = bid.twitter_id 
+
+            item = db.query(TwitterName).filter(TwitterName.twitter_id == bid.twitter_id).first()
+            order['twitter_name'] = item.twitter_name 
+
             order['twitter_status_id'] = bid.twitter_status_id
             order['cost'] = bid.cost
 
@@ -103,18 +127,19 @@ class GetMarketScore(Resource):
         session_user = SessionManager(request).get_session_user()
 
         try:
-            twitter_name = request.args.get('twitter_name')[0]
+            twitter_id = request.args.get('twitter_id')[0]
         except:
             return redirectTo('../', request)
 
-        user = twitter_api.get_user(twitter_name)
+        #user = twitter_api.get_user(twitter_name)
+        twitter_user = twitter_api.get_user_by_id(twitter_id)
 
-        profiles = db.query(Profile).filter(Profile.twitter_name == twitter_name)
+        profiles = db.query(Profile).filter(Profile.twitter_id == twitter_user.id)
         profile = profiles.order_by(Profile.created_at.desc()).first()
 
         record = {}
         record['score'] = 100
-        record['statuses_count'] = user.statuses_count 
-        record['followers_count'] = user.followers_count
+        record['statuses_count'] = twitter_user.statuses_count 
+        record['followers_count'] = twitter_user.followers_count
         record['niche'] = definitions.niches[profile.niche]
         return json.dumps(record)

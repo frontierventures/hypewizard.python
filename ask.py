@@ -127,7 +127,7 @@ class Create(Resource):
             'status': 'active',
             'created_at': timestamp,
             'updated_at': timestamp,
-            'twitter_name': session_user['twitter_name'],
+            'twitter_id': session_user['twitter_id'],
             'twitter_status_id': twitter_status_id,
             'user_id': session_user['id'],
             'target': 0,
@@ -180,8 +180,8 @@ class Withdraw(Resource):
         ask.status = 'withdrawn'
 
         client = db.query(Profile).filter(Profile.user_id == session_user['id']).first()
-        client.available_balance += ask.cost * ask.target
-        client.reserved_balance -= ask.cost * ask.target
+        client.available_balance += ask.cost * (ask.goal - ask.target)
+        client.reserved_balance -= ask.cost * (ask.goal - ask.target)
 
         db.commit()
         return json.dumps(dict(response=1, text=definitions.MESSAGE_SUCCESS))

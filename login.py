@@ -29,6 +29,7 @@ Email = mailer.Email
 def assemble(root):
     root.putChild('login', Main())
     root.putChild('authenticate', Authenticate())
+    root.putChild('reset_password', Authenticate())
     return root
 
 
@@ -152,6 +153,7 @@ def make_session(request, user_id):
     session_user['available_balance'] = profile.available_balance
     session_user['reserved_balance'] = profile.reserved_balance
     session_user['twitter_name'] = profile.twitter_name
+    session_user['twitter_id'] = profile.twitter_id
     session_user['bitcoin_address'] = profile.bitcoin_address
     session_user['transaction_count'] = profile.transaction_count
     session_user['offer_count'] = profile.offer_count

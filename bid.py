@@ -150,7 +150,7 @@ class Create(Resource):
             'status': 'active',
             'created_at': timestamp,
             'updated_at': timestamp,
-            'twitter_name': session_user['twitter_name'],
+            'twitter_id': session_user['twitter_id'],
             'twitter_status_id': 0,
             'user_id': session_user['id'] ,
             'tally': 0,

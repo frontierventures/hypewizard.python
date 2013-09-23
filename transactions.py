@@ -4,7 +4,7 @@ from twisted.web.util import redirectTo
 from twisted.web.template import Element, renderer, renderElement, XMLString
 from twisted.python.filepath import FilePath
 
-from data import Ask, Bid, Profile, Offer, Transaction
+from data import Ask, Bid, Profile, Offer, Transaction, TwitterName
 from data import db
 from sessions import SessionManager
 
@@ -121,10 +121,13 @@ class Table(Element):
             slots['created_at'] = config.convert_timestamp(transaction.created_at, config.STANDARD)
             slots['updated_at'] = config.convert_timestamp(transaction.updated_at, config.STANDARD)
             slots['transaction_id'] = str(transaction.id)
-            slots['client_twitter_name'] = transaction.client_twitter_name.encode('utf-8')
-            slots['client_twitter_name_url'] = 'http://www.twitter.com/%s' % transaction.client_twitter_name
+            
+            item = db.query(TwitterName).filter(TwitterName.twitter_id == transaction.client_twitter_id).first()
+            slots['client_twitter_name'] = item.twitter_name.encode('utf-8')
+
+            slots['client_twitter_name_url'] = 'http://www.twitter.com/%s' % item.twitter_name
             slots['twitter_status_id'] = str(transaction.twitter_status_id) 
-            slots['twitter_status_id_url'] = 'http://www.twitter.com/%s/status/%s' % (transaction.client_twitter_name, transaction.twitter_status_id)
+            slots['twitter_status_id_url'] = 'http://www.twitter.com/%s/status/%s' % (item.twitter_name, transaction.twitter_status_id)
             slots['charge'] = str(transaction.charge) 
             self.transaction = transaction
             yield tag.clone().fillSlots(**slots)
@@ -184,8 +187,6 @@ class Create(Resource):
         session_user = SessionManager(request).get_session_user()
         session_user['action'] = 'create_transaction'
 
-        print "HERE" * 20
-        
         try:
             transaction_type = request.args.get('transaction_type')[0]
         except:
@@ -213,8 +214,8 @@ class Create(Resource):
                 'status': 'open',
                 'created_at': timestamp,
                 'updated_at': timestamp,
-                'client_twitter_name': ask.twitter_name,
-                'promoter_twitter_name': session_user['twitter_name'],
+                'client_twitter_id': ask.twitter_id,
+                'promoter_twitter_id': session_user['twitter_id'],
                 'twitter_status_id': ask.twitter_status_id,
                 'client_id': ask.user_id,
                 'promoter_id': session_user['id'],
@@ -252,8 +253,8 @@ class Create(Resource):
                 'status': 'approved',
                 'created_at': timestamp,
                 'updated_at': timestamp,
-                'client_twitter_name': session_user['twitter_name'],
-                'promoter_twitter_name': bid.twitter_name,
+                'client_twitter_id': session_user['twitter_id'],
+                'promoter_twitter_id': bid.twitter_id,
                 'twitter_status_id': twitter_status_id,
                 'client_id': session_user['id'],
                 'promoter_id': bid.user_id,

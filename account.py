@@ -52,7 +52,7 @@ class Details(Element):
             template = 'templates/elements/unverified_account.xml'
 
         self.loader = XMLString(FilePath(template).getContent())
-        self.twitter_user = twitter_api.get_user(self.session_user['twitter_name'])
+        self.twitter_user = twitter_api.get_user_by_id(self.session_user['twitter_id'])
 
     @renderer
     def details(self, request, tag):
