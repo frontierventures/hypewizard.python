@@ -121,8 +121,8 @@ class Login(Page):
         return forms.Login(self.session_user, self.session_response)
 
     @renderer
-    def recoverPasswordPopup(self, request, tag):
-        return popups.RecoverPassword()
+    def reset_password_popup(self, request, tag):
+        return popups.ResetPassword()
 
 
 class Main(Page):

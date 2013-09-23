@@ -295,13 +295,13 @@ def reset(default):
 
             db.add(user)
 
-        user = db.query(User).filter(User.email == 'a@a.a').first()
+        user = db.query(User).filter(User.email == 'alice@hypewhiz.com').first()
         if not user:
             data = {
                 'status': 'active',
                 'level': 1,
                 'login_timestamp': timestamp,
-                'email': 'a@a.a',
+                'email': 'alice@hypewhiz.com',
                 'password': encryptor.hash_password('a'),
                 'is_email_verified': False,
                 'ip': 0
@@ -333,13 +333,13 @@ def reset(default):
 
             db.add(user)
 
-        user = db.query(User).filter(User.email == 'b@b.b').first()
+        user = db.query(User).filter(User.email == 'bob@hypewhiz.com').first()
         if not user:
             data = {
                 'status': 'active',
                 'level': 1,
                 'login_timestamp': timestamp,
-                'email': 'b@b.b',
+                'email': 'bob@hypewhiz.com',
                 'password': encryptor.hash_password('b'),
                 'is_email_verified': False,
                 'ip': 0
@@ -371,13 +371,13 @@ def reset(default):
 
             db.add(user)
 
-        user = db.query(User).filter(User.email == 'c@c.c').first()
+        user = db.query(User).filter(User.email == 'carol@hypewhiz.com').first()
         if not user:
             data = {
                 'status': 'active',
                 'level': 1,
                 'login_timestamp': timestamp,
-                'email': 'c@c.c',
+                'email': 'carol@hypewhiz.com',
                 'password': encryptor.hash_password('c'),
                 'is_email_verified': False,
                 'ip': 0
@@ -417,4 +417,3 @@ def reset(default):
 #flood(863)
 
 reset(True)
-

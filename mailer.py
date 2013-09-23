@@ -53,7 +53,6 @@ def verificationPlain(url):
     You can now take the steps to become a Hype Wizard user!\n
     Please visit the link below to confirm you are the owner of this email address.\n
     %s\n
-    Smart Property Group 
     Hype Wizard Team
     """ % url
     return plain
@@ -72,73 +71,56 @@ def verificationHtml(url):
     return html
 
 
-#def transactionPendingMemoPlain(transaction):
-#    plain = """
-#    Congratulatuons! Your Smart Property Group transcation was successul!\n
-#    Transaction Id: %s\n
-#    Transaction Amount: %s\n
-#    Transaction Bitcoin Address: %s\n
-#    Smart Property Group 
-#    """ % (transaction.id, transaction.amount, transaction.bitcoinAddress)
-#    return plain
-#
-#
-#def transactionPendingMemoHtml(transaction):
-#    html = """
-#    <html>
-#    <p><b>Congratulations! Your Smart Property Group transaction was successful!</b></p>
-#    <p><b>Transaction Id:</b> %s</p>
-#    <p><b>Transaction Amount:</b> %s</p>
-#    <p><b>Transaction Bitcoin Address:</b> %s</p>
-#    <p><b>Smart Property Group</b></p>
-#    </html>
-#    """ % (transaction.id, transaction.amount, transaction.bitcoinAddress)
-#    return html
-#
-#
-#def transactionApprovalMemoPlain(transaction):
-#    plain = """
-#    Congratulatuons! Your Smart Property Group transaction was successul!\n
-#    Transaction Id: %s\n
-#    Transaction Amount: %s\n
-#    Transaction Bitcoin Address: %s\n
-#    Smart Property Group 
-#    """ % (transaction.id, transaction.amount, transaction.bitcoinAddress)
-#    return plain
-#
-#
-#def transactionApprovalMemoHtml(transaction):
-#    html = """
-#    <html>
-#    <p><b>Congratulations! Your Smart Property Group transaction was successful!</b></p>
-#    <p><b>Transaction Id:</b> %s</p>
-#    <p><b>Transaction Amount:</b> %s</p>
-#    <p><b>Transaction Bitcoin Address:</b> %s</p>
-#    <p><b>Smart Property Group</b></p>
-#    </html>
-#    """ % (transaction.id, transaction.amount, transaction.bitcoinAddress)
-#    return html
-#
-#
-#def transactionCancelationMemoPlain(transaction):
-#    plain = """
-#    Your Smart Property Group transaction was canceled!\n
-#    Transaction Id: %s\n
-#    Transaction Amount: %s\n
-#    Transaction Bitcoin Address: %s (invalid)\n
-#    Smart Property Group 
-#    """ % (transaction.id, transaction.amount, transaction.bitcoinAddress)
-#    return plain
-#
-#
-#def transactionCancelationMemoHtml(transaction):
-#    html = """
-#    <html>
-#    <p><b>Your Smart Property Group transaction was canceled!</b></p>
-#    <p><b>Transaction Id:</b> %s</p>
-#    <p><b>Transaction Amount:</b> %s</p>
-#    <p><b>Transaction Bitcoin Address:</b> %s (invalid)</p>
-#    <p><b>Smart Property Group</b></p>
-#    </html>
-#    """ % (transaction.id, transaction.amount, transaction.bitcoinAddress)
-#    return html
+def offer_created_memo_plain():
+    plain = """
+    You have received an offer to promote your tweet.\n
+    Hype Wizard Team
+    """ 
+    return plain
+
+
+def offer_created_memo_html():
+    html = """
+    <html>
+    <p><b>You have received an offer to promote your tweet.</b></p>
+    <p><b>Hype Wizard Team</b></p>
+    </html>
+    """
+    return html
+
+
+def offer_approved_memo_plain():
+    plain = """
+    Your Hype Wizard offer has been approved.\n
+    Please retweet for your client before you can claim reserved funds.\n
+    Hype Wizard Team
+    """ 
+    return plain
+
+
+def offer_approved_memo_html():
+    html = """
+    <html>
+    <p>Your Hype Wizard offer has been approved.</p>
+    <p>Please retweet for you client before you can claim reserved funds.</p>
+    <p><b>Hype Wizard Team</b></p>
+    </html>
+    """
+    return html
+
+
+def password_reset_memo_plain(email, password):
+    plain = """Account Details\nEmail:  %s\nTemporary Password: %s\nCoingig Team""" % (email, password)
+    return plain
+
+
+def password_reset_memo_html(email, password):
+    html = """\
+    <html>
+    <p><h2>Account Details</h2></p>
+    <p><b>Email:</b> %s</p>
+    <p><b>Temporary Password:</b> %s</p>
+    <p><b>Coingig Team</b></p>
+    </html>
+    """ % (email, password)
+    return html

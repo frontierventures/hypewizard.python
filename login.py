@@ -29,7 +29,7 @@ Email = mailer.Email
 def assemble(root):
     root.putChild('login', Main())
     root.putChild('authenticate', Authenticate())
-    root.putChild('reset_password', Authenticate())
+    root.putChild('reset_password', Reset())
     return root
 
 
@@ -99,7 +99,7 @@ class Authenticate(Resource):
             return redirectTo(url, request)
 
 
-class RecoverPassword(Resource):
+class Reset(Resource):
     def render(self, request):
         print '%srequest.args: %s%s' % (config.color.RED, request.args, config.color.ENDC)
 
@@ -107,10 +107,10 @@ class RecoverPassword(Resource):
             return redirectTo('../', request)
 
         session_user = SessionManager(request).get_session_user()
-        session_user['userEmail'] = request.args.get('userEmail')[0]
+        session_user['email'] = request.args.get('email')[0]
         #SessionManager(request).setSessionUser(session_user)
 
-        userEmail = session_user['userEmail']
+        userEmail = session_user['email']
         #request.setSessionResponseCode(200)
 
         if not userEmail:
@@ -123,12 +123,12 @@ class RecoverPassword(Resource):
             return json.dumps(dict(response=0, text=definitions.EMAIL[2]))
 
         password = ''.join(random.sample(string.digits, 5))
-        user.password = encryptor.hashPassword(password)
+        user.password = encryptor.hash_password(password)
         db.commit()
 
-        plain = mailer.passwordRecoveryPlain(userEmail, password)
-        html = mailer.passwordRecoveryHtml(userEmail, password)
-        Email(mailer.noreply, userEmail, 'Your  password was reset!', plain, html).send()
+        plain = mailer.password_reset_memo_plain(user.email, password)
+        html = mailer.password_reset_memo_html(user.email, password)
+        Email(mailer.noreply, user.email, 'Your Hype Wizard password was reset!', plain, html).send()
 
         return json.dumps(dict(response=1, text=definitions.PASSWORD[3]))
 

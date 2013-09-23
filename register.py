@@ -28,7 +28,6 @@ Email = mailer.Email
 def assemble(root):
     root.putChild('create_user', Create())
     root.putChild('register', Main())
-    root.putChild('reset_password', Resend())
     root.putChild('resend_token', Resend())
     root.putChild('verify_ownership', Verify())
     return root

@@ -11,6 +11,7 @@
         <link href="css/footer.css" rel="stylesheet" />
         <link href="css/bootstrap.css" rel="stylesheet" />
         <link href="css/bootstrap-responsive.css" rel="stylesheet" />
+        <link href="css/colorbox.css" rel="stylesheet" />
 
         <!-- HTML5 shim, for IE6-8 support of HTML5 elements -->
         <!--[if lt IE 9]>
@@ -31,8 +32,12 @@
         <t:transparent t:render="login_form" />            
     </div>
     <t:transparent t:render="footer" />            
+    <div style="display:none">
+        <t:transparent t:render="reset_password_popup" />
+    </div>
 
-    <script src="js/jquery.js"></script>
+    <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
+    <script type="text/javascript" src="js/jquery.colorbox-min.js"></script>
     <script src="js/bootstrap-transition.js"></script>
     <script src="js/bootstrap-alert.js"></script>
     <script src="js/bootstrap-modal.js"></script>
@@ -45,5 +50,7 @@
     <script src="js/bootstrap-collapse.js"></script>
     <script src="js/bootstrap-carousel.js"></script>
     <script src="js/bootstrap-typeahead.js"></script>
+    <script src="js/login.js"></script>
+
 </body>
 </html>

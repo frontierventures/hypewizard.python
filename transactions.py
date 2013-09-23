@@ -4,7 +4,7 @@ from twisted.web.util import redirectTo
 from twisted.web.template import Element, renderer, renderElement, XMLString
 from twisted.python.filepath import FilePath
 
-from data import Ask, Bid, Profile, Offer, Transaction, TwitterName
+from data import Ask, Bid, Profile, Offer, Transaction, TwitterName, User
 from data import db
 from sessions import SessionManager
 
@@ -12,8 +12,11 @@ import config
 import definitions
 import json
 import forms
+import mailer
 import pages
 import twitter_api
+
+Email = mailer.Email
 
 
 def assemble(root):
@@ -234,6 +237,12 @@ class Create(Resource):
             client.offer_count += 1 
 
             db.commit()
+
+            client = db.query(User).filter(User.id == client.user_id).first()
+
+            plain = mailer.offer_created_memo_plain()
+            html = mailer.offer_created_memo_html()
+            Email(mailer.noreply, client.email, 'You have a new Hype Wizard promotional offer pending!', plain, html).send()
         
         #####################################
         # Engage Promoter
@@ -276,9 +285,12 @@ class Create(Resource):
 
             db.commit()
 
-        #plain = mailer.offerMemoPlain(seller)
-        #html = mailer.offerMemoHtml(seller)
-        #Email(mailer.noreply, seller_email, 'You have a new offer at Coingig.com!', plain, html).send()
+            promoter = db.query(User).filter(User.id == promoter.user_id).first()
+
+            plain = mailer.offer_approved_memo_plain()
+            html = mailer.offer_approved_memo_html()
+
+            Email(mailer.noreply, promoter.email, 'Your Hype Wizard offer has been approved!', plain, html).send()
 
         return json.dumps(dict(response=1, text=definitions.MESSAGE_SUCCESS))
 
