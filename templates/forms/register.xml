@@ -7,10 +7,10 @@
         <input type="text" class="input-block-level" placeholder="Email address" name="email">
             <t:attr name="value"><t:slot name="htmlEmail" /></t:attr>
         </input>
-        <input type="password" class="input-block-level" placeholder="Password" name="password">
+        <input type="password" class="input-block-level" placeholder="Password" name="new_password">
             <t:attr name="value"><t:slot name="htmlPassword" /></t:attr>
         </input>
-        <input type="password" class="input-block-level" placeholder="Repeat Password" name="password_repeat">
+        <input type="password" class="input-block-level" placeholder="Repeat Password" name="new_password_repeat">
             <t:attr name="value"><t:slot name="htmlRepeatPassword" /></t:attr>
         </input>
         <input type="text" class="input-block-level" placeholder="Bitcoin Address" name="bitcoin_address">

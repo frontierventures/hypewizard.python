@@ -45,6 +45,19 @@ def new_password_repeat(request, value):
     return response
 
 
+def bitcoin_address(request, value):
+    response = {}
+    response['error'] = False
+
+    if not value:
+        response['error'] = True
+        response['message'] = definitions.BITCOIN_ADDRESS[0]
+    elif not re.match(definitions.REGEX_BITCOIN_ADDRESS, value):
+        response['error'] = True
+        response['message'] = definitions.BITCOIN_ADDRESS[1]
+    return response
+
+
 def password_match(request, value1, value2):
     response = {}
     response['error'] = False
@@ -65,6 +78,16 @@ def email(request, value):
     elif not re.match(definitions.REGEX_EMAIL, value):
         response['error'] = True
         response['message'] = definitions.EMAIL[1]
+    return response
+
+
+def twitter_name(request, value):
+    response = {}
+    response['error'] = False
+
+    if not value:
+        response['error'] = True
+        response['message'] = definitions.TWITTER_NAME[0]
     return response
     #if not value:
     #    SessionManager(request).setSessionResponse({'class': 1, 'form': 0, 'text': definitions.EMAIL[0]})

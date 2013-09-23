@@ -69,20 +69,22 @@ class Create(Resource):
         session_user['action'] = 'register'
 
         email = request.args.get('email')[0]
-        password = request.args.get('password')[0]
-        repeat_password = request.args.get('password_repeat')[0]
+        new_password = request.args.get('new_password')[0]
+        new_password_repeat = request.args.get('new_password_repeat')[0]
         bitcoin_address = request.args.get('bitcoin_address')[0]
         twitter_name = request.args.get('twitter_name')[0]
         niche = request.args.get('niche')[0]
 
         session_user['email'] = email
-        session_user['password'] = password
-        session_user['password_repeat'] = password_repeat
+        session_user['new_password'] = new_password
+        session_user['new_password_repeat'] = new_password_repeat
         session_user['bitcoin_address'] = bitcoin_address
         session_user['twitter_name'] = twitter_name
         session_user['niche'] = niche
 
-        if error.email(request, email):
+        response = error.email(request, email)
+        if response['error']:
+            SessionManager(request).setSessionResponse({'class': 1, 'form': 0, 'text': response['message']})
             return redirectTo('../register', request)
 
         users = db.query(User).filter(User.status == 'active')
@@ -92,20 +94,34 @@ class Create(Resource):
             SessionManager(request).setSessionResponse({'class': 1, 'form': 0, 'text': definitions.EMAIL[3]})
             return redirectTo('../register', request)
 
-        if error.new_password(request, password):
+        response = error.new_password(request, new_password)
+        if response['error']:
+            SessionManager(request).setSessionResponse({'class': 1, 'form': 0, 'text': response['message']})
             return redirectTo('../register', request)
 
-        if error.new_password_repeat(request, password_repeat):
+        response = error.new_password_repeat(request, new_password_repeat)
+        if response['error']:
+            SessionManager(request).setSessionResponse({'class': 1, 'form': 0, 'text': response['message']})
             return redirectTo('../register', request)
 
-        if error.password_mismatch(request, password, password_repeat):
+        response = error.password_match(request, new_password, new_password_repeat)
+        if response['error']:
+            SessionManager(request).setSessionResponse({'class': 1, 'form': 0, 'text': response['message']})
             return redirectTo('../register', request)
 
-        if error.bitcoin_address(request, bitcoin_address):
+        response = error.bitcoin_address(request, bitcoin_address)
+        if response['error']:
+            SessionManager(request).setSessionResponse({'class': 1, 'form': 0, 'text': response['message']})
+            return redirectTo('../register', request)
+
+        response = error.twitter_name(request, twitter_name)
+        if response['error']:
+            SessionManager(request).setSessionResponse({'class': 1, 'form': 0, 'text': response['message']})
             return redirectTo('../register', request)
 
         response = twitter_api.get_user(twitter_name)
         if response['error']:
+            SessionManager(request).setSessionResponse({'class': 1, 'form': 0, 'text': response['message']})
             return redirectTo('../register', request)
 
         twitter_user = response['user']
@@ -117,7 +133,7 @@ class Create(Resource):
         if request.args.get('button')[0] == 'Register':
             timestamp = config.create_timestamp()
             token = hashlib.sha224(str(email)).hexdigest()
-            password = encryptor.hash_password(password)
+            password = encryptor.hash_password(new_password)
             seed = random.randint(0, sys.maxint)
 
             data = {

@@ -4,10 +4,16 @@ EMAIL = ['Email address not entered',
          'Email address does not exist',
          'Email address already exist in the database']
 
-PASSWORD = ['Password not entered',
-            'Non-alphanumeric password',
-            'Invalid password entered',
-            'Temporary password emailed']
+PASSWORD = [
+    'Password not entered',
+    'Non-alphanumeric password',
+    'Invalid password entered',
+    'Temporary password emailed'
+]
+
+TWITTER_NAME = [
+    'Twitter name not entered',
+]
 
 PASSWORD_REPEAT = ['Repeat password not entered',
                    'Non-alphanumeric repeat password entered',

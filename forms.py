@@ -75,13 +75,13 @@ class Register(Element):
         if session_user.get('email'):
             email = session_user['email']
 
-        password = ''
-        if session_user.get('password'):
-            password = session_user['password']
+        new_password = ''
+        if session_user.get('new_password'):
+            new_password = session_user['new_password']
 
-        repeat_password = ''
-        if session_user.get('repeat_password'):
-            repeat_password = session_user['repeat_password']
+        new_password_repeat = ''
+        if session_user.get('new_password_repeat'):
+            new_password_repeat = session_user['new_password_repeat']
 
         bitcoin_address = ''
         if session_user.get('bitcoin_address'):
@@ -89,12 +89,12 @@ class Register(Element):
 
         twitter_name = ''
         if session_user.get('twitter_name'):
-            bitcoin_address = session_user['twitter_name']
+            twitter_name = session_user['twitter_name']
 
         slots = {}
         slots['htmlEmail'] = email
-        slots['htmlPassword'] = password
-        slots['htmlRepeatPassword'] = repeat_password
+        slots['htmlPassword'] = new_password
+        slots['htmlRepeatPassword'] = new_password_repeat
         slots['htmlBitcoinAddress'] = bitcoin_address
         slots['htmlTwitterName'] = twitter_name
         yield tag.fillSlots(**slots)
