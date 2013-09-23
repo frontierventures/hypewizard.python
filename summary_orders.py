@@ -64,7 +64,7 @@ class Table(Element):
             orders = orders.filter(Order.status.in_(['active', 'approved'])).order_by(Order.created_at.desc())
 
         if filters['status'] == 'deleted':
-            orders = orders.filter(Order.status == 'deleted').order_by(Order.login_timestamp.desc())
+            orders = orders.filter(Order.status == 'deleted').order_by(Order.updated_at.desc())
 
         if orders.count() == 0:
             template = 'templates/elements/empty_summary_orders_table.xml'

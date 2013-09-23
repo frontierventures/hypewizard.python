@@ -1,0 +1,14 @@
+<div id="deposit_popup" style='padding:10px; background:#fff;' xmlns:t="http://twistedmatrix.com/ns/twisted.web.template/0.1">
+    <form name="deposit_form" action="../deposit" method="POST" enctype="application/x-www-form-urlencoded" t:render="form">
+        <input type="hidden" name="offer_id" />
+        <div style="text-align: center">
+            <h1>Positive Balance Required</h1>
+            <div id="deposit_alert">
+            </div>
+            <div>
+                <input type="text" placeholder="Deposit Amount (BTC)" name="deposit_amount"/>
+            </div>
+            <button name="button" value="Submit" class="btn btn-large btn-primary" type="submit">Continue</button>
+        </div>
+    </form>
+</div>

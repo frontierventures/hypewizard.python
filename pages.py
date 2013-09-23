@@ -148,6 +148,10 @@ class Market(Page):
         return popups.CreateBid()
 
     @renderer
+    def deposit_popup(self, request, tag):
+        return popups.Deposit()
+
+    @renderer
     def feature_disabled_popup(self, request, tag):
         return popups.FeatureDisabled()
 

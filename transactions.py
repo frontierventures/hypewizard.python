@@ -219,7 +219,8 @@ class Create(Resource):
                 'client_id': ask.user_id,
                 'promoter_id': session_user['id'],
                 'charge': charge, 
-                'ask_id': ask_id
+                'ask_id': ask_id,
+                'bid_id': 0
             }
 
             new_transaction = Transaction(data)
@@ -256,7 +257,9 @@ class Create(Resource):
                 'twitter_status_id': twitter_status_id,
                 'client_id': session_user['id'],
                 'promoter_id': bid.user_id,
-                'charge': charge 
+                'charge': charge,
+                'ask_id': 0,
+                'bid_id': bid_id
             }
 
             new_transaction = Transaction(data)
@@ -313,8 +316,14 @@ class Complete(Resource):
         promoter.transaction_count -= 1
         promoter.available_balance += transaction.charge
 
-        ask = db.query(Ask).filter(Ask.id == transaction.ask_id).first()
-        ask.target += 1
+        if transaction.ask_id != 0:
+            ask = db.query(Ask).filter(Ask.id == transaction.ask_id).first()
+            ask.target += 1
+
+        if transaction.bid_id != 0:
+            bid = db.query(Bid).filter(Bid.id == transaction.bid_id).first()
+            bid.tally += 1
+
 
         db.commit()
 

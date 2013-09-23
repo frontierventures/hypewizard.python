@@ -64,7 +64,7 @@ class Table(Element):
             asks = asks.filter(Ask.status.in_(['active', 'approved'])).order_by(Ask.created_at.desc())
 
         if filters['status'] == 'deleted':
-            asks = asks.filter(Ask.status == 'deleted').order_by(Ask.login_timestamp.desc())
+            asks = asks.filter(Ask.status == 'deleted').order_by(Ask.updated_at.desc())
 
         if asks.count() == 0:
             template = 'templates/elements/empty_summary_asks_table.xml'

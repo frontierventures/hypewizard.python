@@ -44,156 +44,85 @@ class SessionManager():
         return session.uid
 
     def get_session_user(self):
-        sessionObject = ISessionObject(self.session)
-        return sessionObject.user
+        session_object = ISessionObject(self.session)
+        return session_object.user
 
     def setSessionUser(self, user):
-        sessionObject = ISessionObject(self.session)
-        sessionObject.user = user
+        session_object = ISessionObject(self.session)
+        session_object.user = user
 
     def clear_session_user(self):
-        sessionObject = ISessionObject(self.session)
-        sessionObject.user = {'id': 0, 'level': 1, 'twitter_name': '', 'transaction_count': 0}
+        session_object = ISessionObject(self.session)
+        session_object.user = {'id': 0, 'level': 1, 'twitter_name': '', 'transaction_count': 0, 'available_balance': 0, 'reserved_balance': 0}
         print "%ssession_user cleared%s" % (config.color.BLUE, config.color.ENDC)
 
-    def getSessionStore(self):
-        sessionObject = ISessionObject(self.session)
-        return sessionObject.store
-
-    def setSessionStore(self, store):
-        sessionObject = ISessionObject(self.session)
-        sessionObject.store = store
-
-    def clearSessionStore(self):
-        sessionObject = ISessionObject(self.session)
-        sessionObject.store = {'id': 0}
-        print "%ssessionStore cleared%s" % (config.color.BLUE, config.color.ENDC)
-
     def getSessionSearch(self):
-        sessionObject = ISessionObject(self.session)
-        return sessionObject.search
+        session_object = ISessionObject(self.session)
+        return session_object.search
 
     def setSessionSearch(self, search):
-        sessionObject = ISessionObject(self.session)
-        sessionObject.search = search
+        session_object = ISessionObject(self.session)
+        session_object.search = search
 
     def clearSessionSearch(self):
-        sessionObject = ISessionObject(self.session)
+        session_object = ISessionObject(self.session)
         seed = random.randint(0, sys.maxint)
-        sessionObject.search = {'seed': seed, 'isTabOpen': False, 'query': '', 'sort': 'top', 'categoryId': '', 'index': 1}
+        session_object.search = {'seed': seed, 'isTabOpen': False, 'query': '', 'sort': 'top', 'categoryId': '', 'index': 1}
         print "%ssessionSearch cleared%s" % (config.color.BLUE, config.color.ENDC)
 
-    def getSessionProperty(self):
-        sessionObject = ISessionObject(self.session)
-        return sessionObject.propertyDict
-
-    def setSessionProperty(self, propertyDict):
-        sessionObject = ISessionObject(self.session)
-        sessionObject.propertyDict = propertyDict
-
-    def clearSessionProperty(self):
-        sessionObject = ISessionObject(self.session)
-        sessionObject.propertyDict = {'id': 0}
-        print "%ssessionProduct cleared%s" % (config.color.BLUE, config.color.ENDC)
-
     def getSessionOrder(self):
-        sessionObject = ISessionObject(self.session)
-        return sessionObject.order
+        session_object = ISessionObject(self.session)
+        return session_object.order
 
     def setSessionOrder(self, order):
-        sessionObject = ISessionObject(self.session)
-        sessionObject.order = order
+        session_object = ISessionObject(self.session)
+        session_object.order = order
 
     def clearSessionOrder(self):
-        sessionObject = ISessionObject(self.session)
-        sessionObject.order = {'id': 0}
+        session_object = ISessionObject(self.session)
+        session_object.order = {'id': 0}
         print "%ssessionOrder cleared%s" % (config.color.BLUE, config.color.ENDC)
 
     def getSessionTransaction(self):
-        sessionObject = ISessionObject(self.session)
-        return sessionObject.transaction
+        session_object = ISessionObject(self.session)
+        return session_object.transaction
 
     def setSessionTransaction(self, transaction):
-        sessionObject = ISessionObject(self.session)
-        sessionObject.transaction = transaction
+        session_object = ISessionObject(self.session)
+        session_object.transaction = transaction
 
     def clearSessionTransaction(self):
-        sessionObject = ISessionObject(self.session)
-        sessionObject.transaction = {'id': 0}
+        session_object = ISessionObject(self.session)
+        session_object.transaction = {'id': 0}
         print "%ssessionTransaction cleared%s" % (config.color.BLUE, config.color.ENDC)
 
-    def getSessionReview(self):
-        sessionObject = ISessionObject(self.session)
-        return sessionObject.review
-
-    def setSessionReview(self, review):
-        sessionObject = ISessionObject(self.session)
-        sessionObject.review = review
-
-    def clearSessionReview(self):
-        sessionObject = ISessionObject(self.session)
-        sessionObject.review = {'id': 0}
-        print "%ssessionReview cleared%s" % (config.color.BLUE, config.color.ENDC)
-
-    def getSessionAddress(self):
-        sessionObject = ISessionObject(self.session)
-        return sessionObject.address
-
-    def setSessionAddress(self, address):
-        sessionObject = ISessionObject(self.session)
-        sessionObject.address = address
-
-    def clearSessionAddress(self):
-        sessionObject = ISessionObject(self.session)
-        sessionObject.address = {'id': 0}
-        print "%ssessionAddress cleared%s" % (config.color.BLUE, config.color.ENDC)
-
     def get_session_response(self):
-        sessionObject = ISessionObject(self.session)
-        return sessionObject.response
+        session_object = ISessionObject(self.session)
+        return session_object.response
 
     def setSessionResponse(self, response):
-        sessionObject = ISessionObject(self.session)
-        sessionObject.response = response
+        session_object = ISessionObject(self.session)
+        session_object.response = response
 
     def clearSessionResponse(self):
-        sessionObject = ISessionObject(self.session)
-        sessionObject.response = {'class': 0, 'form': 0, 'text': ''}
+        session_object = ISessionObject(self.session)
+        session_object.response = {'class': 0, 'form': 0, 'text': ''}
         print "%ssession_response cleared%s" % (config.color.BLUE, config.color.ENDC)
 
-    #LINK
-    def getSessionLink(self):
-        sessionObject = ISessionObject(self.session)
-        return sessionObject.link
-
-    def setSessionLink(self, link):
-        sessionObject = ISessionObject(self.session)
-        sessionObject.link = link
-
-    def clearSessionLink(self):
-        sessionObject = ISessionObject(self.session)
-        sessionObject.link = {'id': 0}
-        print "%ssessionLink cleared%s" % (config.color.BLUE, config.color.ENDC)
-
     def setSearchResults(self, searchResults):
-        sessionObject = ISessionObject(self.session)
-        sessionObject.searchResults = searchResults
+        session_object = ISessionObject(self.session)
+        session_object.searchResults = searchResults
 
     def getSearchResuls(self):
-        sessionObject = ISessionObject(self.session)
-        return sessionObject.searchResults
+        session_object = ISessionObject(self.session)
+        return session_object.searchResults
 
 
 class ISessionObject(Interface):
     user = Attribute('')
     search = Attribute('')
-    propertyDict = Attribute('')
     order = Attribute('')
-    store = Attribute('')
-    review = Attribute('')
-    address = Attribute('')
     response = Attribute('')
-    link = Attribute('')
     searchResults = Attribute('')
 
 
@@ -201,16 +130,11 @@ class SessionObject(object):
     implements(ISessionObject)
 
     def __init__(self, session):
-        self.user = {'id': 0, 'level': 1, 'twitter_name': '', 'transaction_count': 0}
+        self.user = {'id': 0, 'level': 1, 'twitter_name': '', 'transaction_count': 0, 'available_balance': 0, 'reserved_balance': 0}
         seed = random.randint(0, sys.maxint)
         self.search = {'seed': seed, 'isTabOpen': False, 'query': '', 'sort': 'top', 'categoryId': '', 'index': 1}
-        self.propertyDict = {'id': 0}
         self.order = {'id': 0}
-        self.store = {'id': 0}
-        self.review = {'id': 0}
-        self.address = {'id': 0}
         self.transaction = {'id': 0}
-        self.link = {'id': 0}
         self.response = {'class': 0, 'form': 0, 'text': ''}
         self.searchResults = []
 
@@ -221,8 +145,8 @@ registerAdapter(SessionObject, Session, ISessionObject)
 def disconnect(request, userId):
     buffer = set()
     for session in sessions:
-        sessionObject = ISessionObject(session)
-        session_user = sessionObject.user
+        session_object = ISessionObject(session)
+        session_user = session_object.user
         if session_user['id'] == userId:
             buffer.add(session)
 

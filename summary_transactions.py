@@ -64,7 +64,7 @@ class Table(Element):
             transactions = transactions.filter(Transaction.status.in_(['open', 'approved'])).order_by(Transaction.created_at.desc())
 
         if filters['status'] == 'complete':
-            transactions = transactions.filter(Transaction.status == 'complete').order_by(Transaction.created_at.desc())
+            transactions = transactions.filter(Transaction.status == 'complete').order_by(Transaction.updated_at.desc())
 
         if transactions.count() == 0:
             template = 'templates/elements/empty_summary_transactions_table.xml'

@@ -170,6 +170,36 @@ class CreateBid(Element):
             yield newTag
 
 
+class Deposit(Element):
+    def __init__(self):
+        self.loader = XMLString(FilePath(templates['deposit']).getContent())
+
+    @renderer
+    def form(self, request, tag):
+        slots = {}
+        yield tag.clone().fillSlots(**slots)
+
+    @renderer
+    def is_confirmed_option(self, request, tag):
+        choices = {
+            'yes': 'Yes',
+            'no': 'No'
+            }
+
+        for key in choices.keys(): 
+            thisTagShouldBeSelected = False
+            #if key == propertyStatus:
+            #    thisTagShouldBeSelected = True
+
+            slots = {}
+            slots['value'] = key 
+            slots['caption'] = choices[key] 
+            newTag = tag.clone().fillSlots(**slots)
+            if thisTagShouldBeSelected:
+                newTag(selected='yes')
+            yield newTag
+
+
 class DisapproveOffer(Element):
     def __init__(self, session_user):
         self.loader = XMLString(FilePath(templates['disapprove_offer']).getContent())
@@ -332,6 +362,7 @@ templates = {
         'claim_funds': 'templates/popups/claim_funds.xml',
         'create_ask': 'templates/popups/create_ask.xml',
         'create_bid': 'templates/popups/create_bid.xml',
+        'deposit': 'templates/popups/deposit.xml',
         'disapprove_offer': 'templates/popups/disapprove_offer.xml',
         'feature_disabled': 'templates/popups/feature_disabled.xml',
         'engage_client': 'templates/popups/engage_client.xml',

@@ -49,6 +49,6 @@
     <script type="text/javascript" src="js/bootstrap-collapse.js"></script>
     <script type="text/javascript" src="js/bootstrap-carousel.js"></script>
     <script type="text/javascript" src="js/bootstrap-typeahead.js"></script>
-    <script type="text/javascript" src="js/offers.js"></script>
+    <script type="text/javascript" src="js/summary_bids.js"></script>
 </body>
 </html>

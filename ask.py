@@ -55,26 +55,27 @@ class Main(Resource):
 
 class Process(Resource):
     def render(self, request):
-        response = {'error': True}
+        print '%srequest.args: %s%s' % (config.color.RED, request.args, config.color.ENDC)
+
+        session_user = SessionManager(request).get_session_user()
+        session_user['action'] = 'process_ask'
+
+        print session_user
 
         try:
             action = request.args.get('action')[0]
         except:
             return redirectTo('../', request)
 
+        response = {} 
         response['error'] = False
         response['action'] = action
         
         if action == 'create':
-            try:
-                twitter_status_id = int(request.args.get('status_id')[0])
-                print status_id
-            except:
-                twitter_status_id = 0
-
             response['ask'] = {
-                    'twitter_status_id': str(twitter_status_id)
+                    'id': 0 
                 } 
+            response['available_balance'] = session_user['available_balance']
 
         if action == 'withdraw':
             try:

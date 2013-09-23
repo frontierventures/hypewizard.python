@@ -34,6 +34,7 @@
     <div style="display:none">
         <t:transparent t:render="create_ask_popup" />
         <t:transparent t:render="create_bid_popup" />
+        <t:transparent t:render="deposit_popup" />
         <t:transparent t:render="engage_client_popup" />
         <t:transparent t:render="engage_promoter_popup" />
         <t:transparent t:render="feature_disabled_popup" />

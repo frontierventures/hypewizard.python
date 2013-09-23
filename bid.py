@@ -153,6 +153,7 @@ class Create(Resource):
             'twitter_name': session_user['twitter_name'],
             'twitter_status_id': 0,
             'user_id': session_user['id'] ,
+            'tally': 0,
             'cost': price_per_retweet,
             'campaign_type': campaign_type, 
             'niche': niche

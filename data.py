@@ -63,6 +63,7 @@ class Bid(Base):
     twitter_name = Column(String)
     twitter_status_id = Column(String)
     user_id = Column(Integer)
+    tally = Column(Integer)
     cost = Column(Integer)
     campaign_type = Column(String)
     niche = Column(String)
@@ -74,9 +75,11 @@ class Bid(Base):
         self.twitter_name = data['twitter_name']
         self.twitter_status_id = data['twitter_status_id'] 
         self.user_id = data['user_id']
+        self.tally = data['tally']
         self.cost = data['cost']
         self.campaign_type = data['campaign_type']
         self.niche = data['niche']
+
 
 class Log(Base):
     __tablename__ = "log"
@@ -182,6 +185,7 @@ class Transaction(Base):
     promoter_id = Column(Integer)
     charge = Column(Integer)
     ask_id = Column(Integer)
+    bid_id = Column(Integer)
 
     def __init__(self, data):
         self.status = data['status']
@@ -194,6 +198,7 @@ class Transaction(Base):
         self.promoter_id = data['promoter_id']
         self.charge = data['charge']
         self.ask_id = data['ask_id']
+        self.bid_id = data['bid_id']
 
 
 class User(Base):
@@ -304,6 +309,36 @@ def reset(default):
                 'available_balance': 10000,
                 'reserved_balance': 0,
                 'twitter_name': 'hypewizard',
+                'niche': 'AA',
+                'transaction_count': 0, 
+                'offer_count': 0 
+            }
+            profile = Profile(data)
+            user.profiles = [profile]
+
+            db.add(user)
+
+        user = db.query(User).filter(User.email == 'c@c.c').first()
+        if not user:
+            data = {
+                'status': 'active',
+                'level': 1,
+                'login_timestamp': timestamp,
+                'email': 'c@c.c',
+                'password': encryptor.hash_password('c'),
+                'is_email_verified': False,
+                'ip': 0
+            }
+            user = User(data)
+
+            data = {
+                'created_at': timestamp,
+                'updated_at': timestamp,
+                'token': '',
+                'bitcoin_address': '',
+                'available_balance': 0,
+                'reserved_balance': 0,
+                'twitter_name': 'twitter',
                 'niche': 'AA',
                 'transaction_count': 0, 
                 'offer_count': 0 

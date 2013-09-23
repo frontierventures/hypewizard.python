@@ -64,7 +64,7 @@ class Table(Element):
             bids = bids.filter(Bid.status.in_(['active', 'approved'])).order_by(Bid.created_at.desc())
 
         if filters['status'] == 'deleted':
-            bids = bids.filter(Bid.status == 'deleted').order_by(Bid.login_timestamp.desc())
+            bids = bids.filter(Bid.status == 'deleted').order_by(Bid.updated_at.desc())
 
         if bids.count() == 0:
             template = 'templates/elements/empty_summary_bids_table.xml'
