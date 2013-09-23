@@ -287,10 +287,10 @@ class Create(Resource):
 
             promoter = db.query(User).filter(User.id == promoter.user_id).first()
 
-            plain = mailer.offer_approved_memo_plain()
-            html = mailer.offer_approved_memo_html()
+            plain = mailer.promotion_request_memo_plain()
+            html = mailer.promotion_request_memo_html()
 
-            Email(mailer.noreply, promoter.email, 'Your Hype Wizard offer has been approved!', plain, html).send()
+            Email(mailer.noreply, promoter.email, 'Your have a request with Hype Wizard!', plain, html).send()
 
         return json.dumps(dict(response=1, text=definitions.MESSAGE_SUCCESS))
 

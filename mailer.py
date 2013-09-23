@@ -41,9 +41,9 @@ class Email():
             smtp.sendmail(self.sender, self.receiver, msg.as_string())
             smtp.quit()
 
-            print 'Success: %s %s' % (self.sender, self.receiver)
+            print 'Success: %s => %s' % (self.sender, self.receiver)
         except SMTPException as e:
-            print 'Fail: %s %s' % (self.sender, self.receiver)
+            print 'Fail: %s => %s' %  (self.sender, self.receiver)
             print e
 
 
@@ -82,7 +82,7 @@ def offer_created_memo_plain():
 def offer_created_memo_html():
     html = """
     <html>
-    <p><b>You have received an offer to promote your tweet.</b></p>
+    <p>You have received an offer to promote your tweet.</p>
     <p><b>Hype Wizard Team</b></p>
     </html>
     """
@@ -123,4 +123,22 @@ def password_reset_memo_html(email, password):
     <p><b>Coingig Team</b></p>
     </html>
     """ % (email, password)
+    return html
+
+
+def promotion_request_memo_plain():
+    plain = """
+    You have a pending request for promotion at Hype Wizard.\n
+    Hype Wizard Team
+    """ 
+    return plain
+
+
+def promotion_request_memo_html():
+    html = """
+    <html>
+    <p>Your have a pending request for promotion at Hype Wizard.</p>
+    <p><b>Hype Wizard Team</b></p>
+    </html>
+    """
     return html

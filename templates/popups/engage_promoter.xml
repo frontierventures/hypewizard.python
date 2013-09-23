@@ -1,4 +1,4 @@
-<div id="engage_promoter_popup" style='padding:10px; background:#fff;' xmlns:t="http://twistedmatrix.com/ns/twisted.web.template/0.1">
+<div id="engage_promoter_popup" style='padding:10px; background:#fff; text-align: center;' xmlns:t="http://twistedmatrix.com/ns/twisted.web.template/0.1">
     <form name="engage_promoter_form" action="../create_transaction" method="POST" enctype="application/x-www-form-urlencoded" t:render="form">
         <input type="hidden" name="transaction_type" />
         <input type="hidden" name="bid_id" />

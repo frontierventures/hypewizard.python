@@ -15,6 +15,21 @@ TWITTER_NAME = [
     'Twitter name not entered',
 ]
 
+DEPOSIT_AMOUNT = [
+    'Deposit amount not entered',
+    'Invalid deposit amount entered'
+]
+
+RETWEET_GOAL = [
+    'Retweet goal not entered',
+    'Invalid retweet goal entered'
+]
+
+PRICE_PER_TWEET = [
+    'Price not entered',
+    'Invalid price entered'
+]
+
 PASSWORD_REPEAT = ['Repeat password not entered',
                    'Non-alphanumeric repeat password entered',
                    'Entered passwords do not match',

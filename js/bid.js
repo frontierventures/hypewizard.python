@@ -33,14 +33,14 @@ $(document).ready(function(){
             type: $(this).attr('method'),
             url: $(this).attr('action'),
             dataType: 'json',
-            success: function(json) {
-                if (json.response == 0) {
+            success: function(response) {
+                if (response.error) {
                     $('#create_bid_alert').empty();
-                    $('#create_bid_alert').append('<div class="alert alert-error" id="alert">' + json.text + '</div>');
+                    $('#create_bid_alert').append('<div class="alert alert-error" id="alert">' + response.message + '</div>');
                     $.colorbox.resize();
                 } else {
                     $.colorbox.close();
-                    window.location = '../?kind=promoter'; 
+                    window.location = response.url; 
                 }
             }     
         });

@@ -1,4 +1,4 @@
-<div id="create_ask_popup" style='padding:10px; background:#fff;' xmlns:t="http://twistedmatrix.com/ns/twisted.web.template/0.1">
+<div id="create_ask_popup" style='padding:10px; background:#fff; text-align: center;' xmlns:t="http://twistedmatrix.com/ns/twisted.web.template/0.1">
     <form name="create_ask_form" action="../create_ask" method="POST" enctype="application/x-www-form-urlencoded" t:render="form">
         <input type="hidden" name="status_id" />
         <div>
@@ -14,12 +14,10 @@
                 </select>
             </div>
             <div>
-                <label for="quantity">Retweet Goal:</label>
-                <input type="text" name="goal"/>
+                <input type="text" placeholder="Pay per Retweet" name="price_per_retweet"/>
             </div>
             <div>
-                <label for="quantity">Price for retweet:</label>
-                <input type="text" name="price_per_retweet"/>
+                <input type="text" placeholder="Number of Retweets" name="goal"/>
             </div>
             <div>
                 <select name="niche">

@@ -13,6 +13,7 @@ import coinbase
 import config
 import decimal
 import definitions
+import error
 import json
 import forms
 import pages
@@ -35,6 +36,10 @@ class Deposit(Resource):
         session_user['action'] = 'deposit'
 
         deposit_amount = request.args.get('deposit_amount')[0]
+
+        response = error.deposit_amount(request, deposit_amount)
+        if response['error']:
+            return json.dumps(response) 
 
         timestamp = config.create_timestamp()
             

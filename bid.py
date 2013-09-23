@@ -11,6 +11,7 @@ from sessions import SessionManager
 import config
 import definitions
 import json
+import error
 import forms
 import pages
 import twitter_api
@@ -109,40 +110,13 @@ class Create(Resource):
         session_user = SessionManager(request).get_session_user()
         session_user['action'] = 'create_bid'
         
-        price_per_retweet = request.args.get('price_per_retweet')[0]
+        price_per_tweet = request.args.get('price_per_tweet')[0]
         campaign_type = request.args.get('campaign_type')[0]
         niche = request.args.get('niche')[0]
         
-        ## Handle quantity input
-        #if not quantity:
-        #    return json.dumps(dict(response=0, text=definitions.QUANTITY[0]))
-
-        #try:
-        #    quantity = int(quantity)
-        #except:
-        #    return json.dumps(dict(response=0, text=definitions.QUANTITY[1]))
-
-        #if quantity < 0:
-        #    return json.dumps(dict(response=0, text=definitions.QUANTITY[2]))
-
-        ## Handle quantity input
-        #if not amount:
-        #    return json.dumps(dict(response=0, text=definitions.AMOUNT[0]))
-
-        #try:
-        #    amount = float(amount)
-        #except:
-        #    return json.dumps(dict(response=0, text=definitions.AMOUNT[1]))
-        #
-        ## Handle shipping_cost input
-        #if not shipping_cost:
-        #    return json.dumps(dict(response=0, text=definitions.SHIPPING_COST[0]))
-
-        #try:
-        #    shipping_cost = float(shipping_cost)
-        #except:
-        #    return json.dumps(dict(response=0, text=definitions.SHIPPING_COST[1]))
-
+        response = error.price_per_tweet(request, price_per_tweet)
+        if response['error']:
+            return json.dumps(response) 
 
         timestamp = config.create_timestamp()
 
@@ -154,7 +128,7 @@ class Create(Resource):
             'twitter_status_id': 0,
             'user_id': session_user['id'] ,
             'tally': 0,
-            'cost': price_per_retweet,
+            'cost': price_per_tweet,
             'campaign_type': campaign_type, 
             'niche': niche
         }
@@ -163,11 +137,12 @@ class Create(Resource):
         db.add(new_bid)
         db.commit()
 
-        #plain = mailer.offerMemoPlain(seller)
-        #html = mailer.offerMemoHtml(seller)
-        #Email(mailer.noreply, seller_email, 'You have a new offer at Coingig.com!', plain, html).send()
+        response = {}
+        response['error'] = False
+        response['message'] = definitions.MESSAGE_SUCCESS
+        response['url'] = '../?kind=promoter'
 
-        return json.dumps(dict(response=1, text=definitions.MESSAGE_SUCCESS))
+        return json.dumps(response) 
 
 
 class Withdraw(Resource):

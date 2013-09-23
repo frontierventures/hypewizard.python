@@ -9,11 +9,15 @@ from data import db
 from sessions import SessionManager
 
 import config
+import decimal
 import definitions
+import error
 import json
 import forms
 import pages
 import twitter_api
+
+D = decimal.Decimal
 
 
 def assemble(root):
@@ -118,8 +122,16 @@ class Create(Resource):
         twitter_status_id = request.args.get('twitter_status_id')[0]
         niche = request.args.get('niche')[0]
         campaign_type = request.args.get('campaign_type')[0]
-        charge = int(request.args.get('price_per_retweet')[0])
-        goal = int(request.args.get('goal')[0])
+        charge = request.args.get('price_per_retweet')[0]
+        goal = request.args.get('goal')[0]
+        
+        response = error.price_per_tweet(request, charge)
+        if response['error']:
+            return json.dumps(response) 
+        
+        response = error.goal(request, goal)
+        if response['error']:
+            return json.dumps(response) 
 
         timestamp = config.create_timestamp()
 
@@ -141,17 +153,17 @@ class Create(Resource):
         db.add(new_ask)
 
         client = db.query(Profile).filter(Profile.user_id == session_user['id']).first()
-        client.available_balance -= charge * goal
-        client.reserved_balance += charge * goal
+        client.available_balance -= float(D(charge) * D(goal))
+        client.reserved_balance += float(D(charge) * D(goal))
 
         db.commit()
 
-        #plain = mailer.offerMemoPlain(seller)
-        #html = mailer.offerMemoHtml(seller)
-        #Email(mailer.noreply, seller_email, 'You have a new offer at Coingig.com!', plain, html).send()
+        response = {}
+        response['error'] = False
+        response['message'] = definitions.MESSAGE_SUCCESS
+        response['url'] = '../'
 
-        return json.dumps(dict(response=1, text=definitions.MESSAGE_SUCCESS))
-
+        return json.dumps(response) 
 
 class Withdraw(Resource):
     def render(self, request):

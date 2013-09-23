@@ -17,7 +17,7 @@ $(document).ready(function(){
             });
             if (response.action == 'claim') {
                 $('input[name=transaction_id]').val(response.transaction.id);
-                return "#claim_funds_popup";
+                return "#claim_balance_popup";
             }
         }      
     });
