@@ -300,6 +300,31 @@ class FeatureDisabled(Element):
         self.loader = XMLString(FilePath(templates['feature_disabled']).getContent())
 
 
+class ResendToken(Element):
+    def __init__(self):
+        self.loader = XMLString(FilePath(templates['resend_token']).getContent())
+
+    @renderer
+    def is_confirmed_option(self, request, tag):
+        choices = {
+            'yes': 'Yes',
+            'no': 'No'
+            }
+
+        for key in choices.keys(): 
+            thisTagShouldBeSelected = False
+            #if key == propertyStatus:
+            #    thisTagShouldBeSelected = True
+
+            slots = {}
+            slots['value'] = key 
+            slots['caption'] = choices[key] 
+            newTag = tag.clone().fillSlots(**slots)
+            if thisTagShouldBeSelected:
+                newTag(selected='yes')
+            yield newTag
+
+
 class ResetPassword(Element):
     def __init__(self):
         self.loader = XMLString(FilePath(templates['reset_password']).getContent())
@@ -409,6 +434,7 @@ templates = {
         'feature_disabled': 'templates/popups/feature_disabled.xml',
         'engage_client': 'templates/popups/engage_client.xml',
         'engage_promoter': 'templates/popups/engage_promoter.xml',
+        'resend_token': 'templates/popups/resend_token.xml',
         'reset_password': 'templates/popups/reset_password.xml',
         'withdraw_ask': 'templates/popups/withdraw_ask.xml',
         'withdraw_bid': 'templates/popups/withdraw_bid.xml'

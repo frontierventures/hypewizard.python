@@ -4,7 +4,6 @@ from twisted.web.util import redirectTo
 from twisted.python.filepath import FilePath
 from twisted.web.template import Element, renderer, renderElement, XMLString
 
-from sessions import SessionManager
 
 import twitter_api
 import config
@@ -13,6 +12,7 @@ import encryptor
 import error
 import json
 import locale
+import mailer
 import pages
 
 from data import db
@@ -20,10 +20,13 @@ from sqlalchemy.sql import and_
 from data import Profile, User
 from sessions import SessionManager
 
+Email = mailer.Email
+
 
 def assemble(root):
     root.putChild('account', Main())
     root.putChild('change_password', Change())
+    root.putChild('resend_token', Resend())
     return root
 
 
@@ -51,7 +54,7 @@ class Details(Element):
 
         self.profile = db.query(Profile).filter(Profile.id == session_user['id']).first()
 
-        if session_user['status'] == 'verified':
+        if session_user['is_email_verified']:
             template = 'templates/elements/verified_account.xml'
         else:
             template = 'templates/elements/unverified_account.xml'
@@ -114,5 +117,28 @@ class Change(Resource):
         response['error'] = False
         response['message'] = definitions.MESSAGE_SUCCESS
         response['url'] = '../account' 
+
+        return json.dumps(response) 
+
+
+class Resend(Resource):
+    def render(self, request):
+        print '%srequest.args: %s%s' % (config.color.RED, request.args, config.color.ENDC)
+
+        session_user = SessionManager(request).get_session_user()
+
+        user = db.query(User).filter(User.id == session_user['id']).first()
+        profile = db.query(Profile).filter(Profile.user_id == session_user['id']).first()
+
+        url = 'http://www.hypewhiz.com/verify_email?id=%s&token=%s' % (str(session_user['id']), profile.token)
+        plain = mailer.verify_email_memo_plain(url)
+        html = mailer.verify_email_memo_html(url)
+        Email(mailer.noreply, user.email, 'Instructions to verify your Hype Wizard email', plain, html).send()
+
+
+        response = {}
+        response['error'] = False
+        response['message'] = definitions.MESSAGE_SUCCESS
+        response['url'] = '../account'
 
         return json.dumps(response) 

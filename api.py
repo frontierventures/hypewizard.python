@@ -71,7 +71,7 @@ class GetAsks(Resource):
                 order['engage']['is_allowed'] = False
                 order['engage']['reason'] = 'different_user'
 
-            if session_user['status'] == 'unverified':
+            if not session_user['is_email_verified']:
                 order['engage']['is_allowed'] = False
                 order['engage']['reason'] = 'unverified'
 
@@ -130,7 +130,7 @@ class GetBids(Resource):
                 order['engage']['is_allowed'] = False
                 order['engage']['reason'] = 'different_user'
 
-            if session_user['status'] == 'unverified':
+            if not session_user['is_email_verified']:
                 order['engage']['is_allowed'] = False
                 order['engage']['reason'] = 'unverified'
 

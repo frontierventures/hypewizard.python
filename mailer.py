@@ -71,6 +71,26 @@ def verificationHtml(url):
     return html
 
 
+def verify_email_memo_plain(url):
+    plain = """
+    Please visit the link below to confirm you are the owner of this email address.\n
+    %s\n
+    Hype Wizard Team
+    """ % url
+    return plain
+
+
+def verify_email_memo_html(url):
+    html = """
+    <html>
+    <p>Please visit the link below to confirm you are the owner of this email address.</p>
+    <p>%s</p>
+    <p><b>Hype Wizard Team</b></p>
+    </html>
+    """ % url
+    return html
+
+
 def offer_created_memo_plain():
     plain = """
     You have received an offer to promote your tweet.\n

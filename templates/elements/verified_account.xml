@@ -1,9 +1,9 @@
 <div class="row container-fluid" xmlns:t="http://twistedmatrix.com/ns/twisted.web.template/0.1" t:render="details">
     <div class="span6" style="text-align: center;">
         <h1>Hype Wizard Account</h1>
-        <h2 style="color: red;">Unverified</h2>
+        <h2 style="color: green;">Verified</h2>
+        <div><a href="../orders">Order History</a></div>
         <div><a href="../change_password">Change Password</a></div>
-        <div><a href="../resend_token">Send Verification Instructions</a></div>
     </div>
     <div class="span6" style="text-align: center;">
         <h1>Twitter Account </h1>

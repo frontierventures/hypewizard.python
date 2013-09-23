@@ -266,7 +266,7 @@ def reset(default):
                 'login_timestamp': timestamp,
                 'email': '0@0.0',
                 'password': encryptor.hash_password('0'),
-                'is_email_verified': False,
+                'is_email_verified': True,
                 'ip': 0
             }
             user = User(data)
@@ -303,7 +303,7 @@ def reset(default):
                 'login_timestamp': timestamp,
                 'email': 'alice@hypewhiz.com',
                 'password': encryptor.hash_password('a'),
-                'is_email_verified': False,
+                'is_email_verified': True,
                 'ip': 0
             }
             user = User(data)
@@ -341,7 +341,7 @@ def reset(default):
                 'login_timestamp': timestamp,
                 'email': 'bob@hypewhiz.com',
                 'password': encryptor.hash_password('b'),
-                'is_email_verified': False,
+                'is_email_verified': True,
                 'ip': 0
             }
             user = User(data)
@@ -379,7 +379,7 @@ def reset(default):
                 'login_timestamp': timestamp,
                 'email': 'carol@hypewhiz.com',
                 'password': encryptor.hash_password('c'),
-                'is_email_verified': False,
+                'is_email_verified': True,
                 'ip': 0
             }
             user = User(data)

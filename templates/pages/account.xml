@@ -30,18 +30,13 @@
     <div id="wrap">
         <t:transparent t:render="header" />            
         <div id="push"></div>
-        <div class="row container-fluid">
-            <div class="span6">
-                <t:transparent t:render="details" />            
-            </div>
-            <div class="span6">
-            </div>
-        </div>
+        <t:transparent t:render="details" />            
         <div id="push"></div>
     </div>
     <t:transparent t:render="footer" />            
     <div style="display:none">
         <t:transparent t:render="change_password_popup" />
+        <t:transparent t:render="resend_token_popup" />
     </div>
 
     <!-- Le javascript

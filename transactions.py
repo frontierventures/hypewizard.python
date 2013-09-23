@@ -157,6 +157,7 @@ class Process(Resource):
     def render(self, request):
         print '%srequest.args: %s%s' % (config.color.RED, request.args, config.color.ENDC)
         session_user = SessionManager(request).get_session_user()
+        session_user['action'] = 'process_transaction'
 
         response = {'error': True}
         try:
@@ -333,10 +334,12 @@ class Complete(Resource):
             ask = db.query(Ask).filter(Ask.id == transaction.ask_id).first()
             ask.target += 1
 
+            if ask.target == ask.goal:
+                ask.status = 'withdrawn'
+
         if transaction.bid_id != 0:
             bid = db.query(Bid).filter(Bid.id == transaction.bid_id).first()
             bid.tally += 1
-
 
         db.commit()
 

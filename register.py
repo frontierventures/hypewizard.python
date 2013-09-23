@@ -19,6 +19,7 @@ import login
 import mailer
 import pages
 import random
+import sessions
 import sys
 import twitter_api
 
@@ -28,8 +29,7 @@ Email = mailer.Email
 def assemble(root):
     root.putChild('create_user', Create())
     root.putChild('register', Main())
-    root.putChild('resend_token', Resend())
-    root.putChild('verify_ownership', Verify())
+    root.putChild('verify_email', Verify())
     return root
 
 
@@ -211,7 +211,7 @@ class Verify(Resource):
 
         if profile.token == token:
             user = db.query(User).filter(User.id == user_id).first()
-            user.status = 'verified' 
+            user.is_email_verified = True
             profile.token = ''
             db.commit()
 
@@ -220,22 +220,3 @@ class Verify(Resource):
             return redirectTo('../login?verify=ok', request)
         else:
             return redirectTo('../', request)
-
-
-class Resend(Resource):
-    def render(self, request):
-        print '%srequest.args: %s%s' % (config.color.RED, request.args, config.color.ENDC)
-
-        sessionUser = SessionManager(request).getSessionUser()
-        userId = sessionUser['id']
-
-        user = db.query(User).filter(User.id == user_id).first()
-        profile = db.query(Profile).filter(Profile.user_id == user_id).first()
-
-        url = 'http://www.coingig.com/verify_ownership?id=%s&token=%s' % (str(user_id), profile.token)
-        plain = mailer.verificationPlain(url)
-        html = mailer.verificationHtml(url)
-        Email(mailer.noreply, user.email, 'Getting Started with Hype Wizard', plain, html).send()
-
-        #SessionManager(request).setSessionResponse({'class': 2, 'form': 0, 'text': definitions.UNDEF})
-        return redirectTo('../', request)

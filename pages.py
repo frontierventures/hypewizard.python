@@ -56,6 +56,10 @@ class Account(Page):
     def change_password_popup(self, request, tag):
         return popups.ChangePassword()
 
+    @renderer
+    def resend_token_popup(self, request, tag):
+        return popups.ResendToken()
+
 
 class Ask(Page):
     def __init__(self, pageTitle, template, filters):
