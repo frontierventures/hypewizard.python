@@ -48,13 +48,13 @@ class Account(Page):
         Page.__init__(self, pageTitle, template)
         self.pageTitle = pageTitle
 
-    #@renderer
-    #def twitter_summary(self, request, tag):
-    #    return elements.TwitterSummary(self.session_user)
-
     @renderer
     def details(self, request, tag):
         return account.Details(self.session_user)
+
+    @renderer
+    def change_password_popup(self, request, tag):
+        return popups.ChangePassword()
 
 
 class Ask(Page):
@@ -232,8 +232,8 @@ class Transactions(Page):
         return transactions.Table(self.session_user, self.filters)
 
     @renderer
-    def claim_funds_popup(self, request, tag):
-        return popups.ClaimFunds(self.session_user)
+    def claim_balance_popup(self, request, tag):
+        return popups.ClaimBalance(self.session_user)
 
 
 class SummaryAsks(Page):

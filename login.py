@@ -110,17 +110,23 @@ class Reset(Resource):
         session_user['email'] = request.args.get('email')[0]
         #SessionManager(request).setSessionUser(session_user)
 
-        userEmail = session_user['email']
+        email = session_user['email']
         #request.setSessionResponseCode(200)
 
-        if not userEmail:
-            return json.dumps(dict(response=0, text=definitions.EMAIL[0]))
-        elif not re.match(definitions.REGEX_EMAIL, userEmail):
-            return json.dumps(dict(response=0, text=definitions.EMAIL[1]))
+        response = {}
+        response['error'] = True
 
-        user = db.query(User).filter(User.email == userEmail).first()
+        if not email:
+            response['message'] = definitions.EMAIL[0]
+            return json.dumps(response)
+        elif not re.match(definitions.REGEX_EMAIL, email):
+            response['message'] = definitions.EMAIL[1]
+            return json.dumps(response)
+
+        user = db.query(User).filter(User.email == email).first()
         if not user:
-            return json.dumps(dict(response=0, text=definitions.EMAIL[2]))
+            response['message'] = definitions.EMAIL[2]
+            return json.dumps(response)
 
         password = ''.join(random.sample(string.digits, 5))
         user.password = encryptor.hash_password(password)
@@ -130,7 +136,11 @@ class Reset(Resource):
         html = mailer.password_reset_memo_html(user.email, password)
         Email(mailer.noreply, user.email, 'Your Hype Wizard password was reset!', plain, html).send()
 
-        return json.dumps(dict(response=1, text=definitions.PASSWORD[3]))
+        response['error'] = False
+        response['message'] = definitions.MESSAGE_SUCCESS
+        response['url'] = '../' 
+
+        return json.dumps(response) 
 
 
 def make_session(request, user_id):

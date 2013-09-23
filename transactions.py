@@ -142,7 +142,7 @@ class Table(Element):
         if self.transaction.status == 'approved':
             buttons.append({
                 'url': '../process_transaction?action=claim&id=%s' % self.transaction.id,
-                'caption': 'Claim Funds' 
+                'caption': 'Claim Balance' 
             })
 
         for button in buttons:

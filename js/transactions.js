@@ -21,7 +21,7 @@ $(document).ready(function(){
             }
         }      
     });
-    $('form[name*=claim_funds_form]').submit(function() { 
+    $('form[name*=claim_balance_form]').submit(function() { 
         var response = {};
         $.ajax({
             data: $(this).serialize(),
@@ -30,8 +30,8 @@ $(document).ready(function(){
             dataType: 'json',
             success: function(json) {
                 if (json.response == 0) {
-                    $('#claim_funds_alert').empty();
-                    $('#claim_funds_alert').append('<div class="alert alert-error" id="alert">' + json.text + '</div>');
+                    $('#claim_balance_alert').empty();
+                    $('#claim_balance_alert').append('<div class="alert alert-error" id="alert">' + json.text + '</div>');
                     $.colorbox.resize();
                 } else {
                     $.colorbox.close();

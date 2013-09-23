@@ -41,9 +41,15 @@ class ApproveOffer(Element):
             yield newTag
 
 
-class ClaimFunds(Element):
+class ChangePassword(Element):
     def __init__(self, session_user):
         self.loader = XMLString(FilePath(templates['claim_funds']).getContent())
+        self.session_user = session_user
+
+
+class ClaimBalance(Element):
+    def __init__(self, session_user):
+        self.loader = XMLString(FilePath(templates['claim_balance']).getContent())
         self.session_user = session_user
 
     @renderer
@@ -395,7 +401,7 @@ class WithdrawBid(Element):
 
 templates = {
         'approve_offer': 'templates/popups/approve_offer.xml',
-        'claim_funds': 'templates/popups/claim_funds.xml',
+        'claim_balance': 'templates/popups/claim_balance.xml',
         'create_ask': 'templates/popups/create_ask.xml',
         'create_bid': 'templates/popups/create_bid.xml',
         'deposit': 'templates/popups/deposit.xml',

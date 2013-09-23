@@ -39,6 +39,9 @@
         <div id="push"></div>
     </div>
     <t:transparent t:render="footer" />            
+    <div style="display:none">
+        <t:transparent t:render="reset_password_popup" />
+    </div>
 
     <!-- Le javascript
     ================================================== -->
