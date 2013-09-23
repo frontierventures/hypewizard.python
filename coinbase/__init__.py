@@ -10,6 +10,9 @@ import inspect
 #from decimal import Decimal
 
 from config import COINBASE_ENDPOINT
+from config import TEMP_CREDENTIALS
+from config import API_KEY
+
 from amount import CoinbaseAmount
 from button import CoinbaseButton
 from transaction import CoinbaseTransaction

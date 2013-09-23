@@ -70,13 +70,13 @@ class Deposit(Resource):
 
         code = coinbase_api.create_invoice(data)
 
-        order = db.query(Order).filter(Order.order_id == new_order.id)
-        order.code = code
+        order = db.query(Order).filter(Order.id == new_order.id).first()
+        order.code = str(code)
         db.commit()
 
-        return json.dumps(dict(response=1, text=definitions.MESSAGE_SUCCESS))
+        response = {}
+        response['error'] = False
+        response['message'] = definitions.MESSAGE_SUCCESS
+        response['url'] = 'https://coinbase.com/checkouts/%s?c=a' % order.code
 
-from coinbase import CoinbaseAccount
-
-if __name__ == '__main__':
-    api.get_rates_test()
+        return json.dumps(response) 

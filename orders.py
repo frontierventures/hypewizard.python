@@ -124,12 +124,8 @@ class Table(Element):
 
         if self.order.status == 'open':
             buttons.append({
-                'url': '../process_order?action=approve&id=%s' % self.order.id,
-                'caption': 'Approve' 
-            })
-            buttons.append({
-                'url': '../process_order?action=disapprove&id=%s' % self.order.id,
-                'caption': 'Disapprove' 
+                'url': 'https://coinbase.com/checkouts/%s?c=a' % self.order.code,
+                'caption': 'Invoice' 
             })
 
         for button in buttons:
