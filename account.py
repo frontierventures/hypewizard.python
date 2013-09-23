@@ -8,6 +8,8 @@ from sessions import SessionManager
 
 import twitter_api
 import config
+import error
+import json
 import locale
 import pages
 
@@ -75,35 +77,38 @@ class Change(Resource):
             return redirectTo('../', request)
 
         session_user = SessionManager(request).get_session_user()
-        session_user['email'] = request.args.get('email')[0]
-        #SessionManager(request).setSessionUser(session_user)
+        session_user['action'] = 'change_password'
 
-        email = session_user['email']
-        #request.setSessionResponseCode(200)
+        old_password = request.args.get('old_password')[0]
+        new_password = request.args.get('new_password')[0]
+        new_password_repeat = request.args.get('new_password_repeat')[0]
 
-        response = {}
-        response['error'] = True
+        session_user['old_password'] = old_password
+        session_user['new_password'] = new_password
+        session_user['new_password_repeat'] = new_password_repeat
 
-        if not email:
-            response['message'] = definitions.EMAIL[0]
-            return json.dumps(response)
-        elif not re.match(definitions.REGEX_EMAIL, email):
-            response['message'] = definitions.EMAIL[1]
-            return json.dumps(response)
+        response = error.old_password(request, old_password)
+        if response['error']:
+            return json.dumps(response) 
 
-        user = db.query(User).filter(User.email == email).first()
-        if not user:
-            response['message'] = definitions.EMAIL[2]
-            return json.dumps(response)
+        response = error.new_password(request, new_password)
+        if response['error']:
+            return json.dumps(response) 
 
-        password = ''.join(random.sample(string.digits, 5))
-        user.password = encryptor.hash_password(password)
+        response = error.new_password_repeat(request, new_password_repeat)
+        if response['error']:
+            return json.dumps(response) 
+
+        response = error.password_match(request, new_password, new_password_repeat)
+        if response['error']:
+            return json.dumps(response) 
+
+        user = db.query(User).filter(User.id == session_user['id']).first()
+
+        user.password = encryptor.hash_password(new_password)
         db.commit()
 
-        plain = mailer.password_reset_memo_plain(user.email, password)
-        html = mailer.password_reset_memo_html(user.email, password)
-        Email(mailer.noreply, user.email, 'Your Hype Wizard password was reset!', plain, html).send()
-
+        response = {}
         response['error'] = False
         response['message'] = definitions.MESSAGE_SUCCESS
         response['url'] = '../' 

@@ -76,10 +76,14 @@ class Authenticate(Resource):
         session_user['email'] = email
         session_user['password'] = password
 
-        if error.email(request, email):
+        response = error.email(request, email)
+        if response['error']:
+            SessionManager(request).setSessionResponse({'class': 1, 'form': 0, 'text': response['message']})
             return redirectTo('../login', request)
 
-        if error.password(request, password):
+        response = error.new_password(request, password)
+        if response['error']:
+            SessionManager(request).setSessionResponse({'class': 1, 'form': 0, 'text': response['message']})
             return redirectTo('../login', request)
 
         users = db.query(User).filter(User.email == email)

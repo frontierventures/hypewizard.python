@@ -1,0 +1,19 @@
+<div id="claim_balance_popup" style='padding:10px; background:#fff;' xmlns:t="http://twistedmatrix.com/ns/twisted.web.template/0.1">
+    <form name="claim_balance_form" action="../complete_transaction" method="POST" enctype="application/x-www-form-urlencoded" t:render="form">
+        <input type="hidden" name="transaction_id" />
+        <div>
+            <h1>Are you sure?</h1>
+            <div id="claim_balance_alert">
+            </div>
+            <div>
+                <select name="is_confirmed">
+                    <option t:render="is_confirmed_option">
+                        <t:attr name="value"><t:slot name="value" /></t:attr>
+                        <t:slot name="caption" />
+                    </option>
+                </select>
+            </div>
+            <button name="button" value="Submit" class="btn btn-large btn-primary" type="submit">Claim Balance</button>
+        </div>
+    </form>
+</div>

@@ -70,15 +70,15 @@ class Create(Resource):
 
         email = request.args.get('email')[0]
         password = request.args.get('password')[0]
-        repeat_password = request.args.get('repeat_password')[0]
+        repeat_password = request.args.get('password_repeat')[0]
         bitcoin_address = request.args.get('bitcoin_address')[0]
         twitter_name = request.args.get('twitter_name')[0]
         niche = request.args.get('niche')[0]
 
         session_user['email'] = email
         session_user['password'] = password
-        session_user['repeatPassword'] = repeat_password
-        session_user['bitcoinAddress'] = bitcoin_address
+        session_user['password_repeat'] = password_repeat
+        session_user['bitcoin_address'] = bitcoin_address
         session_user['twitter_name'] = twitter_name
         session_user['niche'] = niche
 
@@ -92,16 +92,16 @@ class Create(Resource):
             SessionManager(request).setSessionResponse({'class': 1, 'form': 0, 'text': definitions.EMAIL[3]})
             return redirectTo('../register', request)
 
-        if error.password(request, password):
+        if error.new_password(request, password):
             return redirectTo('../register', request)
 
-        if error.repeatPassword(request, repeat_password):
+        if error.new_password_repeat(request, password_repeat):
             return redirectTo('../register', request)
 
-        if error.mismatchPassword(request, password, repeat_password):
+        if error.password_mismatch(request, password, password_repeat):
             return redirectTo('../register', request)
 
-        if error.bitcoinAddress(request, bitcoin_address):
+        if error.bitcoin_address(request, bitcoin_address):
             return redirectTo('../register', request)
 
         response = twitter_api.get_user(twitter_name)
