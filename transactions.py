@@ -260,6 +260,13 @@ class Create(Resource):
 
             charge = bid.cost
 
+            client = db.query(Profile).filter(Profile.user_id == session_user['id']).first()
+            if client.available_balance < charge: 
+                response = {}
+                response['error'] = True
+                response['message'] = "This promoter charges %s per retweet." % charge 
+                return json.dumps(response) 
+
             data = {
                 'status': 'approved',
                 'created_at': timestamp,
@@ -280,7 +287,6 @@ class Create(Resource):
             promoter = db.query(Profile).filter(Profile.user_id == bid.user_id).first()
             promoter.transaction_count += 1
 
-            client = db.query(Profile).filter(Profile.user_id == session_user['id']).first()
             client.offer_count += 1 
             client.available_balance -= charge
             client.reserved_balance += charge
@@ -294,7 +300,10 @@ class Create(Resource):
 
             Email(mailer.noreply, promoter.email, 'Your have a request with Hype Wizard!', plain, html).send()
 
-        return json.dumps(dict(response=1, text=definitions.MESSAGE_SUCCESS))
+        response = {}
+        response['error'] = False
+        response['message'] = definitions.MESSAGE_SUCCESS
+        return json.dumps(response) 
 
 
 class Complete(Resource):

@@ -53,10 +53,10 @@ $(document).ready(function(){
             type: $(this).attr('method'),
             url: $(this).attr('action'),
             dataType: 'json',
-            success: function(json) {
-                if (json.response == 0) {
-                    $('#create_transaction_alert').empty();
-                    $('#create_transaction_alert').append('<div class="alert alert-error" id="alert">' + json.text + '</div>');
+            success: function(response) {
+                if (response.error) {
+                    $('#engage_promoter_alert').empty();
+                    $('#engage_promoter_alert').append('<div class="alert alert-error" id="alert">' + response.message + '</div>');
                     $.colorbox.resize();
                 } else {
                     $.colorbox.close();

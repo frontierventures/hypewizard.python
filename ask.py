@@ -114,11 +114,6 @@ class Create(Resource):
         session_user = SessionManager(request).get_session_user()
         session_user['action'] = 'save_order'
         
-        #try:
-        #    status_id = int(request.args.get('status_id')[0])
-        #except:
-        #    return redirectTo('../', request)
-
         twitter_status_id = request.args.get('twitter_status_id')[0]
         niche = request.args.get('niche')[0]
         campaign_type = request.args.get('campaign_type')[0]
@@ -144,6 +139,13 @@ class Create(Resource):
             response['message'] = 'You already have this tweet on the market.' 
             return json.dumps(response) 
 
+        client = db.query(Profile).filter(Profile.user_id == session_user['id']).first()
+        if client.available_balance < D(charge) * D(goal): 
+            response = {}
+            response['error'] = True
+            response['message'] = "You need %s more in your balance to do this." % (D(charge) * D(goal) - D(client.available_balance)) 
+            return json.dumps(response) 
+
         data = {
             'status': 'active',
             'created_at': timestamp,
@@ -162,8 +164,8 @@ class Create(Resource):
         db.add(new_ask)
 
         client = db.query(Profile).filter(Profile.user_id == session_user['id']).first()
-        client.available_balance -= float(D(charge) * D(goal))
-        client.reserved_balance += float(D(charge) * D(goal))
+        client.available_balance -= D(charge) * D(goal)
+        client.reserved_balance += D(charge) * D(goal)
 
         db.commit()
 
