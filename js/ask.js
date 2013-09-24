@@ -13,7 +13,7 @@ $(document).ready(function(){
                 }
             });
             if (response.action == 'create') {
-                if (response.available_balance == 0) {
+                if (response.available_balance <= 0) {
                     return "#deposit_popup";
                 } else {
                     return "#create_ask_popup";
