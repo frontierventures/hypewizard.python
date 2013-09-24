@@ -149,6 +149,16 @@ class GetBids(Resource):
                 order['engage']['is_allowed'] = False
                 order['engage']['reason'] = 'unauthorized'
 
+            else:
+                transactions = db.query(Transaction).filter(Transaction.status == 'approved')
+                transactions = db.query(Transaction).filter(Transaction.client_id == session_user['id'])
+                transaction = db.query(Transaction).filter(Transaction.promoter_id == bid.user_id)
+                #transaction = transactions.filter(Transaction.twitter_status_id == ask.twitter_status_id).first()
+
+                if transaction:
+                    order['engage']['is_allowed'] = False
+                    order['engage']['reason'] = 'engaged'
+
         response['orders'] = orders
         response['error'] = False
 

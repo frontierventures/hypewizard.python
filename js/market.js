@@ -150,6 +150,10 @@ function add_bid_to_market(rule, bid) {
         var action_cell = '<div style="text-align:center"><a href="' + action_url + '">Engage Promoter</a></div>';
     }
 
+    if (!bid.engage.is_allowed && bid.engage.reason == 'engaged') {
+        var action_cell = '<div style="text-align:center"><span style="color: green;">Offer pending</span></div>';
+    }
+
     if (bid.engage.is_allowed) {
         action_url = '../process_bid?action=engage&id=' + bid.id; 
         action_cell = '<div style="text-align:center"><a href="' + action_url + '">Engage Promoter</a></div>';
