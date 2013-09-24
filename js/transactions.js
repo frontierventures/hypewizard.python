@@ -28,14 +28,14 @@ $(document).ready(function(){
             type: $(this).attr('method'),
             url: $(this).attr('action'),
             dataType: 'json',
-            success: function(json) {
-                if (json.response == 0) {
+            success: function(response) {
+                if (response.error) {
                     $('#claim_balance_alert').empty();
-                    $('#claim_balance_alert').append('<div class="alert alert-error" id="alert">' + json.text + '</div>');
+                    $('#claim_balance_alert').append('<div class="alert alert-error" id="alert">' + response.message + '</div>');
                     $.colorbox.resize();
                 } else {
                     $.colorbox.close();
-                    window.location = '../transactions'; 
+                    window.location = response.url; 
                 }
             }     
         });

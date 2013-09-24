@@ -241,8 +241,8 @@ class Create(Resource):
 
             client = db.query(User).filter(User.id == client.user_id).first()
 
-            plain = mailer.offer_created_memo_plain()
-            html = mailer.offer_created_memo_html()
+            plain = mailer.offer_created_memo_plain(new_transaction)
+            html = mailer.offer_created_memo_html(new_transaction)
             Email(mailer.noreply, client.email, 'You have a new Hype Wizard promotional offer pending!', plain, html).send()
         
         #####################################
@@ -320,6 +320,29 @@ class Complete(Resource):
         #####################################
         # Check Retweet Maturity
         #####################################
+        
+        response = twitter_api.get_retweet_duration(transaction.promoter_twitter_id, transaction.twitter_status_id)
+        if response['error']:
+            response = {}
+            response['error'] = True
+            response['message'] = 'Twitter Api error'
+            return json.dumps(response) 
+        else:
+            if response['is_retweet_found']:
+                delta = response['delta']
+                if response['delta'] < 86400:
+                    print delta * 20
+                    response = {}
+                    response['error'] = True
+                    response['message'] = 'Please wait until the end of promotion period (~ %s hrs)' % int(24 - delta / 3600)
+                    return json.dumps(response) 
+            else:
+                response = {}
+                response['error'] = True
+                response['message'] = 'Please retweet for your client'
+                return json.dumps(response) 
+
+        #####################################
 
         timestamp = config.create_timestamp()
         
@@ -347,4 +370,9 @@ class Complete(Resource):
 
         db.commit()
 
-        return json.dumps(dict(response=1, text=definitions.MESSAGE_SUCCESS))
+        response = {}
+        response['error'] = False
+        response['message'] = definitions.MESSAGE_SUCCESS
+        response['url'] = '../transactions'
+
+        return json.dumps(response) 

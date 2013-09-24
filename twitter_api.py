@@ -21,6 +21,27 @@ def get_statuses(twitter_name):
         statuses = api.GetUserTimeline(screen_name=twitter_name)
     return statuses
 
+def get_user_by_id(twitter_id):
+    user = api.GetUser(user_id=twitter_id)
+    return user
+
+def convert_twitter_timestamp(created_at):
+    timestamp = time.strftime('%Y-%m-%d %H:%M:%S', time.strptime(created_at,'%a %b %d %H:%M:%S +0000 %Y'))
+    return timestamp
+
+def get_status(status_id):
+    status = api.GetStatus(status_id, trim_user=True, include_my_retweet=True, include_entities=True)
+    return status
+
+#def get_retweets(status_id):
+#    statuses = api.GetRetweets(status_id, count=100, trim_user=False) 
+#    return statuses
+
+#####################################
+# Usefull
+#####################################
+
+# Used for first login
 def get_user(twitter_name):
     response = {
         'error': False
@@ -34,28 +55,79 @@ def get_user(twitter_name):
         #print error
     return response
 
-def get_user_by_id(twitter_id):
-    user = api.GetUser(user_id=twitter_id)
-    return user
-
-def convert_twitter_timestamp(created_at):
-    timestamp = time.strftime('%Y-%m-%d %H:%M:%S', time.strptime(created_at,'%a %b %d %H:%M:%S +0000 %Y'))
-    return timestamp
-
-def get_status(status_id):
-    status = api.GetStatus(status_id, trim_user=True, include_my_retweet=True, include_entities=True)
-    return status
-
 def get_retweets(status_id):
-    statuses = api.GetRetweets(status_id, count=100, trim_user=False) 
-    return statuses
+    response = {
+        'error': False
+    }
+    try:
+        retweets = api.GetRetweets(status_id, count=100, trim_user=False) 
+        response['retweets'] = retweets
+    except twitter.TwitterError, error:
+        response['error'] = True
+        response['message'] = error[0][0]['message']
+        #print error
+    return response
 
+def verify_transaction(promoter_id, status_id):
+    response = twitter_api.get_retweets(status_id)
+    for retweet in response['retweets']:
+        print retweet
+        print retweet.user.id
 
-def get_retweet():
-    status = api.GetStatus(status_id, trim_user=True, include_my_retweet=True, include_entities=True)
-    return status
+        if str(retweet.user.id) == str(promoter_id):
+            print retweet.created_at, retweet.user.screen_name
+            print "Match"
+            #twitter_api.convert_twitter_timestamp(tweet.retweeted_status.created_at), 
+        print
+
+def get_retweet_duration(promoter_id, status_id):
+    print "promoter_id: %s" % promoter_id
+    response = {
+        'error': False
+    }
+    response = get_retweets(status_id)
+    retweets = response['retweets']
+
+    is_retweet_found = False
+    delta = 0
+    for retweet in retweets:
+        print retweet.user.id, retweet.user.screen_name, retweet.created_at
+
+        if str(retweet.user.id) == str(promoter_id):
+            dt1 = parse(retweet.created_at)
+            dt1 = dt1.replace(tzinfo=None)
+            seconds1 = (dt1 - datetime(1970,1,1)).total_seconds()
     
+            dt2 = datetime.utcnow() #current utc time 
+            seconds2 = (dt2 - datetime(1970,1,1)).total_seconds()
+    
+            delta = seconds2 - seconds1
+            is_retweet_found = True
 
+    response = {}
+    response['is_retweet_found'] = is_retweet_found
+    response['error'] = False
+    response['delta'] = delta
+    return response
+    
+#####################################
+# Usefull
+#####################################
+
+
+# User for maturity calculation
+#def get_timeline(twitter_id):
+#    response = {
+#        'error': False
+#    }
+#    try:
+#        timeline = api.GetUserTimeline(user_id=twitter_id)
+#        response['timeline'] = timeline
+#    except twitter.TwitterError, error:
+#        response['error'] = True
+#        response['message'] = error[0][0]['message']
+#        #print error
+#    return response
     #account = CoinbaseAccount(api_key=API_KEY)
     #test_get_rates(account=account)
     #test_create_invoice(account=account)
@@ -67,25 +139,6 @@ screen_name = 'hypewizard'
 #from datetime import datetime, date, time
 from dateutil.parser import parse
 from datetime import datetime
-
-def is_promotional_period_over(status_id, screen_name):
-    statuses = get_retweets(status_id)
-    for status in statuses:
-        if status.user.screen_name == screen_name:
-            #print status.created_at, convert_twitter_timestamp(status.created_at)
-            #print status.user.time_zone, status.user.utc_offset
-    
-            dt1 = parse(status.created_at)
-            dt1 = dt1.replace(tzinfo=None)
-            seconds1 = (dt1 - datetime(1970,1,1)).total_seconds()
-    
-            dt2 = datetime.utcnow() #current utc time 
-            seconds2 = (dt2 - datetime(1970,1,1)).total_seconds()
-    
-            delta = seconds2 - seconds1
-    
-            if delta < 86400:
-                print "You have about %s to go until the end of promotion." % int(24 - delta / 3600)
 
 #is_promotional_period_over(status_id, screen_name)
 

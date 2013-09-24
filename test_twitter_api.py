@@ -1,38 +1,34 @@
 import twitter_api
    
-def match(tweets, status_id):
-    for tweet in tweets:
-        if tweet.retweeted_status:
-            print tweet.retweeted_status
-    
-            if tweet.retweeted_status.id == int(status_id): 
-                print '%s %s %s\n' % (
-                        tweet.retweeted_status.id, 
-                        twitter_api.convert_twitter_timestamp(tweet.retweeted_status.created_at), 
-                        twitter_api.convert_twitter_timestamp(tweet.retweeted_status.created_at)
-                    ) * 20 
+def verify_transaction(promoter_id, status_id):
+    response = twitter_api.get_retweets(status_id)
+    for retweet in response['retweets']:
+        print retweet
+        print retweet.user.id
+
+        if str(retweet.user.id) == str(promoter_id):
+            print retweet.created_at, retweet.user.screen_name
+            print "Match"
+            #twitter_api.convert_twitter_timestamp(tweet.retweeted_status.created_at), 
+        print
 
 if __name__ == '__main__':
-    #account = CoinbaseAccount(api_key=API_KEY)
-    #test_get_rates(account=account)
-    #test_create_invoice(account=account)
-    #print twitter_api.get_followers_count('coingig')
-    #print twitter_api.get_user('hypewizard')['user']
-
-    #print twitter_api.get_statuses('hypewizard')
-    #print
-    #statuses = twitter_api.get_statuses('helper_alice')
-
-    #for status in statuses:
-    #    print status
-    
-    # twitter for promotion
-    status_id = '381333411018715136'
     client_id = '632058592'
 
-    tweets = twitter_api.get_statuses('helper_alice')
+    #status_id = '382245592719568896'
+    # You can search promoters timeline and see which are retweets
+    # You can search clients timeline and see what was retweeted
 
-    match(tweets, status_id)
+    #tweets = twitter_api.get_statuses('helper_alice')
+    #print twitter_api.get_timeline(client_id)
+
+    promoter_id = '1898591701' 
+    status_id = '381333411018715136'
+
+    #verify_transaction(promoter_id, status_id)
+    twitter_api.is_promotional_period_over(promoter_id, status_id)
+
+    #match(tweets, status_id)
     
     # Find retweets
 
