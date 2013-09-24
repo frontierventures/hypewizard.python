@@ -39,6 +39,9 @@ class Deposit(Resource):
         session_user = SessionManager(request).get_session_user()
         session_user['action'] = 'deposit'
 
+        if session_user['id'] == 0:
+            return redirectTo('../', request)
+
         deposit_amount = request.args.get('deposit_amount')[0]
 
         response = error.deposit_amount(request, deposit_amount)
@@ -62,6 +65,7 @@ class Deposit(Resource):
             'currency': 'USD',
             'fiat_amount': float(fiat_amount),
             'btc_amount': satoshi_deposit_amount, 
+            'bitcoin_address': '',
             'code': '', 
             'token': '' 
         }
@@ -106,11 +110,14 @@ class Withdraw(Resource):
 
         session_user = SessionManager(request).get_session_user()
         session_user['action'] = 'withdraw'
+
+        if session_user['id'] == 0:
+            return redirectTo('../', request)
         
-        amount = request.args.get('amount')[0]
+        withdraw_amount = request.args.get('amount')[0]
         bitcoin_address = request.args.get('bitcoin_address')[0]
         
-        response = error.withdraw_amount(request, amount)
+        response = error.withdraw_amount(request, withdraw_amount)
         if response['error']:
             return json.dumps(response) 
         
@@ -120,7 +127,10 @@ class Withdraw(Resource):
 
         profile = db.query(Profile).filter(Profile.id == session_user['id']).first()
 
-        if D(profile.available_balance) < D(amount):
+        satoshi_withdraw_amount = D(withdraw_amount) * D(100000000)
+        satoshi_withdraw_amount = int(satoshi_withdraw_amount)
+
+        if profile.available_balance < satoshi_withdraw_amount:
             response = {}
             response['error'] = True
             response['message'] = "You can withdraw %s max." % profile.available_balance 
@@ -130,7 +140,7 @@ class Withdraw(Resource):
         timestamp = config.create_timestamp()
 
         rates = coinbase_api.get_rates()
-        fiat_amount = D(amount) * D(rates['sell'])
+        fiat_amount = D(withdraw_amount) * D(rates['sell'])
 
         data = {
             'status': 'open',
@@ -140,14 +150,24 @@ class Withdraw(Resource):
             'user_id': session_user['id'],
             'currency': 'USD',
             'fiat_amount': float(fiat_amount),
-            'btc_amount': amount,
-            'code': '' 
+            'btc_amount': satoshi_withdraw_amount,
+            'bitcoin_address': bitcoin_address,
+            'code': '', 
+            'token': ''
         }
 
         new_order = Order(data)
         db.add(new_order)
 
-        profile.available_balance = D(profile.available_balance) - D(amount) 
+        data = {
+            'bitcoin_address': bitcoin_address,
+            'withdraw_amount': withdraw_amount
+        }
+
+        transaction = coinbase_api.send_btc(data)
+
+        profile.available_balance = profile.available_balance - satoshi_withdraw_amount 
+        new_order.status = 'complete'
         db.commit()
 
         functions.refresh_session_user(request)
@@ -155,7 +175,7 @@ class Withdraw(Resource):
         response = {}
         response['error'] = False
         response['message'] = definitions.MESSAGE_SUCCESS
-        response['url'] = '../orders'
+        response['url'] = '../orders?status=complete'
         return json.dumps(response) 
  
 
@@ -173,9 +193,7 @@ class Callback(Resource):
 
         if order:
             profile = db.query(Profile).filter(Profile.user_id == order.user_id).first()
-
-            new_balance_satoshi = D(profile.available_balance) + D(order.btc_amount)
-            profile.available_balance += int(new_balance_satoshi) 
+            profile.available_balance += order.btc_amount 
 
             order.status = 'complete'
             # credit balance

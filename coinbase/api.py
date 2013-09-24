@@ -25,3 +25,14 @@ def create_invoice(data):
     print data
     print 'https://coinbase.com/checkouts/%s?c=a' % button.code
     return button.code
+
+def send_btc(data):
+    global account
+    transaction = account.send(
+        to_address=data['bitcoin_address'], 
+        amount=data['withdraw_amount'], 
+        notes='Hype Wizard Withdrawal Receipt', 
+        currency='BTC'
+    )
+    
+    return transaction

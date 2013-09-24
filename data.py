@@ -133,6 +133,7 @@ class Order(Base):
     currency = Column(String)
     fiat_amount = Column(String)
     btc_amount = Column(Integer)
+    bitcoin_address = Column(String)
     code = Column(String)
     token = Column(String)
 
@@ -145,6 +146,7 @@ class Order(Base):
         self.currency = data['currency']
         self.fiat_amount = data['fiat_amount']
         self.btc_amount = data['btc_amount']
+        self.bitcoin_address = data['bitcoin_address']
         self.code = data['code']
         self.token = data['token']
 
