@@ -155,13 +155,35 @@ function add_bid_to_market(rule, bid) {
         action_cell = '<div style="text-align:center"><a href="' + action_url + '">Engage Promoter</a></div>';
     }
 
+    //$('.bids').append(
+    //        '<div class="block">' + 
+    //        '<div style="text-align:center">' + bid.niche + '</div>' +
+    //        '<div style="text-align:center"><a href="http://twitter.com/' + bid.twitter_name + '">' + bid.twitter_name + '</a></div>' +
+    //        '<div style="text-align:center"> (S: ' + user.statuses_count + ', F: ' + user.followers_count + ')</div>' +
+    //        '<div style="text-align:center">' + bid.campaign_type + '</div>' +
+    //        '<div style="text-align:center">' + bid.cost + '</div>' +
+    //        action_cell + 
+    //        '</div>');
     $('.bids').append(
-            '<div class="block">' + 
+            '<div class="block">' +
+            '<div style="text-align:center; float:left; width:150px;">' +
             '<div style="text-align:center">' + bid.niche + '</div>' +
-            '<div style="text-align:center"><a href="http://twitter.com/' + bid.twitter_name + '">' + bid.twitter_name + '</a></div>' +
-            '<div style="text-align:center"> (S: ' + user.statuses_count + ', F: ' + user.followers_count + ')</div>' +
+            '<div>' +
+            '<a href="https://twitter.com/' + bid.twitter_name + '">' + bid.twitter_name + '</a>' +
+            '<div>' +
+            '</div>' +
+            '</div>' +
+            '</div>' +
+            '<div style="float: left;width: 150px;">' +
+            '<div style="text-align:center;font-size: 30px;"><b>' + bid.cost + 'BTC</b></div>' +
+            '<div style="text-align:center">Charge per Tweet </div>' +
+            '</div>' +
+            '<div style="text-align:center; display: table-cell; vertical-align: middle; font-size: 20px; height: 120px; width: 300px;">' +
+            //'<a href="https://twitter.com/' + bid.twitter_name + '/status/' + ask.twitter_status_id + '">' + ask.twitter_status_text + '</a>' +    
+            //bid.twitter_status_text +    
+            '(S: ' + user.statuses_count + ', F: ' + user.followers_count + ')' +
+            '</div>' +
             '<div style="text-align:center">' + bid.campaign_type + '</div>' +
-            '<div style="text-align:center">' + bid.cost + '</div>' +
             action_cell + 
             '</div>');
 };
