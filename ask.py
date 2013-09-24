@@ -80,6 +80,8 @@ class Process(Resource):
                     'id': 0 
                 } 
             response['available_balance'] = session_user['available_balance']
+            if session_user['available_balance'] <= 0:
+                response['error'] = True
 
         if action == 'withdraw':
             try:
