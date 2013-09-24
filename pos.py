@@ -4,7 +4,7 @@ from twisted.web.util import redirectTo
 from twisted.web.template import Element, renderer, renderElement, XMLString
 from twisted.python.filepath import FilePath
 
-from data import Order
+from data import Order, Profile
 from data import db
 from sessions import SessionManager
 
@@ -100,7 +100,7 @@ class Withdraw(Resource):
         amount = request.args.get('amount')[0]
         bitcoin_address = request.args.get('bitcoin_address')[0]
         
-        response = error.amount(request, amount)
+        response = error.withdraw_amount(request, amount)
         if response['error']:
             return json.dumps(response) 
         
@@ -110,7 +110,7 @@ class Withdraw(Resource):
 
         profile = db.query(Profile).filter(Profile.id == session_user['id']).first()
 
-        if D(profile.available_balance) > D(amount):
+        if D(profile.available_balance) < D(amount):
             response = {}
             response['error'] = True
             response['message'] = "You can withdraw %s max." % profile.available_balance 
@@ -120,7 +120,7 @@ class Withdraw(Resource):
         timestamp = config.create_timestamp()
 
         rates = coinbase_api.get_rates()
-        fiat_amount = D(deposit_amount) * D(rates['sell'])
+        fiat_amount = D(amount) * D(rates['sell'])
 
         data = {
             'status': 'open',
@@ -130,8 +130,16 @@ class Withdraw(Resource):
             'user_id': session_user['id'],
             'currency': 'USD',
             'fiat_amount': float(fiat_amount),
-            'btc_amount': withdraw_amount,
+            'btc_amount': amount,
             'code': '' 
         }
 
+        new_order = Order(data)
+        db.add(new_order)
+        db.commit()
+
+        response = {}
+        response['error'] = False
+        response['message'] = definitions.MESSAGE_SUCCESS
+        response['url'] = '../orders'
         return json.dumps(response) 

@@ -135,6 +135,15 @@ class Create(Resource):
 
         timestamp = config.create_timestamp()
 
+        asks = db.query(Ask).filter(Ask.twitter_status_id == twitter_status_id)
+        ask = asks.filter(Ask.status == 'active').first()
+
+        if ask:
+            response = {}
+            response['error'] = True
+            response['message'] = 'You already have this tweet on the market.' 
+            return json.dumps(response) 
+
         data = {
             'status': 'active',
             'created_at': timestamp,

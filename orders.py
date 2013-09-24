@@ -108,6 +108,7 @@ class Table(Element):
         for order in self.orders:
             slots = {}
             slots['status'] = order.status 
+            slots['kind'] = order.kind 
             slots['created_at'] = config.convert_timestamp(order.created_at, config.STANDARD)
             slots['updated_at'] = config.convert_timestamp(order.updated_at, config.STANDARD)
             slots['order_id'] = str(order.id)

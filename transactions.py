@@ -14,6 +14,7 @@ import json
 import forms
 import mailer
 import pages
+import time
 import twitter_api
 
 Email = mailer.Email
@@ -241,8 +242,8 @@ class Create(Resource):
 
             client = db.query(User).filter(User.id == client.user_id).first()
 
-            plain = mailer.offer_created_memo_plain(new_transaction)
-            html = mailer.offer_created_memo_html(new_transaction)
+            plain = mailer.offer_created_memo_plain(promoter, new_transaction)
+            html = mailer.offer_created_memo_html(promoter, new_transaction)
             Email(mailer.noreply, client.email, 'You have a new Hype Wizard promotional offer pending!', plain, html).send()
         
         #####################################
@@ -330,11 +331,12 @@ class Complete(Resource):
         else:
             if response['is_retweet_found']:
                 delta = response['delta']
-                if response['delta'] < 86400:
+                if delta < 86400:
                     print delta * 20
+                    timestamp = time.strftime('%H hrs %M mins %S secs', time.gmtime(delta))
                     response = {}
                     response['error'] = True
-                    response['message'] = 'Please wait until the end of promotion period (~ %s hrs)' % int(24 - delta / 3600)
+                    response['message'] = 'Please wait until the end of promotion period (ETA: %s)' % timestamp 
                     return json.dumps(response) 
             else:
                 response = {}

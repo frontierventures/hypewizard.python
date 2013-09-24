@@ -16,6 +16,7 @@
         <table style="width: 100%">
             <thead>
                 <tr>
+                    <th>Kind</th>
                     <th>Status</th>
                     <th>Created At</th>
                     <th>Updated At</th>
@@ -26,6 +27,7 @@
             </thead>
             <tbody>
                 <tr t:render="row">
+                    <td style="text-align:center"><t:slot name="kind" /></td>
                     <td style="text-align:center"><t:slot name="status" /></td>
                     <td style="text-align:center"><t:slot name="created_at" /></td>
                     <td style="text-align:center"><t:slot name="updated_at" /></td>
