@@ -181,7 +181,7 @@ class Create(Resource):
             db.add(new_user)
             db.commit()
 
-            url = 'http://www.hypewhiz.com/verify_email?id=%s&token=%s' % (str(new_user.id), token)
+            url = '%s/verify_email?id=%s&token=%s' % (config.company_url, str(new_user.id), token)
 
             plain = mailer.verificationPlain(url)
             html = mailer.verificationHtml(url)

@@ -64,4 +64,5 @@ def convert_timestamp(timestamp, formatting):
     timestamp = utc.strftime(formatting)
     return timestamp
 
-company_name = "Hype Wizard"
+company_name = 'Hype Wizard'
+company_url = 'http://198.61.239.230:8180'

@@ -135,7 +135,8 @@ class Resend(Resource):
         user = db.query(User).filter(User.id == session_user['id']).first()
         profile = db.query(Profile).filter(Profile.user_id == session_user['id']).first()
 
-        url = 'http://www.hypewhiz.com/verify_email?id=%s&token=%s' % (str(session_user['id']), profile.token)
+        url = '%s/verify_email?id=%s&token=%s' % (config.company_url, str(session_user['id']), token)
+
         plain = mailer.verify_email_memo_plain(url)
         html = mailer.verify_email_memo_html(url)
         Email(mailer.noreply, user.email, 'Instructions to verify your Hype Wizard email', plain, html).send()

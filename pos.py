@@ -25,6 +25,7 @@ coinbase_api = api
 
 
 def assemble(root):
+    root.putChild('callback', Callback())
     root.putChild('deposit', Deposit())
     root.putChild('withdraw', Withdraw())
     return root
@@ -69,7 +70,8 @@ class Deposit(Resource):
             "price_string": "%s" % deposit_amount,
             "price_currency_iso": "BTC",
             "custom": "%s" % new_order.id,
-            "callback_url": "http://www.example.com/my_custom_button_callback",
+            #http://198.61.239.230:8180/
+            "callback_url": "%s/callback" % config.company_url,
             "description": "Spendable Hype Wizard credit",
             "type": "buy_now",
             "style": "custom_large"
@@ -148,3 +150,11 @@ class Withdraw(Resource):
         response['message'] = definitions.MESSAGE_SUCCESS
         response['url'] = '../orders'
         return json.dumps(response) 
+
+
+class Callback(Resource):
+    def render(self, request):
+        print '%srequest.args: %s%s' % (config.color.RED, request.args, config.color.ENDC)
+        print 'Ping\n' * 20
+        request.setResponseCode(200)
+        return 'OK' 
