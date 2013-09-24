@@ -37,6 +37,7 @@
     <div style="display:none">
         <t:transparent t:render="change_password_popup" />
         <t:transparent t:render="resend_token_popup" />
+        <t:transparent t:render="withdraw_popup" />
     </div>
 
     <!-- Le javascript

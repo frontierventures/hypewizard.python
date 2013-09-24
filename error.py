@@ -101,6 +101,27 @@ def deposit_amount(request, value):
     return response
 
 
+def withdraw_amount(request, value):
+    response = {}
+    response['error'] = False
+
+    if not value:
+        response['error'] = True
+        response['message'] = definitions.WITHDRAW_AMOUNT[0]
+
+    try:
+        value = float(value)
+    except:
+        response['error'] = True
+        response['message'] = definitions.WITHDRAW_AMOUNT[1]
+
+    if value <= 0:
+        response['error'] = True
+        response['message'] = definitions.WITHDRAW_AMOUNT[1]
+
+    return response
+
+
 def price_per_tweet(request, value):
     response = {}
     response['error'] = False

@@ -20,6 +20,11 @@ DEPOSIT_AMOUNT = [
     'Invalid deposit amount entered'
 ]
 
+WITHDRAW_AMOUNT = [
+    'Withdraw amount not entered',
+    'Invalid withdraw amount entered'
+]
+
 RETWEET_GOAL = [
     'Retweet goal not entered',
     'Invalid retweet goal entered'

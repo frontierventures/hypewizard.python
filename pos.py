@@ -25,6 +25,7 @@ coinbase_api = api
 
 def assemble(root):
     root.putChild('deposit', Deposit())
+    root.putChild('withdraw', Withdraw())
     return root
 
 
@@ -44,13 +45,13 @@ class Deposit(Resource):
         timestamp = config.create_timestamp()
             
         rates = coinbase_api.get_rates()
-
         fiat_amount = D(deposit_amount) * D(rates['buy'])
 
         data = {
             'status': 'open',
             'created_at': timestamp,
             'updated_at': timestamp,
+            'kind': 'deposit',
             'user_id': session_user['id'],
             'currency': 'USD',
             'fiat_amount': float(fiat_amount),
@@ -83,5 +84,54 @@ class Deposit(Resource):
         response['error'] = False
         response['message'] = definitions.MESSAGE_SUCCESS
         response['url'] = 'https://coinbase.com/checkouts/%s?c=a' % order.code
+        return json.dumps(response) 
+
+
+class Withdraw(Resource):
+    def render(self, request):
+        print '%srequest.args: %s%s' % (config.color.RED, request.args, config.color.ENDC)
+
+        if not request.args:
+            return redirectTo('../', request)
+
+        session_user = SessionManager(request).get_session_user()
+        session_user['action'] = 'withdraw'
+        
+        amount = request.args.get('amount')[0]
+        bitcoin_address = request.args.get('bitcoin_address')[0]
+        
+        response = error.amount(request, amount)
+        if response['error']:
+            return json.dumps(response) 
+        
+        response = error.bitcoin_address(request, bitcoin_address)
+        if response['error']:
+            return json.dumps(response) 
+
+        profile = db.query(Profile).filter(Profile.id == session_user['id']).first()
+
+        if D(profile.available_balance) > D(amount):
+            response = {}
+            response['error'] = True
+            response['message'] = "You can withdraw %s max." % profile.available_balance 
+            response['url'] = '../account'
+            return json.dumps(response) 
+
+        timestamp = config.create_timestamp()
+
+        rates = coinbase_api.get_rates()
+        fiat_amount = D(deposit_amount) * D(rates['sell'])
+
+        data = {
+            'status': 'open',
+            'created_at': timestamp,
+            'updated_at': timestamp,
+            'kind': 'withdraw',
+            'user_id': session_user['id'],
+            'currency': 'USD',
+            'fiat_amount': float(fiat_amount),
+            'btc_amount': withdraw_amount,
+            'code': '' 
+        }
 
         return json.dumps(response) 

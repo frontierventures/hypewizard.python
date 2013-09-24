@@ -11,6 +11,12 @@ $(document).ready(function(){
             return "#resend_token_popup";
         }      
     });
+    $('a[href*=withdraw]').colorbox({
+        inline:true,           
+        href: function() {              
+            return "#withdraw_popup";
+        }      
+    });
     $('form[name*=change_password_form]').submit(function() { 
         var response = {};
         $.ajax({

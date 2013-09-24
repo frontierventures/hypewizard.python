@@ -60,6 +60,10 @@ class Account(Page):
     def resend_token_popup(self, request, tag):
         return popups.ResendToken()
 
+    @renderer
+    def withdraw_popup(self, request, tag):
+        return popups.Withdraw()
+
 
 class Ask(Page):
     def __init__(self, pageTitle, template, filters):

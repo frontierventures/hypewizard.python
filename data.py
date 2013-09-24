@@ -128,6 +128,7 @@ class Order(Base):
     status = Column(String)
     created_at = Column(String)
     updated_at = Column(String)
+    kind = Column(String)
     user_id = Column(Integer)
     currency = Column(String)
     fiat_amount = Column(String)
@@ -138,6 +139,7 @@ class Order(Base):
         self.status = data['status']
         self.created_at = data['created_at']
         self.updated_at = data['updated_at']
+        self.kind = data['kind']
         self.user_id = data['user_id']
         self.currency = data['currency']
         self.fiat_amount = data['fiat_amount']

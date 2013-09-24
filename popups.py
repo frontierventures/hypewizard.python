@@ -330,10 +330,9 @@ class ResetPassword(Element):
         self.loader = XMLString(FilePath(templates['reset_password']).getContent())
 
 
-class WithdrawAsk(Element):
-    def __init__(self, session_user):
-        self.loader = XMLString(FilePath(templates['withdraw_ask']).getContent())
-        self.session_user = session_user
+class Withdraw(Element):
+    def __init__(self):
+        self.loader = XMLString(FilePath(templates['withdraw']).getContent())
 
     @renderer
     def form(self, request, tag):
@@ -436,6 +435,7 @@ templates = {
         'engage_promoter': 'templates/popups/engage_promoter.xml',
         'resend_token': 'templates/popups/resend_token.xml',
         'reset_password': 'templates/popups/reset_password.xml',
+        'withdraw': 'templates/popups/withdraw.xml',
         'withdraw_ask': 'templates/popups/withdraw_ask.xml',
         'withdraw_bid': 'templates/popups/withdraw_bid.xml'
     }
