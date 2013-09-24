@@ -3,7 +3,7 @@
         <input type="hidden" name="transaction_id" />
         <div>
             <h1>Are you sure?</h1>
-            <div id="claim_balance_alert">
+            <div style="overflow:hidden;" id="claim_balance_alert">
             </div>
             <div>
                 <select name="is_confirmed">

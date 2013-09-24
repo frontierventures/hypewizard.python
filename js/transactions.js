@@ -38,6 +38,8 @@ $(document).ready(function(){
         }      
     });
     $('form[name*=claim_balance_form]').submit(function() { 
+        $('#claim_balance_alert').append('<img src="../img/loading_bar.gif" />');
+        $.colorbox.resize();
         var response = {};
         $.ajax({
             data: $(this).serialize(),
@@ -46,6 +48,7 @@ $(document).ready(function(){
             dataType: 'json',
             success: function(response) {
                 if (response.error) {
+                    $('#claim_balance_alert').empty();
                     $('#claim_balance_alert').append('<div class="alert alert-error" id="alert">' + response.message + '</div>');
                     $.colorbox.resize();
                 } else {

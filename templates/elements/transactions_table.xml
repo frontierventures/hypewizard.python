@@ -22,7 +22,7 @@
                     <th>Transaction Id</th>
                     <th>Client (Twitter Name)</th>
                     <th>Twitter Status Id</th>
-                    <th>Profit</th>
+                    <th>Reward (BTC)</th>
                     <th>Actions</th>
                 </tr>
             </thead>

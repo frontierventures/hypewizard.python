@@ -314,13 +314,18 @@ class Create(Resource):
 class Complete(Resource):
     def render(self, request):
         print '%srequest.args: %s%s' % (config.color.RED, request.args, config.color.ENDC)
-
+        
+        time.sleep(2)
         session_user = SessionManager(request).get_session_user()
         session_user['action'] = 'complete_transaction'
 
         is_confirmed = request.args.get('is_confirmed')[0]
         if is_confirmed == 'no':
-            return json.dumps(dict(response=1, text=definitions.MESSAGE_SUCCESS))
+            response = {}
+            response['error'] = False
+            response['message'] = definitions.MESSAGE_SUCCESS
+            response['url'] = '../transactions'
+            return json.dumps(response) 
         
         try:
             transaction_id = int(request.args.get('transaction_id')[0])
