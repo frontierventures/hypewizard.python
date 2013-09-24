@@ -81,6 +81,10 @@ function add_ask_to_market(rule, ask) {
         var action_cell = '<div style="text-align:center"><a href="../">View Tweet</a> <a href="' + action_url + '">Engage Client</a></div>';
     }
 
+    if (!ask.engage.is_allowed && ask.engage.reason == 'engaged') {
+        var action_cell = '<div style="text-align:center"><a href="../">View Tweet</a> <span style="color: green;">Waiting for client reply</span></div>';
+    }
+
     if (ask.engage.is_allowed) {
         action_url = '../process_ask?action=engage&id=' + ask.id; 
         action_cell = '<div style="text-align:center"><a href="../">View Tweet</a> <a href="' + action_url + '">Engage Client</a></div>';

@@ -2,7 +2,7 @@
 from twisted.web.resource import Resource
 from twisted.web.util import redirectTo
 from twisted.python .filepath import FilePath
-from parsley import makeGrammar
+#from parsley import makeGrammar
 from twisted.web.template import XMLString, Element, renderer, tags
 
 from data import db

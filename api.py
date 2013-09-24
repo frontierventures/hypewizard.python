@@ -7,7 +7,7 @@ import functions
 import json
 import twitter_api
 
-from data import Ask, Bid, Profile, TwitterUserData, Tweet 
+from data import Ask, Bid, Profile, Transaction, TwitterUserData, Tweet 
 from data import db
 from sqlalchemy.sql import and_
 from sqlalchemy.sql import func
@@ -80,6 +80,15 @@ class GetAsks(Resource):
             if session_user['id'] == 0:
                 order['engage']['is_allowed'] = False
                 order['engage']['reason'] = 'unauthorized'
+
+            else:
+                transactions = db.query(Transaction).filter(Transaction.status == 'open')
+                transactions = db.query(Transaction).filter(Transaction.promoter_id == session_user['id'])
+                transaction = transactions.filter(Transaction.twitter_status_id == ask.twitter_status_id).first()
+
+                if transaction:
+                    order['engage']['is_allowed'] = False
+                    order['engage']['reason'] = 'engaged'
 
             orders.append(order)
 
