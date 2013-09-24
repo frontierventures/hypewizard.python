@@ -11,7 +11,7 @@
             <b>Seeking to promote your tweets? <a><t:attr name="href"><t:slot name="url" /></t:attr>Post Your Ask</a></b>
         </div>
     </div>
-    <div style="width: 100%; float: left;" class="asks">
+    <div style="width: 100%; float: left; text-align: center;" class="asks">
         <input type="hidden" name="kind">
             <t:attr name="value"><t:slot name="kind" /></t:attr>
         </input>

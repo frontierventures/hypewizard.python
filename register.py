@@ -119,6 +119,11 @@ class Create(Resource):
             SessionManager(request).setSessionResponse({'class': 1, 'form': 0, 'text': response['message']})
             return redirectTo('../register', request)
 
+        twitter_user_data = db.query(TwitterUserData).filter(TwitterUserData.twitter_name == twitter_name).first()
+        if twitter_user_data:
+            SessionManager(request).setSessionResponse({'class': 1, 'form': 0, 'text': 'Twitter name already used'})
+            return redirectTo('../register', request)
+
         response = twitter_api.get_user(twitter_name)
         if response['error']:
             SessionManager(request).setSessionResponse({'class': 1, 'form': 0, 'text': response['message']})
@@ -137,7 +142,7 @@ class Create(Resource):
             seed = random.randint(0, sys.maxint)
 
             data = {
-                'status': 'unverified',
+                'status': 'active',
                 'level': 1,
                 'login_timestamp': timestamp,
                 'email': email,

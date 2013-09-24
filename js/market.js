@@ -99,7 +99,7 @@ function add_ask_to_market(rule, ask) {
 
     $('.asks').append(
             '<div class="block">' +
-            '<div style="text-align:center;float: left;width: 150px;">' +
+            '<div style="text-align:center; float:left; width:150px;">' +
             '<div style="text-align:center">' + ask.niche + '</div>' +
             '<div>' +
             '<a href="https://twitter.com/' + ask.twitter_name + '">' + ask.twitter_name + '</a>' +
@@ -117,7 +117,6 @@ function add_ask_to_market(rule, ask) {
             '</div>' +
             '<div style="text-align:center">' + ask.campaign_type + '</div>' +
             action_cell + 
-            '<hr />' +
             '</div>');
 };
 function add_bid_to_market(rule, bid) { 
