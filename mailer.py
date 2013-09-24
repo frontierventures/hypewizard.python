@@ -95,8 +95,8 @@ def offer_created_memo_plain(promoter, offer):
     plain = """
     You have received an offer to promote one of your tweets.\n
     Promoter Twitter Name: %s\n
-    Tweet Id Name: %s\n
-    Please login to review promoter's wizard score.\n
+    Tweet Id: %s\n
+    Please login to review promoter's wizard score before you continue.\n
     Hype Wizard Team
     """ % (promoter.twitter_name, offer.twitter_status_id)
     return plain
@@ -105,9 +105,10 @@ def offer_created_memo_plain(promoter, offer):
 def offer_created_memo_html(promoter, offer):
     html = """
     <html>
-    <p>You have received an offer to promote one of your tweets (#%s).</p>
+    <p>You have received an offer to promote one of your tweets.</p>
     <p><b>Promoter: </b><a:href="http://www.twitter.com/%s">%s</a></p>
-    <p>Please login to review promoter's wizard score.</p>
+    <p><b>Tweet Id: </b>%s</p>
+    <p>Please login to review promoter's wizard score before you continue.</p>
     <p><b>Hype Wizard Team</b></p>
     </html>
     """ % (promoter.twitter_name, promoter.twitter_name, offer.twitter_status_id)

@@ -14,6 +14,7 @@ import config
 import decimal
 import definitions
 import error
+import functions
 import json
 import forms
 import pages
@@ -136,7 +137,11 @@ class Withdraw(Resource):
 
         new_order = Order(data)
         db.add(new_order)
+
+        profile.available_balance = D(profile.available_balance) - D(amount) 
         db.commit()
+
+        functions.refresh_session_user(request)
 
         response = {}
         response['error'] = False
