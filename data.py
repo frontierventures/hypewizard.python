@@ -183,6 +183,7 @@ class Transaction(Base):
     __tablename__ = 'transactions'
     id = Column(Integer, Sequence('transaction_id_seq'), primary_key=True)
     status = Column(String)
+    kind = Column(String)
     created_at = Column(String)
     updated_at = Column(String)
     client_twitter_id = Column(Integer)
@@ -196,6 +197,7 @@ class Transaction(Base):
 
     def __init__(self, data):
         self.status = data['status']
+        self.kind = data['kind']
         self.created_at = data['created_at']
         self.updated_at = data['updated_at']
         self.client_twitter_id = data['client_twitter_id']

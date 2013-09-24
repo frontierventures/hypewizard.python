@@ -217,6 +217,7 @@ class Create(Resource):
 
             data = {
                 'status': 'open',
+                'kind': 'client-first',
                 'created_at': timestamp,
                 'updated_at': timestamp,
                 'client_twitter_id': ask.twitter_id,
@@ -269,8 +270,22 @@ class Create(Resource):
                 response['message'] = "This promoter charges %s per retweet." % charge 
                 return json.dumps(response) 
 
+            #asks = db.query(Ask).filter(Ask.twitter_status_id == twitter_status_id)
+            #ask = asks.filter(Ask.status == 'active').first()
+
+            transactions = db.query(Transaction).filter(Transaction.client_id == session_user['id'])
+            transactions = transactions.filter(Transaction.status.in_(['open', 'approved']))  
+            transaction = transactions.filter(Transaction.twitter_status_id == twitter_status_id).first()
+
+            if transaction:
+                response = {}
+                response['error'] = True
+                response['message'] = 'You already seeking to promoter this tweet with this promoter.' 
+                return json.dumps(response) 
+
             data = {
                 'status': 'approved',
+                'kind': 'direct',
                 'created_at': timestamp,
                 'updated_at': timestamp,
                 'client_twitter_id': session_user['twitter_id'],

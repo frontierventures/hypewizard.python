@@ -1,0 +1,25 @@
+GnuPGInterface==0.3.2
+Landscape-Client==12.05
+PAM==0.4.2
+Parsley==1.1
+SQLAlchemy==0.8.2
+Twisted==13.1.0
+Twisted-Core==12.2.0
+apt-xapian-index==0.44
+argparse==1.2.1
+chardet==2.0.1
+## FIXME: could not find svn URL in dependency_links for this package:
+distribute==0.6.28dev-r0
+psycopg2==2.5.1
+pyOpenSSL==0.13
+pyPdf==1.13
+pycurl==7.19.0
+pyserial==2.5
+python-apt==0.8.7ubuntu4.1
+python-debian==0.1.21-nmu2ubuntu1
+reportlab==2.7
+six==1.1.0
+txWS==0.7.1
+virtualenv==1.10.1
+wsgiref==0.1.2
+zope.interface==3.6.1

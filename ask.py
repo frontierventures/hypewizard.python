@@ -132,6 +132,15 @@ class Create(Resource):
 
         timestamp = config.create_timestamp()
 
+        asks = db.query(Ask).filter(Ask.user_id == session_user['id'])
+        asks = asks.filter(Ask.status == 'active')
+
+        if asks.count() >= 3:
+            response = {}
+            response['error'] = True
+            response['message'] = 'You can only have 3 active asks on the market.' 
+            return json.dumps(response) 
+
         asks = db.query(Ask).filter(Ask.twitter_status_id == twitter_status_id)
         ask = asks.filter(Ask.status == 'active').first()
 

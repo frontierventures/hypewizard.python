@@ -117,6 +117,7 @@ class Table(Element):
 
             slots = {}
             slots['status'] = offer.status 
+            slots['kind'] = offer.kind 
             slots['created_at'] = config.convert_timestamp(offer.created_at, config.STANDARD)
             slots['updated_at'] = config.convert_timestamp(offer.updated_at, config.STANDARD)
             slots['offer_id'] = str(offer.id)
