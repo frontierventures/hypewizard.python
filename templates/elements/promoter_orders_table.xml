@@ -8,7 +8,7 @@
         </div>
         <div class="span4">
             <br />
-            If you are seeking to earn <a><t:attr name="href"><t:slot name="url" /></t:attr>Post Your Bid</a>
+            <b>Seeking to earn? <a><t:attr name="href"><t:slot name="url" /></t:attr>Post Your Bid</a></b>
         </div>
     </div>
     <div style="width: 100%; float: left;" class="bids">

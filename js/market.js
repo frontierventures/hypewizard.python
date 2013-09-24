@@ -73,29 +73,52 @@ function add_ask_to_market(rule, ask) {
 
     if (!ask.engage.is_allowed && ask.engage.reason == 'unverified') {
         var action_url = '../feature_disabled?reason=unverified';
-        var action_cell = '<div style="text-align:center"><a href="' + action_url + '">Engage Client</a></div>';
+        var action_cell = '<div style="text-align:center"><a href="../">View Tweet</a> <a href="' + action_url + '">Engage Client</a></div>';
     }
 
     if (!ask.engage.is_allowed && ask.engage.reason == 'unauthorized') {
         var action_url = '../feature_disabled?reason=unauthorized';
-        var action_cell = '<div style="text-align:center"><a href="' + action_url + '">Engage Client</a></div>';
+        var action_cell = '<div style="text-align:center"><a href="../">View Tweet</a> <a href="' + action_url + '">Engage Client</a></div>';
     }
 
     if (ask.engage.is_allowed) {
         action_url = '../process_ask?action=engage&id=' + ask.id; 
-        action_cell = '<div style="text-align:center"><a href="' + action_url + '">Engage Client</a></div>';
+        action_cell = '<div style="text-align:center"><a href="../">View Tweet</a> <a href="' + action_url + '">Engage Client</a></div>';
     }
 
+    //$('.asks').append(
+    //        '<div class="block">' + 
+    //        '<div style="text-align:center">' + ask.niche + '</div>' +
+    //        '<div style="text-align:center"><a href="https://twitter.com/' + ask.twitter_name + '">' + ask.twitter_name + '</a></div>' +
+    //        '<div style="text-align:center; font-size: 16px"><a href="https://twitter.com/' + ask.twitter_name + '/status/' + ask.twitter_status_id + '">' + ask.twitter_status_text + '</a></div>' +
+    //        '<div style="text-align:center">' + ask.campaign_type + '</div>' +
+    //        '<div style="text-align:center">' + ask.target + ' of ' + ask.goal + '</div>' +
+    //        '<div style="text-align:center">' + ask.cost + '</div>' +
+    //        action_cell + 
+    //        '</div>'); 
+
     $('.asks').append(
-            '<div class="block">' + 
+            '<div class="block">' +
+            '<div style="text-align:center;float: left;width: 150px;">' +
             '<div style="text-align:center">' + ask.niche + '</div>' +
-            '<div style="text-align:center"><a href="https://twitter.com/' + ask.twitter_name + '">' + ask.twitter_name + '</a></div>' +
-            '<div style="text-align:center; font-size: 16px"><a href="https://twitter.com/' + ask.twitter_name + '/status/' + ask.twitter_status_id + '">' + ask.twitter_status_text + '</a></div>' +
-            '<div style="text-align:center">' + ask.campaign_type + '</div>' +
+            '<div>' +
+            '<a href="https://twitter.com/' + ask.twitter_name + '">' + ask.twitter_name + '</a>' +
+            '<div>' +
+            '</div>' +
+            '</div>' +
+            '</div>' +
+            '<div style="float: left;width: 150px;">' +
+            '<div style="text-align:center;font-size: 30px;"><b>' + ask.cost + 'BTC</b></div>' +
             '<div style="text-align:center">' + ask.target + ' of ' + ask.goal + '</div>' +
-            '<div style="text-align:center">' + ask.cost + '</div>' +
+            '</div>' +
+            '<div style="text-align:center; display: table-cell; vertical-align: middle; font-size: 12px; height: 120px;">' +
+            //'<a href="https://twitter.com/' + ask.twitter_name + '/status/' + ask.twitter_status_id + '">' + ask.twitter_status_text + '</a>' +    
+            ask.twitter_status_text +    
+            '</div>' +
+            '<div style="text-align:center">' + ask.campaign_type + '</div>' +
             action_cell + 
-            '</div>'); 
+            '<hr />' +
+            '</div>');
 };
 function add_bid_to_market(rule, bid) { 
     var user = {};
@@ -128,7 +151,7 @@ function add_bid_to_market(rule, bid) {
         action_url = '../process_bid?action=engage&id=' + bid.id; 
         action_cell = '<div style="text-align:center"><a href="' + action_url + '">Engage Promoter</a></div>';
     }
-    
+
     $('.bids').append(
             '<div class="block">' + 
             '<div style="text-align:center">' + bid.niche + '</div>' +

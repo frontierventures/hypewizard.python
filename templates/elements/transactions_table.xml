@@ -28,6 +28,7 @@
             </thead>
             <tbody>
                 <tr t:render="row">
+                    <t:attr name="id"><t:slot name="row_id" /></t:attr>
                     <td style="text-align:center"><t:slot name="status" /></td>
                     <td style="text-align:center"><t:slot name="created_at" /></td>
                     <td style="text-align:center"><t:slot name="updated_at" /></td>

@@ -33,7 +33,7 @@ class Main(Resource):
         print '%srequest.args: %s%s' % (config.color.RED, request.args, config.color.ENDC)
 
         session_user = SessionManager(request).get_session_user()
-        session_user['action'] = 'transactions'
+        session_user['page'] = 'transactions'
 
         if session_user['id'] == 0:
             return redirectTo('../', request)
@@ -118,9 +118,9 @@ class Table(Element):
 
     @renderer
     def row(self, request, tag):
-        for transaction in self.transactions:
+        for index, transaction in enumerate(self.transactions):
             slots = {}
-
+            slots['row_id'] = 'row_%s' % index
             slots['status'] = transaction.status 
             slots['created_at'] = config.convert_timestamp(transaction.created_at, config.STANDARD)
             slots['updated_at'] = config.convert_timestamp(transaction.updated_at, config.STANDARD)
@@ -245,6 +245,8 @@ class Create(Resource):
             plain = mailer.offer_created_memo_plain(promoter, new_transaction)
             html = mailer.offer_created_memo_html(promoter, new_transaction)
             Email(mailer.noreply, client.email, 'You have a new Hype Wizard promotional offer pending!', plain, html).send()
+
+            url = '../transactions'
         
         #####################################
         # Engage Promoter
@@ -300,9 +302,12 @@ class Create(Resource):
 
             Email(mailer.noreply, promoter.email, 'Your have a request with Hype Wizard!', plain, html).send()
 
+            url = '../offers'
+
         response = {}
         response['error'] = False
         response['message'] = definitions.MESSAGE_SUCCESS
+        response['url'] = url 
         return json.dumps(response) 
 
 

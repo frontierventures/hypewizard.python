@@ -32,7 +32,7 @@ class Main(Resource):
         print '%srequest.args: %s%s' % (config.color.RED, request.args, config.color.ENDC)
 
         session_user = SessionManager(request).get_session_user()
-        session_user['action'] = 'offers'
+        session_user['page'] = 'offers'
 
         if session_user['id'] == 0:
             return redirectTo('../', request)

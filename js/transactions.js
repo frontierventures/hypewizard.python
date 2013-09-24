@@ -2,6 +2,21 @@ $(document).ready(function(){
     $("select[name=transaction_status]").change(function(){     
         window.location='../transactions?status=' + this.value; 
     }); 
+    $.ajax({
+        url: '../get_session_user',
+        async: false,
+        cache: false,
+        dataType: 'json',
+        fail: function() { response.error = false }, 
+        success: function(data) {
+            response = data;
+            //alert(response.action);
+            if(response.action == 'create_transaction') {
+                $('#row_0').css("background-color", "#0266C8");
+                $('#row_0').css("color", "#FFFFFF");
+            }
+        }
+    });
     $('a[href*=process_transaction]').colorbox({
         inline:true,           
         href: function() {              

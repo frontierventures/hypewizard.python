@@ -19,6 +19,7 @@ import definitions
 def assemble(root):
     root.putChild('get_asks', GetAsks())
     root.putChild('get_bids', GetBids())
+    root.putChild('get_session_user', GetSessionUser())
     root.putChild('get_user', GetMarketScore())
     return root
 
@@ -166,3 +167,13 @@ class GetMarketScore(Resource):
         record['followers_count'] = twitter_user.followers_count
         record['niche'] = definitions.niches[profile.niche]
         return json.dumps(record)
+        session_response = SessionManager(request).get_session_response()
+
+        reponse = {}
+        return json.dumps(record)
+
+
+class GetSessionUser(Resource):
+    def render(self, request):
+        session_user = SessionManager(request).get_session_user()
+        return json.dumps(session_user)
