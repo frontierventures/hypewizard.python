@@ -72,6 +72,8 @@ class Details(Element):
         slots['statuses_count'] = str(self.twitter_user.statuses_count)
         slots['followers_count'] = str(self.twitter_user.followers_count)
         slots['twitter_image'] = str(self.twitter_user_data.twitter_image)
+        slots['available_balance'] = str(self.profile.available_balance)
+        slots['reserved_balance'] = str(self.profile.reserved_balance)
         slots['market_score'] = str(0)
         #slots['status_text'] = status.text.encode('utf-8')
         yield tag.clone().fillSlots(**slots)

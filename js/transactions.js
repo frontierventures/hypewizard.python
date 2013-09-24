@@ -17,6 +17,7 @@ $(document).ready(function(){
             });
             if (response.action == 'claim') {
                 $('input[name=transaction_id]').val(response.transaction.id);
+                $('#claim_balance_alert').empty();
                 return "#claim_balance_popup";
             }
         }      
@@ -30,7 +31,6 @@ $(document).ready(function(){
             dataType: 'json',
             success: function(response) {
                 if (response.error) {
-                    $('#claim_balance_alert').empty();
                     $('#claim_balance_alert').append('<div class="alert alert-error" id="alert">' + response.message + '</div>');
                     $.colorbox.resize();
                 } else {

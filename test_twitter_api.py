@@ -19,15 +19,15 @@ if __name__ == '__main__':
     # You can search promoters timeline and see which are retweets
     # You can search clients timeline and see what was retweeted
 
-    #tweets = twitter_api.get_statuses('helper_alice')
+    tweets = twitter_api.get_statuses('hypewizard')
+    print tweets
     #print twitter_api.get_timeline(client_id)
 
     promoter_id = '1898591701' 
     status_id = '381333411018715136'
 
     #verify_transaction(promoter_id, status_id)
-    twitter_api.is_promotional_period_over(promoter_id, status_id)
-
+    #twitter_api.is_promotional_period_over(promoter_id, status_id)
     #match(tweets, status_id)
     
     # Find retweets

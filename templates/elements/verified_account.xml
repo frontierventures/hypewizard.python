@@ -2,6 +2,9 @@
     <div class="span6" style="text-align: center;">
         <h1>Hype Wizard Account</h1>
         <h2 style="color: green;">Verified</h2>
+        <div><b>Available Balance:</b> <t:slot name="available_balance" /></div>
+        <div><b>Reserved Balance:</b> <t:slot name="reserved_balance" /></div>
+        <div><a href="../withdraw">Withdraw</a></div>
         <div><a href="../orders">Order History</a></div>
         <div><a href="../change_password">Change Password</a></div>
     </div>
