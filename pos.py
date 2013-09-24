@@ -15,6 +15,7 @@ import decimal
 import definitions
 import error
 import functions
+import hashlib
 import json
 import forms
 import pages
@@ -49,6 +50,9 @@ class Deposit(Resource):
         rates = coinbase_api.get_rates()
         fiat_amount = D(deposit_amount) * D(rates['buy'])
 
+        satoshi_deposit_amount = D(deposit_amount) * D(100000000)
+        satoshi_deposit_amount = int(satoshi_deposit_amount)
+
         data = {
             'status': 'open',
             'created_at': timestamp,
@@ -57,21 +61,23 @@ class Deposit(Resource):
             'user_id': session_user['id'],
             'currency': 'USD',
             'fiat_amount': float(fiat_amount),
-            'btc_amount': deposit_amount,
-            'code': '' 
+            'btc_amount': satoshi_deposit_amount, 
+            'code': '', 
+            'token': '' 
         }
 
         new_order = Order(data)
         db.add(new_order)
         db.commit()
 
+        token = hashlib.sha224(str(data)).hexdigest()
+
         data = {
             "name": "Hype Wizard Credit - %s BTC" % deposit_amount,
             "price_string": "%s" % deposit_amount,
             "price_currency_iso": "BTC",
             "custom": "%s" % new_order.id,
-            #http://198.61.239.230:8180/
-            "callback_url": "%s/callback" % config.company_url,
+            "callback_url": "%s/callback?token=%s" % (config.company_url, token),
             "description": "Spendable Hype Wizard credit",
             "type": "buy_now",
             "style": "custom_large"
@@ -81,6 +87,7 @@ class Deposit(Resource):
 
         order = db.query(Order).filter(Order.id == new_order.id).first()
         order.code = str(code)
+        order.token = str(token)
         db.commit()
 
         response = {}
@@ -150,11 +157,30 @@ class Withdraw(Resource):
         response['message'] = definitions.MESSAGE_SUCCESS
         response['url'] = '../orders'
         return json.dumps(response) 
-
+ 
 
 class Callback(Resource):
     def render(self, request):
         print '%srequest.args: %s%s' % (config.color.RED, request.args, config.color.ENDC)
-        print 'Ping\n' * 20
+        try:
+            token = request.args.get('token')[0]
+        except:
+            token = ''
+
+        if token:
+            orders = db.query(Order).filter(Order.status == 'open')
+            order = orders.filter(Order.token == token).first()
+
+        if order:
+            profile = db.query(Profile).filter(Profile.user_id == order.user_id).first()
+
+            new_balance_satoshi = D(profile.available_balance) + D(order.btc_amount)
+            profile.available_balance += int(new_balance_satoshi) 
+
+            order.status = 'complete'
+            # credit balance
+            db.commit()
+
+        print 'Callback from Coinbase\n' * 20
         request.setResponseCode(200)
         return 'OK' 

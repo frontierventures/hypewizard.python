@@ -22,5 +22,6 @@ def create_invoice(data):
     global account
         
     button = account.create_button(data)
+    print data
     print 'https://coinbase.com/checkouts/%s?c=a' % button.code
     return button.code

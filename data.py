@@ -132,8 +132,9 @@ class Order(Base):
     user_id = Column(Integer)
     currency = Column(String)
     fiat_amount = Column(String)
-    btc_amount = Column(String)
+    btc_amount = Column(Integer)
     code = Column(String)
+    token = Column(String)
 
     def __init__(self, data):
         self.status = data['status']
@@ -145,6 +146,7 @@ class Order(Base):
         self.fiat_amount = data['fiat_amount']
         self.btc_amount = data['btc_amount']
         self.code = data['code']
+        self.token = data['token']
 
 
 class Profile(Base):
