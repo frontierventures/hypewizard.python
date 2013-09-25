@@ -22,8 +22,6 @@ Email = mailer.Email
 def assemble(root):
     root.putChild('offers', Main())
     root.putChild('process_offer', Process())
-    root.putChild('approve_offer', Approve())
-    root.putChild('disapprove_offer', Disapprove())
     return root
 
 
@@ -62,7 +60,7 @@ class Table(Element):
         self.session_user = session_user
         self.filters = filters
 
-        offers = db.query(Transaction).filter(Transaction.client_id == session_user['id'])
+        offers = db.query(Transaction).filter(Transaction.promoter_id == session_user['id'])
 
         if filters['status'] == 'open':
             offers = offers.filter(Transaction.status.in_(['open', 'approved'])).order_by(Transaction.updated_at.desc())
@@ -70,7 +68,7 @@ class Table(Element):
             offers = offers.filter(Transaction.status == 'complete').order_by(Transaction.updated_at.desc())
 
         if offers.count() == 0:
-            template = 'templates/elements/no_offers_table.xml'
+            template = 'templates/elements/empty_offers_table.xml'
         else:
             template = 'templates/elements/offers_table.xml'
 
@@ -112,22 +110,18 @@ class Table(Element):
 
     @renderer
     def row(self, request, tag):
-        for offer in self.offers:
-            user = twitter_api.get_user_by_id(offer.promoter_twitter_id)
-
+        for index, offer in enumerate(self.offers):
             slots = {}
+            slots['row_id'] = 'row_%s' % index
             slots['status'] = offer.status 
-            slots['kind'] = offer.kind 
             slots['created_at'] = config.convert_timestamp(offer.created_at, config.STANDARD)
             slots['updated_at'] = config.convert_timestamp(offer.updated_at, config.STANDARD)
             slots['offer_id'] = str(offer.id)
+            
+            item = db.query(TwitterUserData).filter(TwitterUserData.twitter_id == offer.client_twitter_id).first()
+            slots['client_twitter_name'] = item.twitter_name.encode('utf-8')
 
-            item = db.query(TwitterUserData).filter(TwitterUserData.twitter_id == offer.promoter_twitter_id).first()
-            slots['promoter_twitter_name'] = item.twitter_name.encode('utf-8')
-
-            slots['promoter_twitter_name_url'] = 'http://www.twitter.com/%s' % item.twitter_name
-            slots['statuses_count'] = str(user.statuses_count) 
-            slots['followers_count'] = str(user.followers_count) 
+            slots['client_twitter_name_url'] = 'http://www.twitter.com/%s' % item.twitter_name
             slots['twitter_status_id'] = str(offer.twitter_status_id) 
             slots['twitter_status_id_url'] = 'http://www.twitter.com/%s/status/%s' % (item.twitter_name, offer.twitter_status_id)
             slots['charge'] = str(offer.charge) 
@@ -137,15 +131,11 @@ class Table(Element):
     @renderer
     def action(self, request, tag):
         buttons = []
-
-        if self.offer.status == 'open':
+        
+        if self.offer.status == 'approved':
             buttons.append({
-                'url': '../process_offer?action=approve&id=%s' % self.offer.id,
-                'caption': 'Approve' 
-            })
-            buttons.append({
-                'url': '../process_offer?action=disapprove&id=%s' % self.offer.id,
-                'caption': 'Disapprove' 
+                'url': '../process_offer?action=claim&id=%s' % self.offer.id,
+                'caption': 'Claim Balance' 
             })
 
         for button in buttons:
@@ -158,7 +148,9 @@ class Table(Element):
 
 class Process(Resource):
     def render(self, request):
+        print '%srequest.args: %s%s' % (config.color.RED, request.args, config.color.ENDC)
         session_user = SessionManager(request).get_session_user()
+        session_user['action'] = 'process_offer'
 
         response = {'error': True}
         try:
@@ -166,93 +158,17 @@ class Process(Resource):
         except:
             return redirectTo('../', request)
 
-        try:
-            offer_id = int(request.args.get('id')[0])
-        except:
-            return redirectTo('../', request)
+        if action == 'claim':
+            try:
+                offer_id = int(request.args.get('id')[0])
+            except:
+                return redirectTo('../offers', request)
 
-        response['error'] = False
-        response['action'] = action
+            response['error'] = False
+            response['action'] = action
 
-        response['offer'] = {
-                'id': str(offer_id)
-            } 
+            response['offer'] = {
+                    'id': str(offer_id)
+                } 
 
-        return json.dumps(response)
-
-
-class Approve(Resource):
-    def render(self, request):
-        print '%srequest.args: %s%s' % (config.color.RED, request.args, config.color.ENDC)
-
-        session_user = SessionManager(request).get_session_user()
-        session_user['action'] = 'approve_offer'
-
-        try:
-            offer_id = int(request.args.get('offer_id')[0])
-        except:
-            return redirectTo('../offers', request)
-
-        offer = db.query(Transaction).filter(Transaction.id == offer_id).first()
-
-        if offer.client_id != session_user['id']:
-            return redirectTo('../', request)
-
-        is_confirmed = request.args.get('is_confirmed')[0]
-        if is_confirmed == 'no':
-            return json.dumps(dict(response=1, text=definitions.MESSAGE_SUCCESS))
-
-        timestamp = config.create_timestamp()
-        
-        #ask = db.query(Ask).filter(Ask.id == ).first()
-
-        offer.updated_at = timestamp 
-        offer.status = 'approved'
-        db.commit()
-
-        promoter = db.query(User).filter(User.id == offer.promoter_id).first()
-
-        plain = mailer.offer_approved_memo_plain(offer)
-        html = mailer.offer_approved_memo_html(offer)
-
-        Email(mailer.noreply, promoter.email, 'Your Hype Wizard offer has been approved!', plain, html).send()
-
-        return json.dumps(dict(response=1, text=definitions.MESSAGE_SUCCESS))
-
-
-class Disapprove(Resource):
-    def render(self, request):
-        print '%srequest.args: %s%s' % (config.color.RED, request.args, config.color.ENDC)
-
-        session_user = SessionManager(request).get_session_user()
-        session_user['action'] = 'disapprove'
-
-        try:
-            offer_id = int(request.args.get('offer_id')[0])
-        except:
-            return redirectTo('../offers', request)
-
-        offer = db.query(Transaction).filter(Transaction.id == offer_id).first()
-
-        if offer.client_id != session_user['id']:
-            return redirectTo('../', request)
-
-        is_confirmed = request.args.get('is_confirmed')[0]
-        if is_confirmed == 'no':
-            return json.dumps(dict(response=1, text=definitions.MESSAGE_SUCCESS))
-
-        timestamp = config.create_timestamp()
-        
-        offer.updated_at = timestamp 
-        offer.status = 'cancelled'
-
-        client = db.query(Profile).filter(Profile.user_id == offer.client_id).first()
-        client.offer_count -= 1
-        client.available_balance += offer.charge
-        client.reserved_balance -= offer.charge
-
-        promoter = db.query(Profile).filter(Profile.user_id == offer.promoter_id).first()
-        promoter.transaction_count -= 1
-        
-        db.commit()
-        return json.dumps(dict(response=1, text=definitions.MESSAGE_SUCCESS))
+            return json.dumps(response)

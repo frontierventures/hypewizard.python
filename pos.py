@@ -180,8 +180,8 @@ class Withdraw(Resource):
  
 
 class Callback(Resource):
-    def render(self, request):
-        print '%srequest.args: %s%s' % (config.color.RED, request.args, config.color.ENDC)
+    def render(self, request): 
+        print '%srequest.args:  %s%s' % (config.color.RED, request.args, config.color.ENDC)
         try:
             token = request.args.get('token')[0]
         except:

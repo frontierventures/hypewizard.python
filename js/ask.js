@@ -16,6 +16,7 @@ $(document).ready(function(){
                 if (response.available_balance <= 0) {
                     return "#deposit_popup";
                 } else {
+                    $('#create_ask_alert').empty();
                     return "#create_ask_popup";
                 }
             }

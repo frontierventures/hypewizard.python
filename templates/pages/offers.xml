@@ -31,8 +31,7 @@
     </div>
     <t:transparent t:render="footer" />            
     <div style="display:none">
-        <t:transparent t:render="approve_offer_popup" />
-        <t:transparent t:render="disapprove_offer_popup" />
+        <t:transparent t:render="claim_balance_popup" />
     </div>
     <!-- Le javascript
     ================================================== -->

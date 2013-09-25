@@ -14,7 +14,7 @@
                 </select>
             </div>
             <div>
-                <input type="text" placeholder="Pay per Retweet" name="price_per_retweet"/>
+                <input type="text" placeholder="Reward per Retweet" name="price_per_retweet"/>
             </div>
             <div>
                 <input type="text" placeholder="Number of Retweets" name="goal"/>

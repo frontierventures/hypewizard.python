@@ -25,6 +25,8 @@ def assemble(root):
     root.putChild('create_transaction', Create())
     root.putChild('process_transaction', Process())
     root.putChild('complete_transaction', Complete())
+    root.putChild('approve_transaction', Approve())
+    root.putChild('disapprove_transaction', Disapprove())
     return root
 
 
@@ -68,7 +70,7 @@ class Table(Element):
         self.session_user = session_user
         self.filters = filters
 
-        transactions = db.query(Transaction).filter(Transaction.promoter_id == session_user['id'])
+        transactions = db.query(Transaction).filter(Transaction.client_id == session_user['id'])
         
         if filters['status'] == 'open':
             transactions = transactions.filter(Transaction.status.in_(['open', 'approved'])).order_by(Transaction.updated_at.desc())
@@ -76,7 +78,7 @@ class Table(Element):
             transactions = transactions.filter(Transaction.status == 'complete').order_by(Transaction.updated_at.desc())
 
         if transactions.count() == 0:
-            template = 'templates/elements/no_transactions_table.xml'
+            template = 'templates/elements/empty_transactions_table.xml'
         else:
             template = 'templates/elements/transactions_table.xml'
 
@@ -118,18 +120,22 @@ class Table(Element):
 
     @renderer
     def row(self, request, tag):
-        for index, transaction in enumerate(self.transactions):
+        for transaction in self.transactions:
+            user = twitter_api.get_user_by_id(transaction.promoter_twitter_id)
+
             slots = {}
-            slots['row_id'] = 'row_%s' % index
             slots['status'] = transaction.status 
+            slots['kind'] = transaction.kind 
             slots['created_at'] = config.convert_timestamp(transaction.created_at, config.STANDARD)
             slots['updated_at'] = config.convert_timestamp(transaction.updated_at, config.STANDARD)
             slots['transaction_id'] = str(transaction.id)
-            
-            item = db.query(TwitterUserData).filter(TwitterUserData.twitter_id == transaction.client_twitter_id).first()
-            slots['client_twitter_name'] = item.twitter_name.encode('utf-8')
 
-            slots['client_twitter_name_url'] = 'http://www.twitter.com/%s' % item.twitter_name
+            item = db.query(TwitterUserData).filter(TwitterUserData.twitter_id == transaction.promoter_twitter_id).first()
+            slots['promoter_twitter_name'] = item.twitter_name.encode('utf-8')
+
+            slots['promoter_twitter_name_url'] = 'http://www.twitter.com/%s' % item.twitter_name
+            slots['statuses_count'] = str(user.statuses_count) 
+            slots['followers_count'] = str(user.followers_count) 
             slots['twitter_status_id'] = str(transaction.twitter_status_id) 
             slots['twitter_status_id_url'] = 'http://www.twitter.com/%s/status/%s' % (item.twitter_name, transaction.twitter_status_id)
             slots['charge'] = str(transaction.charge) 
@@ -139,11 +145,15 @@ class Table(Element):
     @renderer
     def action(self, request, tag):
         buttons = []
-        
-        if self.transaction.status == 'approved':
+
+        if self.transaction.status == 'open':
             buttons.append({
-                'url': '../process_transaction?action=claim&id=%s' % self.transaction.id,
-                'caption': 'Claim Balance' 
+                'url': '../process_transaction?action=approve&id=%s' % self.transaction.id,
+                'caption': 'Approve' 
+            })
+            buttons.append({
+                'url': '../process_transaction?action=disapprove&id=%s' % self.transaction.id,
+                'caption': 'Disapprove' 
             })
 
         for button in buttons:
@@ -156,9 +166,7 @@ class Table(Element):
 
 class Process(Resource):
     def render(self, request):
-        print '%srequest.args: %s%s' % (config.color.RED, request.args, config.color.ENDC)
         session_user = SessionManager(request).get_session_user()
-        session_user['action'] = 'process_transaction'
 
         response = {'error': True}
         try:
@@ -166,20 +174,96 @@ class Process(Resource):
         except:
             return redirectTo('../', request)
 
-        if action == 'claim':
-            try:
-                transaction_id = int(request.args.get('id')[0])
-            except:
-                return redirectTo('../transactions', request)
+        try:
+            transaction_id = int(request.args.get('id')[0])
+        except:
+            return redirectTo('../', request)
 
-            response['error'] = False
-            response['action'] = action
+        response['error'] = False
+        response['action'] = action
 
-            response['transaction'] = {
-                    'id': str(transaction_id)
-                } 
+        response['transaction'] = {
+                'id': str(transaction_id)
+            } 
 
-            return json.dumps(response)
+        return json.dumps(response)
+
+
+class Approve(Resource):
+    def render(self, request):
+        print '%srequest.args: %s%s' % (config.color.RED, request.args, config.color.ENDC)
+
+        session_user = SessionManager(request).get_session_user()
+        session_user['action'] = 'approve_transaction'
+
+        try:
+            transaction_id = int(request.args.get('transaction_id')[0])
+        except:
+            return redirectTo('../transactions', request)
+
+        transaction = db.query(Transaction).filter(Transaction.id == transaction_id).first()
+
+        if transaction.client_id != session_user['id']:
+            return redirectTo('../', request)
+
+        is_confirmed = request.args.get('is_confirmed')[0]
+        if is_confirmed == 'no':
+            return json.dumps(dict(response=1, text=definitions.MESSAGE_SUCCESS))
+
+        timestamp = config.create_timestamp()
+        
+        #ask = db.query(Ask).filter(Ask.id == ).first()
+
+        transaction.updated_at = timestamp 
+        transaction.status = 'approved'
+        db.commit()
+
+        promoter = db.query(User).filter(User.id == transaction.promoter_id).first()
+
+        plain = mailer.transaction_approved_memo_plain(transaction)
+        html = mailer.transaction_approved_memo_html(transaction)
+
+        Email(mailer.noreply, promoter.email, 'Your Hype Wizard transaction has been approved!', plain, html).send()
+
+        return json.dumps(dict(response=1, text=definitions.MESSAGE_SUCCESS))
+
+
+class Disapprove(Resource):
+    def render(self, request):
+        print '%srequest.args: %s%s' % (config.color.RED, request.args, config.color.ENDC)
+
+        session_user = SessionManager(request).get_session_user()
+        session_user['action'] = 'disapprove'
+
+        try:
+            transaction_id = int(request.args.get('transaction_id')[0])
+        except:
+            return redirectTo('../transactions', request)
+
+        transaction = db.query(Transaction).filter(Transaction.id == transaction_id).first()
+
+        if transaction.client_id != session_user['id']:
+            return redirectTo('../', request)
+
+        is_confirmed = request.args.get('is_confirmed')[0]
+        if is_confirmed == 'no':
+            return json.dumps(dict(response=1, text=definitions.MESSAGE_SUCCESS))
+
+        timestamp = config.create_timestamp()
+        
+        transaction.updated_at = timestamp 
+        transaction.status = 'cancelled'
+
+        client = db.query(Profile).filter(Profile.user_id == transaction.client_id).first()
+        client.transaction_count -= 1
+        client.available_balance += transaction.charge
+        client.reserved_balance -= transaction.charge
+
+        promoter = db.query(Profile).filter(Profile.user_id == transaction.promoter_id).first()
+        promoter.transaction_count -= 1
+        
+        db.commit()
+        return json.dumps(dict(response=1, text=definitions.MESSAGE_SUCCESS))
 
 
 class Create(Resource):
@@ -217,7 +301,7 @@ class Create(Resource):
 
             data = {
                 'status': 'open',
-                'kind': 'client-first',
+                'kind': 'promoter-first',
                 'created_at': timestamp,
                 'updated_at': timestamp,
                 'client_twitter_id': ask.twitter_id,
@@ -234,10 +318,10 @@ class Create(Resource):
             db.add(new_transaction)
 
             promoter = db.query(Profile).filter(Profile.user_id == session_user['id']).first()
-            promoter.transaction_count += 1
+            promoter.offer_count += 1
 
             client = db.query(Profile).filter(Profile.user_id == ask.user_id).first()
-            client.offer_count += 1 
+            client.transaction_count += 1 
 
             db.commit()
 
@@ -247,7 +331,7 @@ class Create(Resource):
             html = mailer.offer_created_memo_html(promoter, new_transaction)
             Email(mailer.noreply, client.email, 'You have a new Hype Wizard promotional offer pending!', plain, html).send()
 
-            url = '../transactions'
+            url = '../offers'
         
         #####################################
         # Engage Promoter
@@ -302,9 +386,9 @@ class Create(Resource):
             db.add(new_transaction)
 
             promoter = db.query(Profile).filter(Profile.user_id == bid.user_id).first()
-            promoter.transaction_count += 1
+            promoter.offer_count += 1
 
-            client.offer_count += 1 
+            client.transaction_count += 1 
             client.available_balance -= charge
             client.reserved_balance += charge
 
@@ -317,7 +401,7 @@ class Create(Resource):
 
             Email(mailer.noreply, promoter.email, 'Your have a request with Hype Wizard!', plain, html).send()
 
-            url = '../offers'
+            url = '../transactions'
 
         response = {}
         response['error'] = False
@@ -386,11 +470,11 @@ class Complete(Resource):
         transaction.status = 'complete'
 
         client = db.query(Profile).filter(Profile.user_id == transaction.client_id).first()
-        client.offer_count -= 1
+        client.transaction_count -= 1
         client.reserved_balance -= transaction.charge
 
         promoter = db.query(Profile).filter(Profile.user_id == transaction.promoter_id).first()
-        promoter.transaction_count -= 1
+        promoter.offer_count -= 1
         promoter.available_balance += transaction.charge
 
         if transaction.ask_id != 0:

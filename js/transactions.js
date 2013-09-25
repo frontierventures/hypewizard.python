@@ -2,21 +2,6 @@ $(document).ready(function(){
     $("select[name=transaction_status]").change(function(){     
         window.location='../transactions?status=' + this.value; 
     }); 
-    $.ajax({
-        url: '../get_session_user',
-        async: false,
-        cache: false,
-        dataType: 'json',
-        fail: function() { response.error = false }, 
-        success: function(data) {
-            response = data;
-            //alert(response.action);
-            if(response.action == 'create_transaction') {
-                $('#row_0').css("background-color", "#0266C8");
-                $('#row_0').css("color", "#FFFFFF");
-            }
-        }
-    });
     $('a[href*=process_transaction]').colorbox({
         inline:true,           
         href: function() {              
@@ -30,30 +15,51 @@ $(document).ready(function(){
                     response = data;
                 }
             });
-            if (response.action == 'claim') {
+            if (response.action == 'approve') {
                 $('input[name=transaction_id]').val(response.transaction.id);
-                $('#claim_balance_alert').empty();
-                return "#claim_balance_popup";
+                return "#approve_transaction_popup";
+            }
+            if (response.action == 'disapprove') {
+                $('input[name=transaction_id]').val(response.transaction.id);
+                return "#disapprove_transaction_popup";
             }
         }      
     });
-    $('form[name*=claim_balance_form]').submit(function() { 
-        $('#claim_balance_alert').append('<img src="../img/loading_bar.gif" />');
-        $.colorbox.resize();
+    $('form[name*=approve_transaction_form]').submit(function() { 
         var response = {};
         $.ajax({
             data: $(this).serialize(),
             type: $(this).attr('method'),
             url: $(this).attr('action'),
             dataType: 'json',
-            success: function(response) {
-                if (response.error) {
-                    $('#claim_balance_alert').empty();
-                    $('#claim_balance_alert').append('<div class="alert alert-error" id="alert">' + response.message + '</div>');
+            success: function(json) {
+                if (json.response == 0) {
+                    $('#approve_transaction_alert').empty();
+                    $('#approve_transaction_alert').append('<div class="alert alert-error" id="alert">' + json.text + '</div>');
                     $.colorbox.resize();
                 } else {
                     $.colorbox.close();
-                    window.location = response.url; 
+                    window.location = '../transactions'; 
+                }
+            }     
+        });
+        return false; 
+    }); 
+    $('form[name*=disapprove_transaction_form]').submit(function() { 
+        var response = {};
+        $.ajax({
+            data: $(this).serialize(),
+            type: $(this).attr('method'),
+            url: $(this).attr('action'),
+            dataType: 'json',
+            success: function(json) {
+                if (json.response == 0) {
+                    $('#disapprove_transaction_alert').empty();
+                    $('#disapprove_transaction_alert').append('<div class="alert alert-error" id="alert">' + json.text + '</div>');
+                    $.colorbox.resize();
+                } else {
+                    $.colorbox.close();
+                    window.location = '../transactions'; 
                 }
             }     
         });

@@ -10,9 +10,9 @@ from data import db
 import twitter_api
 
 
-class ApproveOffer(Element):
+class ApproveTransaction(Element):
     def __init__(self, session_user):
-        self.loader = XMLString(FilePath(templates['approve_offer']).getContent())
+        self.loader = XMLString(FilePath(templates['approve_transaction']).getContent())
         self.session_user = session_user
 
     @renderer
@@ -205,9 +205,9 @@ class Deposit(Element):
             yield newTag
 
 
-class DisapproveOffer(Element):
+class DisapproveTransaction(Element):
     def __init__(self, session_user):
-        self.loader = XMLString(FilePath(templates['disapprove_offer']).getContent())
+        self.loader = XMLString(FilePath(templates['disapprove_transaction']).getContent())
         self.session_user = session_user
 
     @renderer
@@ -423,13 +423,13 @@ class WithdrawBid(Element):
 
 
 templates = {
-        'approve_offer': 'templates/popups/approve_offer.xml',
+        'approve_transaction': 'templates/popups/approve_transaction.xml',
         'change_password': 'templates/popups/change_password.xml',
         'claim_balance': 'templates/popups/claim_balance.xml',
         'create_ask': 'templates/popups/create_ask.xml',
         'create_bid': 'templates/popups/create_bid.xml',
         'deposit': 'templates/popups/deposit.xml',
-        'disapprove_offer': 'templates/popups/disapprove_offer.xml',
+        'disapprove_transaction': 'templates/popups/disapprove_transaction.xml',
         'feature_disabled': 'templates/popups/feature_disabled.xml',
         'engage_client': 'templates/popups/engage_client.xml',
         'engage_promoter': 'templates/popups/engage_promoter.xml',

@@ -191,12 +191,8 @@ class Offers(Page):
         return offers.Table(self.session_user, self.filters)
 
     @renderer
-    def approve_offer_popup(self, request, tag):
-        return popups.ApproveOffer(self.session_user)
-
-    @renderer
-    def disapprove_offer_popup(self, request, tag):
-        return popups.DisapproveOffer(self.session_user)
+    def claim_balance_popup(self, request, tag):
+        return popups.ClaimBalance(self.session_user)
 
 
 class Orders(Page):
@@ -240,8 +236,12 @@ class Transactions(Page):
         return transactions.Table(self.session_user, self.filters)
 
     @renderer
-    def claim_balance_popup(self, request, tag):
-        return popups.ClaimBalance(self.session_user)
+    def approve_transaction_popup(self, request, tag):
+        return popups.ApproveTransaction(self.session_user)
+
+    @renderer
+    def disapprove_transaction_popup(self, request, tag):
+        return popups.DisapproveTransaction(self.session_user)
 
 
 class SummaryAsks(Page):
