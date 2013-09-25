@@ -1,9 +1,9 @@
-<div id="claim_balance_popup" style='padding:10px; background:#fff; text-align:center;' xmlns:t="http://twistedmatrix.com/ns/twisted.web.template/0.1">
-    <form name="claim_balance_form" action="../complete_offer" method="POST" enctype="application/x-www-form-urlencoded" t:render="form">
-        <input type="hidden" name="offer_id" />
+<div id="approve_transaction_popup" style='padding:10px; background:#fff; text-align: center;' xmlns:t="http://twistedmatrix.com/ns/twisted.web.template/0.1">
+    <form name="approve_transaction_form" action="../approve_transaction" method="POST" enctype="application/x-www-form-urlencoded" t:render="form">
+        <input type="hidden" name="transaction_id" />
         <div>
-            <h1>Have you retweeted client's tweet?</h1>
-            <div style="overflow:auto;" id="claim_balance_alert">
+            <h1>Approve Transaction?</h1>
+            <div id="approve_transaction_alert">
             </div>
             <div>
                 <select name="is_confirmed">

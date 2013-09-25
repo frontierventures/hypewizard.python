@@ -66,23 +66,30 @@ function build_grid(kind) {
     }
 };
 function add_ask_to_market(rule, ask) { 
-    if (!ask.engage.is_allowed && ask.engage.reason == 'different_user') {
-        action_url = '../process_ask?action=withdraw&id=' + ask.id; 
-        action_cell = '<div style="text-align:center"><a href="' + action_url + '">Withdraw</a></div>';
-    }
 
-    if (!ask.engage.is_allowed && ask.engage.reason == 'unverified') {
-        var action_url = '../feature_disabled?reason=unverified';
-        var action_cell = '<div style="text-align:center"><a href="../">View Tweet</a> <a href="' + action_url + '">Engage Client</a></div>';
-    }
+    if (!ask.engage.is_allowed) {
+        if (ask.engage.reason == 'different_user') {
+            action_url = '../process_ ask?action=withdraw&id=' + ask.id; 
+            action_cell = '<div style="text-align:center"><a href="' + action_url + '">Withdraw</a></div>';
+        }
 
-    if (!ask.engage.is_allowed && ask.engage.reason == 'unauthorized') {
-        var action_url = '../feature_disabled?reason=unauthorized';
-        var action_cell = '<div style="text-align:center"><a href="../">View Tweet</a> <a href="' + action_url + '">Engage Client</a></div>';
-    }
+        if (ask.engage.reason == 'unverified') {
+            var action_url = '../feature_disabled?reason=unverified';
+            var action_cell = '<div style="text-align:center"><a href="../">View Tweet</a> <a href="' + action_url + '">Engage Client</a></div>';
+        }
 
-    if (!ask.engage.is_allowed && ask.engage.reason == 'engaged') {
-        var action_cell = '<div style="text-align:center"><a href="../">View Tweet</a> <span style="color: green;">Waiting for client reply</span></div>';
+        if (ask.engage.reason == 'unauthorized') {
+            var action_url = '../feature_disabled?reason=unauthorized';
+            var action_cell = '<div style="text-align:center"><a href="../">View Tweet</a> <a href="' + action_url + '">Engage Client</a></div>';
+        }
+
+        if (ask.engage.reason == 'engaged') {
+            var action_cell = '<div style="text-align:center"><a href="../">View Tweet</a> <span style="color: green;">Waiting for approval</span></div>';
+        }
+
+        if (ask.engage.reason == 'approved') {
+            var action_cell = '<div style="text-align:center"><a href="../">View Tweet</a> <span style="color: green;">Good to retweet</span></div>';
+        }
     }
 
     if (ask.engage.is_allowed) {

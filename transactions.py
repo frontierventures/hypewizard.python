@@ -24,7 +24,6 @@ def assemble(root):
     root.putChild('transactions', Main())
     root.putChild('create_transaction', Create())
     root.putChild('process_transaction', Process())
-    root.putChild('complete_transaction', Complete())
     root.putChild('approve_transaction', Approve())
     root.putChild('disapprove_transaction', Disapprove())
     return root
@@ -222,7 +221,6 @@ class Approve(Resource):
 
         plain = mailer.transaction_approved_memo_plain(transaction)
         html = mailer.transaction_approved_memo_html(transaction)
-
         Email(mailer.noreply, promoter.email, 'Your Hype Wizard transaction has been approved!', plain, html).send()
 
         return json.dumps(dict(response=1, text=definitions.MESSAGE_SUCCESS))
@@ -407,92 +405,4 @@ class Create(Resource):
         response['error'] = False
         response['message'] = definitions.MESSAGE_SUCCESS
         response['url'] = url 
-        return json.dumps(response) 
-
-
-class Complete(Resource):
-    def render(self, request):
-        print '%srequest.args: %s%s' % (config.color.RED, request.args, config.color.ENDC)
-        
-        time.sleep(2)
-        session_user = SessionManager(request).get_session_user()
-        session_user['action'] = 'complete_transaction'
-
-        is_confirmed = request.args.get('is_confirmed')[0]
-        if is_confirmed == 'no':
-            response = {}
-            response['error'] = False
-            response['message'] = definitions.MESSAGE_SUCCESS
-            response['url'] = '../transactions'
-            return json.dumps(response) 
-        
-        try:
-            transaction_id = int(request.args.get('transaction_id')[0])
-        except:
-            return redirectTo('../', request)
-        
-        transaction = db.query(Transaction).filter(Transaction.id == transaction_id).first()
-
-        if transaction.promoter_id != session_user['id']:
-            return redirectTo('../', request)
-
-        #####################################
-        # Check Retweet Maturity
-        #####################################
-        
-        response = twitter_api.get_retweet_duration(transaction.promoter_twitter_id, transaction.twitter_status_id)
-        if response['error']:
-            response = {}
-            response['error'] = True
-            response['message'] = 'Twitter Api error'
-            return json.dumps(response) 
-        else:
-            if response['is_retweet_found']:
-                delta = response['delta']
-                if delta < 86400:
-                    print delta * 20
-                    timestamp = time.strftime('%H hrs %M mins %S secs', time.gmtime(delta))
-                    response = {}
-                    response['error'] = True
-                    response['message'] = 'Please wait until the end of promotion period (ETA: %s)' % timestamp 
-                    return json.dumps(response) 
-            else:
-                response = {}
-                response['error'] = True
-                response['message'] = 'Please retweet for your client'
-                return json.dumps(response) 
-
-        #####################################
-
-        timestamp = config.create_timestamp()
-        
-        transaction.updated_at = timestamp 
-        transaction.status = 'complete'
-
-        client = db.query(Profile).filter(Profile.user_id == transaction.client_id).first()
-        client.transaction_count -= 1
-        client.reserved_balance -= transaction.charge
-
-        promoter = db.query(Profile).filter(Profile.user_id == transaction.promoter_id).first()
-        promoter.offer_count -= 1
-        promoter.available_balance += transaction.charge
-
-        if transaction.ask_id != 0:
-            ask = db.query(Ask).filter(Ask.id == transaction.ask_id).first()
-            ask.target += 1
-
-            if ask.target == ask.goal:
-                ask.status = 'withdrawn'
-
-        if transaction.bid_id != 0:
-            bid = db.query(Bid).filter(Bid.id == transaction.bid_id).first()
-            bid.tally += 1
-
-        db.commit()
-
-        response = {}
-        response['error'] = False
-        response['message'] = definitions.MESSAGE_SUCCESS
-        response['url'] = '../transactions'
-
         return json.dumps(response) 

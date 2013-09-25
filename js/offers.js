@@ -30,9 +30,9 @@ $(document).ready(function(){
                     response = data;
                 }
             });
-            if (response.action == 'claim') {
-                $('input[name=offer_id]').val(response.offer.id);
+            if (response.action == 'complete') {
                 $('#claim_balance_alert').empty();
+                $('input[name=offer_id]').val(response.offer.id);
                 return "#claim_balance_popup";
             }
         }      

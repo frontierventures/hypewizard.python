@@ -115,23 +115,46 @@ def offer_created_memo_html(promoter, offer):
     return html
 
 
-def offer_approved_memo_plain(offer):
+def transaction_approved_memo_plain(transaction):
     plain = """
     Your Hype Wizard offer has been approved.\n
     Please retweet status #%s for your client before you can claim reserved funds.\n
     Hype Wizard Team
-    """ % offer.twitter_status_id 
+    """ % transaction.twitter_status_id 
     return plain
 
 
-def offer_approved_memo_html(offer):
+def transaction_approved_memo_html(transaction):
     html = """
     <html>
     <p>Your Hype Wizard offer has been approved.</p>
     <p>Please retweet status #%s for your client before you can claim reserved funds.</p>
     <p><b>Hype Wizard Team</b></p>
     </html>
-    """ % offer.twitter_status_id 
+    """ % transaction.twitter_status_id 
+    return html
+
+
+def transaction_complete_memo_plain(offer):
+    plain = """
+    Congratulations!
+    Your tweet has been promoted.\n
+    Tweet Id: %s\n
+    Please login to review promoter's wizard score before you continue.\n
+    Hype Wizard Team
+    """ % (offer.twitter_status_id)
+    return plain
+
+
+def transaction_complete_memo_html(offer):
+    html = """
+    <html>
+    <p>Congratulations!</p>
+    <p>Your tweet has been promoted.</p>
+    <p><b>Tweet Id: </b>%s</p>
+    <p><b>Hype Wizard Team</b></p>
+    </html>
+    """ % (offer.twitter_status_id)
     return html
 
 

@@ -82,13 +82,19 @@ class GetAsks(Resource):
                 order['engage']['reason'] = 'unauthorized'
 
             else:
-                transactions = db.query(Transaction).filter(Transaction.status == 'open')
-                transactions = db.query(Transaction).filter(Transaction.promoter_id == session_user['id'])
-                transaction = transactions.filter(Transaction.twitter_status_id == ask.twitter_status_id).first()
+                #transactions = db.query(Transaction).filter(Transaction.status == 'open')
+                transactions = db.query(Transaction).filter(Transaction.ask_id == ask.id)
+                transactions = transactions.filter(Transaction.promoter_id == session_user['id'])
+                transaction = transactions.filter(Transaction.status == 'open').first()
 
                 if transaction:
                     order['engage']['is_allowed'] = False
                     order['engage']['reason'] = 'engaged'
+
+                transaction = transactions.filter(Transaction.status == 'approved').first()
+                if transaction:
+                    order['engage']['is_allowed'] = False
+                    order['engage']['reason'] = 'approved'
 
             orders.append(order)
 
@@ -151,9 +157,11 @@ class GetBids(Resource):
 
             else:
                 transactions = db.query(Transaction).filter(Transaction.status == 'approved')
-                transactions = db.query(Transaction).filter(Transaction.client_id == session_user['id'])
-                transaction = db.query(Transaction).filter(Transaction.promoter_id == bid.user_id)
+                transactions = transactions.filter(Transaction.client_id == session_user['id'])
+                transaction = transactions.filter(Transaction.promoter_id == bid.user_id).first()
                 #transaction = transactions.filter(Transaction.twitter_status_id == ask.twitter_status_id).first()
+
+                print transaction
 
                 if transaction:
                     order['engage']['is_allowed'] = False
