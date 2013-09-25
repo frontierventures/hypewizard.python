@@ -133,7 +133,7 @@ class Withdraw(Resource):
         if profile.available_balance < satoshi_withdraw_amount:
             response = {}
             response['error'] = True
-            response['message'] = "You can withdraw %s max." % profile.available_balance 
+            response['message'] = "You can withdraw %s max." % (D(profile.available_balance) / D(100000000))
             response['url'] = '../account'
             return json.dumps(response) 
 

@@ -158,7 +158,7 @@ function add_bid_to_market(rule, bid) {
     }
 
     if (!bid.engage.is_allowed && bid.engage.reason == 'engaged') {
-        var action_cell = '<div style="text-align:center"><span style="color: green;">Offer pending</span></div>';
+        var action_cell = '<div style="text-align:center"><span style="color: green;">Transaction pending</span></div>';
     }
 
     if (bid.engage.is_allowed) {

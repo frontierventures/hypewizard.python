@@ -327,7 +327,7 @@ def reset(default):
                 'updated_at': timestamp,
                 'token': '',
                 'bitcoin_address': '',
-                'available_balance': 10000,
+                'available_balance': 100000000,
                 'reserved_balance': 0,
                 'twitter_name': 'coingig',
                 'twitter_id': 1129728541,
@@ -366,13 +366,13 @@ def reset(default):
                 'updated_at': timestamp,
                 'token': '',
                 'bitcoin_address': '',
-                'available_balance': 10000,
+                'available_balance': 100000000,
                 'reserved_balance': 0,
                 'twitter_name': 'hypewizard',
                 'twitter_id': 632058592,
                 'niche': 'AA',
                 'transaction_count': 0, 
-                'offer_count': 0 
+                'offer_cou nt': 0 
             }
             profile = Profile(data)
             user.profiles = [profile]
@@ -380,12 +380,12 @@ def reset(default):
             data = {            
                 'twitter_id': 632058592,
                 'twitter_name': 'hypewizard',
-                'twitter_image': 'https://si0.twimg.com/profile_images/378800000485472101/27c7a9dc98a6aaaa1e208c242bcb3666_normal.png',
+                'twitter_ image': 'https://si0.twimg.com/profile_images/378800000485472101/27c7a9dc98a6aaaa1e208c242bcb3666_normal.png',
             }
             twitter_user = TwitterUserData(data)
             user.twitter_user_data = [twitter_user]
 
-            db.add(user)
+            db.add(user) 
 
         user = db.query(User).filter(User.email == 'carol@hypewhiz.com').first()
         if not user:
@@ -411,7 +411,7 @@ def reset(default):
                 'twitter_id': 783214,
                 'niche': 'AA',
                 'transaction_count': 0, 
-                'offer_count': 0 
+                'offer_co unt': 0 
             }
             profile = Profile(data)
             user.profiles = [profile]
@@ -419,12 +419,12 @@ def reset(default):
             data = {            
                 'twitter_id': 783214,
                 'twitter_name': 'twitter',
-                'twitter_image': 'https://si0.twimg.com/profile_images/378800000485472101/27c7a9dc98a6aaaa1e208c242bcb3666_normal.png',
-            }
+                 'twitter_image': 'https://si0.twimg.com/profile_images/378800000485472101/27c7a9dc98a6aaaa1e208c242bcb3666_normal.png',
+            } 
             twitter_user = TwitterUserData(data)
             user.twitter_user_data = [twitter_user]
 
-            db.add(user)
+            db.add(user) 
 
         db.commit()
         print "User account added"
