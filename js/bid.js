@@ -26,7 +26,7 @@ $(document).ready(function(){
             }
         }      
     });
-    $('form[name*=create_bid_form]').submit(function() { 
+    $('form[name=create_bid_form]').submit(function() { 
         var response = {};
         $.ajax({
             data: $(this).serialize(),
@@ -46,7 +46,7 @@ $(document).ready(function(){
         });
         return false; 
     }); 
-    $('form[name*=engage_promoter_form]').submit(function() { 
+    $('form[name=engage_promoter_form]').submit(function() { 
         var response = {};
         $.ajax({
             data: $(this).serialize(),
@@ -66,7 +66,7 @@ $(document).ready(function(){
         });
         return false; 
     }); 
-    $('form[name*=withdraw_bid]').submit(function() { 
+    $('form[name=withdraw_bid_form]').submit(function() { 
         var response = {};
         $.ajax({
             data: $(this).serialize(),

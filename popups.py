@@ -119,16 +119,18 @@ class CreateAsk(Element):
 
     @renderer
     def twitter_status_option(self, request, tag):
-        twitter_statuses = twitter_api.get_statuses(self.session_user['twitter_name'])
+        tweets = []
+        if self.session_user['id'] != 0:
+            tweets = twitter_api.get_statuses(self.session_user['twitter_id'])
 
-        for twitter_status in twitter_statuses: 
+        for tweet in tweets: 
             thisTagShouldBeSelected = False
             #if key == propertyStatus:
             #    thisTagShouldBeSelected = True
 
             slots = {}
-            slots['value'] = str(twitter_status.id)
-            slots['caption'] =  twitter_status.text.encode('utf-8')
+            slots['value'] = str(tweet.id)
+            slots['caption'] =  tweet.text.encode('utf-8')
             newTag = tag.clone().fillSlots(**slots)
             if thisTagShouldBeSelected:
                 newTag(selected='yes')
@@ -279,16 +281,18 @@ class EngagePromoter(Element):
 
     @renderer
     def twitter_status_option(self, request, tag):
-        twitter_statuses = twitter_api.get_statuses(self.session_user['twitter_name'])
+        tweets = []
+        if self.session_user['id'] != 0:
+            tweets = twitter_api.get_statuses(self.session_user['twitter_id'])
 
-        for twitter_status in twitter_statuses: 
+        for tweet in tweets: 
             thisTagShouldBeSelected = False
             #if key == propertyStatus:
             #    thisTagShouldBeSelected = True
 
             slots = {}
-            slots['value'] = str(twitter_status.id)
-            slots['caption'] =  twitter_status.text.encode('utf-8')
+            slots['value'] = str(tweet.id)
+            slots['caption'] =  tweet.text.encode('utf-8')
             newTag = tag.clone().fillSlots(**slots)
             if thisTagShouldBeSelected:
                 newTag(selected='yes')

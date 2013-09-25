@@ -14,13 +14,6 @@ def get_followers_count(twitter_name):
     user = api.GetUser(screen_name=twitter_name)
     return user.followers_count
 
-def get_statuses(twitter_name):
-    # user = api.GetUser(screen_name="coingig")
-    statuses = []
-    if twitter_name:
-        statuses = api.GetUserTimeline(screen_name=twitter_name)
-    return statuses
-
 def get_user_by_id(twitter_id):
     user = api.GetUser(user_id=twitter_id)
     return user
@@ -40,6 +33,12 @@ def get_status(status_id):
 #####################################
 # Usefull
 #####################################
+
+def get_statuses(twitter_id):
+    # user = api.GetUser(screen_name="coingig")
+    statuses = []
+    statuses = api.GetUserTimeline(user_id=twitter_id, include_rts=False, exclude_replies=True)
+    return statuses
 
 # Used for first login
 def get_user(twitter_name):
@@ -82,6 +81,7 @@ def verify_transaction(promoter_id, status_id):
 
 def get_retweet_duration(promoter_id, status_id):
     print "promoter_id: %s" % promoter_id
+    print "status_id: %s" % status_id
     response = {
         'error': False
     }

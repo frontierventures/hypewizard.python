@@ -167,7 +167,9 @@ class Process(Resource):
     def render(self, request):
         session_user = SessionManager(request).get_session_user()
 
-        response = {'error': True}
+        response = {
+            'error': True
+        }
         try:
             action = request.args.get('action')[0]
         except:
@@ -207,7 +209,11 @@ class Approve(Resource):
 
         is_confirmed = request.args.get('is_confirmed')[0]
         if is_confirmed == 'no':
-            return json.dumps(dict(response=1, text=definitions.MESSAGE_SUCCESS))
+            response = {}
+            response['error'] = False
+            response['message'] = definitions.MESSAGE_SUCCESS
+            response['url'] = '../transactions' 
+            return json.dumps(response) 
 
         timestamp = config.create_timestamp()
         
@@ -223,7 +229,11 @@ class Approve(Resource):
         html = mailer.transaction_approved_memo_html(transaction)
         Email(mailer.noreply, promoter.email, 'Your Hype Wizard transaction has been approved!', plain, html).send()
 
-        return json.dumps(dict(response=1, text=definitions.MESSAGE_SUCCESS))
+        response = {}
+        response['error'] = False
+        response['message'] = definitions.MESSAGE_SUCCESS
+        response['url'] = '../transactions' 
+        return json.dumps(response) 
 
 
 class Disapprove(Resource):
@@ -232,6 +242,8 @@ class Disapprove(Resource):
 
         session_user = SessionManager(request).get_session_user()
         session_user['action'] = 'disapprove'
+
+        print "disapprove" * 20
 
         try:
             transaction_id = int(request.args.get('transaction_id')[0])
@@ -245,7 +257,11 @@ class Disapprove(Resource):
 
         is_confirmed = request.args.get('is_confirmed')[0]
         if is_confirmed == 'no':
-            return json.dumps(dict(response=1, text=definitions.MESSAGE_SUCCESS))
+            response = {}
+            response['error'] = False
+            response['message'] = definitions.MESSAGE_SUCCESS
+            response['url'] = '../transactions' 
+            return json.dumps(response) 
 
         timestamp = config.create_timestamp()
         
@@ -258,10 +274,15 @@ class Disapprove(Resource):
         client.reserved_balance -= transaction.charge
 
         promoter = db.query(Profile).filter(Profile.user_id == transaction.promoter_id).first()
-        promoter.transaction_count -= 1
+        promoter.offer_count -= 1
         
         db.commit()
-        return json.dumps(dict(response=1, text=definitions.MESSAGE_SUCCESS))
+
+        response = {}
+        response['error'] = False
+        response['message'] = definitions.MESSAGE_SUCCESS
+        response['url'] = '../transactions' 
+        return json.dumps(response) 
 
 
 class Create(Resource):
@@ -329,7 +350,7 @@ class Create(Resource):
             html = mailer.offer_created_memo_html(promoter, new_transaction)
             Email(mailer.noreply, client.email, 'You have a new Hype Wizard promotional offer pending!', plain, html).send()
 
-            url = '../offers'
+            url = '../'
         
         #####################################
         # Engage Promoter

@@ -31,7 +31,7 @@ $(document).ready(function(){
             }
         }      
     });
-    $('form[name*=create_ask_form]').submit(function() { 
+    $('form[name=create_ask_form]').submit(function() { 
         var response = {};
         $.ajax({
             data: $(this).serialize(),
@@ -51,7 +51,7 @@ $(document).ready(function(){
         });
         return false; 
     }); 
-    $('form[name*=deposit_form]').submit(function() { 
+    $('form[name=deposit_form]').submit(function() { 
         var response = {};
         $.ajax({
             data: $(this).serialize(),
@@ -71,7 +71,7 @@ $(document).ready(function(){
         });
         return false; 
     }); 
-    $('form[name*=engage_client]').submit(function() { 
+    $('form[name=engage_client_form]').submit(function() { 
         var response = {};
         $.ajax({
             data: $(this).serialize(),
@@ -91,7 +91,7 @@ $(document).ready(function(){
         });
         return false; 
     }); 
-    $('form[name*=withdraw_ask]').submit(function() { 
+    $('form[name=withdraw_ask_form]').submit(function() { 
         var response = {};
         $.ajax({
             data: $(this).serialize(),

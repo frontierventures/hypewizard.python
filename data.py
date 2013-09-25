@@ -372,7 +372,7 @@ def reset(default):
                 'twitter_id': 632058592,
                 'niche': 'AA',
                 'transaction_count': 0, 
-                'offer_cou nt': 0 
+                'offer_count': 0 
             }
             profile = Profile(data)
             user.profiles = [profile]
@@ -380,7 +380,7 @@ def reset(default):
             data = {            
                 'twitter_id': 632058592,
                 'twitter_name': 'hypewizard',
-                'twitter_ image': 'https://si0.twimg.com/profile_images/378800000485472101/27c7a9dc98a6aaaa1e208c242bcb3666_normal.png',
+                'twitter_image': 'https://si0.twimg.com/profile_images/378800000485472101/27c7a9dc98a6aaaa1e208c242bcb3666_normal.png',
             }
             twitter_user = TwitterUserData(data)
             user.twitter_user_data = [twitter_user]
@@ -411,7 +411,7 @@ def reset(default):
                 'twitter_id': 783214,
                 'niche': 'AA',
                 'transaction_count': 0, 
-                'offer_co unt': 0 
+                'offer_count': 0 
             }
             profile = Profile(data)
             user.profiles = [profile]

@@ -4,7 +4,7 @@
             <h1>Promoters</h1>
         </div>
         <div class="span4">
-            <h2><a href="../?kind=client">Clients</a></h2>
+            <h3><a href="../?kind=client">Clients</a></h3>
         </div>
         <div class="span4">
             <br />

@@ -220,7 +220,7 @@ class Complete(Resource):
                     timestamp = time.strftime('%H hrs %M mins %S secs', time.gmtime(delta))
                     response = {}
                     response['error'] = True
-                    response['message'] = 'Please wait until the end of promotion period (ETA: %s)' % timestamp 
+                    response['message'] = 'Promotion period is 24 hrs. (Elapsed: %s)' % timestamp 
                     return json.dumps(response) 
             else:
                 response = {}
