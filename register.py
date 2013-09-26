@@ -131,6 +131,13 @@ class Create(Resource):
 
         twitter_user = response['user']
 
+        #####################################
+        # Cache twitter user 
+        #####################################
+        data = {
+
+        }
+
         if not request.args.get('is_terms_accepted'):
             SessionManager(request).setSessionResponse({'class': 1, 'form': 0, 'text': definitions.TERMS[0]})
             return redirectTo('../register', request)

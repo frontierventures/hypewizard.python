@@ -12,55 +12,6 @@
             </select>
         </span>
     </div>
-    <div>
-        <table style="width: 100%">
-            <thead>
-                <tr>
-                    <th>Status</th>
-                    <th>Kind</th>
-                    <th>Created At</th>
-                    <th>Updated At</th>
-                    <th>Transaction Id</th>
-                    <th>Promoter (Twitter Name)</th>
-                    <th>Wizard Score</th>
-                    <th>Twitter Status Id</th>
-                    <th>Charge (BTC)</th>
-                    <th>Actions</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr t:render="row">
-                    <td style="text-align:center"><t:slot name="status" /></td>
-                    <td style="text-align:center"><t:slot name="kind" /></td>
-                    <td style="text-align:center"><t:slot name="created_at" /></td>
-                    <td style="text-align:center"><t:slot name="updated_at" /></td>
-                    <td style="text-align:center"><t:slot name="transaction_id" /></td>
-                    <td style="text-align:center">
-                        <a>
-                            <t:attr name="href">
-                                <t:slot name="promoter_twitter_name_url" />
-                            </t:attr>
-                            <t:slot name="promoter_twitter_name" />
-                        </a>
-                    </td>
-                    <td style="text-align:center">(S: <t:slot name="statuses_count" />, F: <t:slot name="followers_count" />)</td>
-                    <td style="text-align:center">
-                        <a>
-                            <t:attr name="href">
-                                <t:slot name="twitter_status_id_url" />
-                            </t:attr>
-                            <t:slot name="twitter_status_id" />
-                        </a>
-                    </td>
-                    <td style="text-align:center"><t:slot name="charge" /></td>
-                    <td style="text-align:center">
-                        <a t:render="action">
-                            <t:attr name="href"><t:slot name="url" /></t:attr>
-                            <t:slot name="caption" />
-                        </a>
-                    </td>
-                </tr>
-            </tbody>
-        </table>
+    <div style="width: 100%; float: left; text-align: center;" class="asks">
     </div>
 </div>

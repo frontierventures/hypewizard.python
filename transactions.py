@@ -117,50 +117,50 @@ class Table(Element):
                 newTag(selected='yes')
             yield newTag
 
-    @renderer
-    def row(self, request, tag):
-        for transaction in self.transactions:
-            user = twitter_api.get_user_by_id(transaction.promoter_twitter_id)
-
-            slots = {}
-            slots['status'] = transaction.status 
-            slots['kind'] = transaction.kind 
-            slots['created_at'] = config.convert_timestamp(transaction.created_at, config.STANDARD)
-            slots['updated_at'] = config.convert_timestamp(transaction.updated_at, config.STANDARD)
-            slots['transaction_id'] = str(transaction.id)
-
-            item = db.query(TwitterUserData).filter(TwitterUserData.twitter_id == transaction.promoter_twitter_id).first()
-            slots['promoter_twitter_name'] = item.twitter_name.encode('utf-8')
-
-            slots['promoter_twitter_name_url'] = 'http://www.twitter.com/%s' % item.twitter_name
-            slots['statuses_count'] = str(user.statuses_count) 
-            slots['followers_count'] = str(user.followers_count) 
-            slots['twitter_status_id'] = str(transaction.twitter_status_id) 
-            slots['twitter_status_id_url'] = 'http://www.twitter.com/%s/status/%s' % (item.twitter_name, transaction.twitter_status_id)
-            slots['charge'] = str(transaction.charge) 
-            self.transaction = transaction
-            yield tag.clone().fillSlots(**slots)
-
-    @renderer
-    def action(self, request, tag):
-        buttons = []
-
-        if self.transaction.status == 'open':
-            buttons.append({
-                'url': '../process_transaction?action=approve&id=%s' % self.transaction.id,
-                'caption': 'Approve' 
-            })
-            buttons.append({
-                'url': '../process_transaction?action=disapprove&id=%s' % self.transaction.id,
-                'caption': 'Disapprove' 
-            })
-
-        for button in buttons:
-            slots = {}
-            slots = {}
-            slots['caption'] = button['caption']
-            slots['url'] = button['url']
-            yield tag.clone().fillSlots(**slots) 
+#    @renderer
+#    def row(self, request, tag):
+#        for transaction in self.transactions:
+#            user = twitter_api.get_user_by_id(transaction.promoter_twitter_id)
+#
+#            slots = {}
+#            slots['status'] = transaction.status 
+#            slots['kind'] = transaction.kind 
+#            slots['created_at'] = config.convert_timestamp(transaction.created_at, config.STANDARD)
+#            slots['updated_at'] = config.convert_timestamp(transaction.updated_at, config.STANDARD)
+#            slots['transaction_id'] = str(transaction.id)
+#
+#            item = db.query(TwitterUserData).filter(TwitterUserData.twitter_id == transaction.promoter_twitter_id).first()
+#            slots['promoter_twitter_name'] = item.twitter_name.encode('utf-8')
+#
+#            slots['promoter_twitter_name_url'] = 'http://www.twitter.com/%s' % item.twitter_name
+#            slots['statuses_count'] = str(user.statuses_count) 
+#            slots['followers_count'] = str(user.followers_count) 
+#            slots['twitter_status_id'] = str(transaction.twitter_status_id) 
+#            slots['twitter_status_id_url'] = 'http://www.twitter.com/%s/status/%s' % (item.twitter_name, transaction.twitter_status_id)
+#            slots['charge'] = str(transaction.charge) 
+#            self.transaction = transaction
+#            yield tag.clone().fillSlots(**slots)
+#
+#    @renderer
+#    def action(self, request, tag):
+#        buttons = []
+#
+#        if self.transaction.status == 'open':
+#            buttons.append({
+#                'url': '../process_transaction?action=approve&id=%s' % self.transaction.id,
+#                'caption': 'Approve' 
+#            })
+#            buttons.append({
+#                'url': '../process_transaction?action=disapprove&id=%s' % self.transaction.id,
+#                'caption': 'Disapprove' 
+#            })
+#
+#        for button in buttons:
+#            slots = {}
+#            slots = {}
+#            slots['caption'] = button['caption']
+#            slots['url'] = button['url']
+#            yield tag.clone().fillSlots(**slots) 
 
 
 class Process(Resource):

@@ -220,6 +220,9 @@ class TwitterUserData(Base):
     twitter_id = Column(Integer)
     twitter_name = Column(String)
     twitter_image = Column(String)
+    created_at = Column(String)
+    followers_count = Column(Integer)
+    status_count = Column(Integer)
 
     user_id = Column(Integer, ForeignKey('users.id'))
     user = relationship('User', backref=backref('twitter_user_data', order_by=id))
@@ -228,6 +231,9 @@ class TwitterUserData(Base):
         self.twitter_id = data['twitter_id'] 
         self.twitter_name = data['twitter_name'] 
         self.twitter_image = data['twitter_image'] 
+        self.created_at = data['twitter_image'] 
+        self.followers_count = data['followers_count'] 
+        self.followers_count = data['status_count'] 
 
 
 class Tweet(Base):

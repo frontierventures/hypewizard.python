@@ -21,6 +21,7 @@ def assemble(root):
     root.putChild('get_bids', GetBids())
     root.putChild('get_session_user', GetSessionUser())
     root.putChild('get_user', GetMarketScore())
+    root.putChild('get_transactions', GetTransactions())
     return root
 
 
@@ -168,6 +169,47 @@ class GetBids(Resource):
                     order['engage']['reason'] = 'engaged'
 
         response['orders'] = orders
+        response['error'] = False
+
+        return json.dumps(response)
+
+
+class GetTransactions(Resource):
+    def render(self, request):
+        response = {'error': True}
+
+        session_user = SessionManager(request).get_session_user()
+        session_user['action'] = 'get_transactions'
+
+        if session_user['id'] == 0:
+            return redirectTo('../', request)
+    
+        transactions = db.query(Transaction).filter(Transaction.client_id == session_user['id'])
+        transactions = db.query(Transaction).filter(Transaction.status.in_(['open', 'approved']))
+        transactions = transactions.order_by(Transaction.created_at.desc())
+
+        records = []
+        for transaction in transactions: 
+            record = {}
+            record['status'] = transaction.status
+            record['kind'] = transaction.kind
+            record['created_at'] = transaction.created_at
+            record['updated_at'] = transaction.updated_at
+            record['id'] = transaction.id
+            # Pull Twitter user data
+            twitter_user_data = db.query(TwitterUserData).filter(TwitterUserData.twitter_id == transaction.promoter_twitter_id).first()
+
+            record['promoter_twitter_name'] = twitter_user_data.twitter_name 
+            record['promoter_twitter_image'] = twitter_user_data.twitter_image 
+            record['ask_id'] = transaction.ask_id
+
+            record['wizard_score'] = "MY WIZARD SCORE" 
+
+            record['twitter_status_id'] = transaction.twitter_status_id
+            record['charge'] = transaction.charge
+            records.append(record)
+
+        response['transactions'] = records
         response['error'] = False
 
         return json.dumps(response)
