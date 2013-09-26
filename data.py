@@ -218,8 +218,8 @@ class TwitterUserData(Base):
     __tablename__ = 'twitter_user_data'
     id = Column(Integer, Sequence('twitter_name_id_seq'), primary_key=True)
     twitter_id = Column(Integer)
-    twitter_name = Column(String)
-    twitter_image = Column(String)
+    screen_name = Column(String)
+    image = Column(String)
     created_at = Column(String)
     followers_count = Column(Integer)
     status_count = Column(Integer)
@@ -229,11 +229,11 @@ class TwitterUserData(Base):
 
     def __init__(self, data):
         self.twitter_id = data['twitter_id'] 
-        self.twitter_name = data['twitter_name'] 
-        self.twitter_image = data['twitter_image'] 
-        self.created_at = data['twitter_image'] 
+        self.screen_name = data['screen_name'] 
+        self.image = data['image'] 
+        self.created_at = data['created_at'] 
         self.followers_count = data['followers_count'] 
-        self.followers_count = data['status_count'] 
+        self.status_count= data['status_count'] 
 
 
 class Tweet(Base):
@@ -307,8 +307,8 @@ def reset(default):
 
             data = {            
                 'twitter_id': 0,
-                'twitter_name': '',
-                'twitter_image': 'https://si0.twimg.com/profile_images/378800000485472101/27c7a9dc98a6aaaa1e208c242bcb3666_normal.png',
+                'name': '',
+                'image': 'https://si0.twimg.com/profile_images/378800000485472101/27c7a9dc98a6aaaa1e208c242bcb3666_normal.png',
             }
             twitter_user = TwitterUserData(data)
             user.twitter_user_data = [twitter_user]
@@ -439,4 +439,4 @@ def reset(default):
 
 #flood(863)
 
-reset(True)
+#reset(True)

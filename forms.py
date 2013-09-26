@@ -61,7 +61,9 @@ class Login(Element):
 
 
 class Register(Element):
-    loader = XMLString(FilePath('templates/forms/register.xml').getContent())
+    #print os.path.realpath(__file__)
+    #loader = XMLString(FilePath('templates/forms/register.xml').getContent())
+    loader = XMLString(FilePath(__file__).sibling('templates').child('forms').child('register.xml').getContent())
 
     def __init__(self, session_user, session_response):
         self.session_user = session_user

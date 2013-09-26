@@ -41,12 +41,12 @@ def get_statuses(twitter_id):
     return statuses
 
 # Used for first login
-def get_user(twitter_name):
+def get_user(twitter_name=None, twitter_id=None):
     response = {
         'error': False
     }
     try:
-        user = api.GetUser(screen_name=twitter_name)
+        user = api.GetUser(screen_name=twitter_name, user_id=twitter_id)
         response['user'] = user
     except twitter.TwitterError, error:
         response['error'] = True

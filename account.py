@@ -60,7 +60,7 @@ class Details(Element):
             template = 'templates/elements/unverified_account.xml'
 
         self.loader = XMLString(FilePath(template).getContent())
-        self.twitter_user = twitter_api.get_user_by_id(self.session_user['twitter_id'])
+        self.twitter_user = twitter_api.get_user(twitter_id=self.session_user['twitter_id'])
 
         self.twitter_user_data = db.query(TwitterUserData).filter(TwitterUserData.twitter_id == self.session_user['twitter_id']).first()
 

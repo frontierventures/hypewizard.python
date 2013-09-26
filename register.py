@@ -131,13 +131,6 @@ class Create(Resource):
 
         twitter_user = response['user']
 
-        #####################################
-        # Cache twitter user 
-        #####################################
-        data = {
-
-        }
-
         if not request.args.get('is_terms_accepted'):
             SessionManager(request).setSessionResponse({'class': 1, 'form': 0, 'text': definitions.TERMS[0]})
             return redirectTo('../register', request)
@@ -177,10 +170,16 @@ class Create(Resource):
 
             new_user.profiles = [new_profile]
 
-            data = {            
+            #####################################
+            # Cache twitter user 
+            #####################################
+            data = {
                 'twitter_id': twitter_user.id,
-                'twitter_name': twitter_name,
-                'twitter_image': twitter_user.profile_image_url,
+                'screen_name': twitter_user.screen_name,
+                'image': twitter_user.profile_image_url,
+                'created_at': twitter_user.created_at,
+                'followers_count': twitter_user.follower_count,
+                'status_count': twitter_user.status_count
             }
             new_twitter_user = TwitterUserData(data)
             new_user.twitter_user_data = [new_twitter_user]
@@ -233,3 +232,7 @@ class Verify(Resource):
             return redirectTo('../login?verify=ok', request)
         else:
             return redirectTo('../', request)
+
+
+def test():
+    print "Callback from register"
