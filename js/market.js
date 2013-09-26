@@ -66,10 +66,9 @@ function build_grid(kind) {
     }
 };
 function add_ask_to_market(rule, ask) { 
-
     if (!ask.engage.is_allowed) {
         if (ask.engage.reason == 'different_user') {
-            action_url = '../process_ ask?action=withdraw&id=' + ask.id; 
+            action_url = '../process_ask?action=withdraw&id=' + ask.id; 
             action_cell = '<div style="text-align:center"><a href="' + action_url + '">Withdraw</a></div>';
         }
 
