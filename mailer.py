@@ -135,7 +135,7 @@ def transaction_approved_memo_html(transaction):
     return html
 
 
-def transaction_complete_memo_plain(offer):
+def offer_complete_memo_plain(offer):
     plain = """
     Congratulations!
     Your tweet has been promoted.\n
@@ -146,7 +146,7 @@ def transaction_complete_memo_plain(offer):
     return plain
 
 
-def transaction_complete_memo_html(offer):
+def offer_complete_memo_html(offer):
     html = """
     <html>
     <p>Congratulations!</p>
