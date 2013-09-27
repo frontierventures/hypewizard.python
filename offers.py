@@ -121,11 +121,11 @@ class Table(Element):
             slots['offer_id'] = str(offer.id)
             
             item = db.query(TwitterUserData).filter(TwitterUserData.twitter_id == offer.client_twitter_id).first()
-            slots['client_twitter_name'] = item.twitter_name.encode('utf-8')
+            slots['client_twitter_name'] = item.screen_name.encode('utf-8')
 
-            slots['client_twitter_name_url'] = 'http://www.twitter.com/%s' % item.twitter_name
+            slots['client_twitter_name_url'] = 'http://www.twitter.com/%s' % item.screen_name
             slots['twitter_status_id'] = str(offer.twitter_status_id) 
-            slots['twitter_status_id_url'] = 'http://www.twitter.com/%s/status/%s' % (item.twitter_name, offer.twitter_status_id)
+            slots['twitter_status_id_url'] = 'http://www.twitter.com/%s/status/%s' % (item.screen_name, offer.twitter_status_id)
             slots['charge'] = str(offer.charge) 
             self.offer = offer
             yield tag.clone().fillSlots(**slots)

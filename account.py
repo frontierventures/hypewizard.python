@@ -60,7 +60,8 @@ class Details(Element):
             template = 'templates/elements/unverified_account.xml'
 
         self.loader = XMLString(FilePath(template).getContent())
-        self.twitter_user = twitter_api.get_user(twitter_id=self.session_user['twitter_id'])
+        self.twitter_user = twitter_api.get_user(twitter_id=self.session_user['twitter_id'])['user']
+          
 
         self.twitter_user_data = db.query(TwitterUserData).filter(TwitterUserData.twitter_id == self.session_user['twitter_id']).first()
 
@@ -71,7 +72,7 @@ class Details(Element):
         slots['created_at'] = str(self.twitter_user.created_at)
         slots['statuses_count'] = str(self.twitter_user.statuses_count)
         slots['followers_count'] = str(self.twitter_user.followers_count)
-        slots['twitter_image'] = str(self.twitter_user_data.twitter_image)
+        slots['twitter_image'] = str(self.twitter_user_data.image)
         slots['available_balance'] = str(self.profile.available_balance)
         slots['reserved_balance'] = str(self.profile.reserved_balance)
         slots['market_score'] = str(0)
