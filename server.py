@@ -51,9 +51,6 @@ root = summary_transactions.assemble(root)
 root = summary_users.assemble(root)
 root = transactions.assemble(root)
 
-import trial_receipt
-root = trial_receipt.assemble(root)
-
 root.putChild('', root)
 root.putChild('faq', faq.Main())
 root.putChild('terms', terms.Main())
