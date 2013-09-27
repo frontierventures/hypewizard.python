@@ -4,7 +4,7 @@ from twisted.web.util import redirectTo
 from twisted.web.template import Element, renderer, renderElement, XMLString
 from twisted.python.filepath import FilePath
 
-from data import Ask, Bid, Profile, Offer, Transaction, TwitterUserData, User
+from data import Ask, Bid, Profile, Transaction, TwitterUserData, User
 from data import db
 from sessions import SessionManager
 

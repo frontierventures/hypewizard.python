@@ -97,31 +97,6 @@ class Log(Base):
         self.note = data['note']
 
 
-class Offer(Base):
-    __tablename__ = 'offers'
-    id = Column(Integer, Sequence('offer_id_seq'), primary_key=True)
-    status = Column(String)
-    created_at = Column(String)
-    updated_at = Column(String)
-    client_twitter_name = Column(String)
-    promoter_twitter_name = Column(String)
-    twitter_status_id = Column(String)
-    client_id = Column(Integer)
-    promoter_id = Column(Integer)
-    charge = Column(String)
-
-    def __init__(self, data):
-        self.status = data['status']
-        self.created_at = data['created_at']
-        self.updated_at = data['updated_at']
-        self.client_twitter_name = data['client_twitter_name']
-        self.promoter_twitter_name = data['promoter_twitter_name']
-        self.twitter_status_id = data['twitter_status_id'] 
-        self.client_id = data['client_id']
-        self.promoter_id = data['promoter_id']
-        self.charge = data['charge']
-
-
 class Order(Base):
     __tablename__ = 'orders'
     id = Column(Integer, Sequence('order_id_seq'), primary_key=True)
