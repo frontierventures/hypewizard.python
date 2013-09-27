@@ -258,11 +258,12 @@ class Complete(Resource):
 
         plain = mailer.offer_complete_memo_plain(offer)
         html = mailer.offer_complete_memo_html(offer)
+
+        client = db.query(User).filter(User.id == offer.client_id).first()
         Email(mailer.noreply, client.email, 'Your Hype Wizard transaction is complete!', plain, html).send()
 
         response = {}
         response['error'] = False
         response['message'] = definitions.MESSAGE_SUCCESS
         response['url'] = '../offers?kind=complete'
-
         return json.dumps(response) 
