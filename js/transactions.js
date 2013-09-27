@@ -102,8 +102,6 @@ function add_ask_to_grid(ask) {
     var action_url = '../process_ask?action=engage&id=' + ask.id; 
     var action_cell = '<div style="text-align:center"><a href="../">View Tweet</a> <a href="' + action_url + '">Engage Client</a></div>';
 
-    alert("added ask");
-
     $('.asks').append('<div id="status_' + ask.twitter_status_id + '" class="span4">' +
             '<div class="block">' +
             '<div style="text-align:center; float:left; width:150px;">' +
@@ -128,9 +126,8 @@ function add_ask_to_grid(ask) {
             '</div>');
 };
 function add_transaction_to_grid(transaction) { 
-    alert(transaction.ask_id);
     var action_url = '../process_ask?action=engage&id=' + transaction.id; 
-    var action_cell = '<div style="text-align:center"><a href="../process_transaction?action=approve&id=' + transaction.id + '">Approve</a> <a href="../process_transaction?action=disapprove&id=' + transaction.id + '">Approve</a></div>';
+    var action_cell = '<div style="text-align:center"><a href="../process_transaction?action=approve&id=' + transaction.id + '">Approve</a> <a href="../process_transaction?action=disapprove&id=' + transaction.id + '">Disapprove</a></div>';
     
     $('#status_' + transaction.twitter_status_id).append(
             '<div class="block">' +

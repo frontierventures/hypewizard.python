@@ -42,7 +42,7 @@ class GetAsks(Resource):
             order['campaign_type'] = definitions.campaign_types[ask.campaign_type]
 
             item = db.query(TwitterUserData).filter(TwitterUserData.twitter_id == ask.twitter_id).first()
-            order['twitter_name'] = item.twitter_name 
+            order['twitter_name'] = item.screen_name 
             
             tweet = db.query(Tweet).filter(Tweet.twitter_status_id == ask.twitter_status_id).first()
 
@@ -129,7 +129,7 @@ class GetBids(Resource):
             order['twitter_id'] = bid.twitter_id 
 
             item = db.query(TwitterUserData).filter(TwitterUserData.twitter_id == bid.twitter_id).first()
-            order['twitter_name'] = item.twitter_name 
+            order['twitter_name'] = item.screen_name 
 
             order['twitter_status_id'] = bid.twitter_status_id
             order['cost'] = bid.cost
@@ -199,8 +199,8 @@ class GetTransactions(Resource):
             # Pull Twitter user data
             twitter_user_data = db.query(TwitterUserData).filter(TwitterUserData.twitter_id == transaction.promoter_twitter_id).first()
 
-            record['promoter_twitter_name'] = twitter_user_data.twitter_name 
-            record['promoter_twitter_image'] = twitter_user_data.twitter_image 
+            record['promoter_twitter_name'] = twitter_user_data.screen_name 
+            record['promoter_twitter_image'] = twitter_user_data.image 
             record['ask_id'] = transaction.ask_id
 
             record['wizard_score'] = "MY WIZARD SCORE" 

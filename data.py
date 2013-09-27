@@ -304,12 +304,15 @@ def reset(default):
             }
             profile = Profile(data)
             user.profiles = [profile]
-
             data = {            
-                'twitter_id': 0,
-                'name': '',
+                'twitter_id': 1129728541,
+                'screen_name': 'hypewizard',
                 'image': 'https://si0.twimg.com/profile_images/378800000485472101/27c7a9dc98a6aaaa1e208c242bcb3666_normal.png',
+                'created_at': 'Tue Jul 10 15:03:07 +0000 2012',
+                'followers_count': 10, 
+                'status_count': 10 
             }
+
             twitter_user = TwitterUserData(data)
             user.twitter_user_data = [twitter_user]
 
@@ -346,8 +349,12 @@ def reset(default):
 
             data = {            
                 'twitter_id': 1129728541,
-                'twitter_name': 'coingig',
-                'twitter_image': 'https://si0.twimg.com/profile_images/378800000485472101/27c7a9dc98a6aaaa1e208c242bcb3666_normal.png',
+                'screen_name': 'coingig',
+                'image': 'https://si0.twimg.com/profile_images/378800000485472101/27c7a9dc98a6aaaa1e208c242bcb3666_normal.png',
+                'image': 'https://si0.twimg.com/profile_images/378800000485472101/27c7a9dc98a6aaaa1e208c242bcb3666_normal.png',
+                'created_at': 'Tue Jul 10 15:03:07 +0000 2012',
+                'followers_count': 10, 
+                'status_count': 10 
             }
             twitter_user = TwitterUserData(data)
             user.twitter_user_data = [twitter_user]
@@ -384,9 +391,12 @@ def reset(default):
             user.profiles = [profile]
 
             data = {            
-                'twitter_id': 632058592,
-                'twitter_name': 'hypewizard',
-                'twitter_image': 'https://si0.twimg.com/profile_images/378800000485472101/27c7a9dc98a6aaaa1e208c242bcb3666_normal.png',
+                'twitter_id': 1129728541,
+                'screen_name': 'hypewizard',
+                'image': 'https://si0.twimg.com/profile_images/378800000485472101/27c7a9dc98a6aaaa1e208c242bcb3666_normal.png',
+                'created_at': 'Tue Jul 10 15:03:07 +0000 2012',
+                'followers_count': 10, 
+                'status_count': 10 
             }
             twitter_user = TwitterUserData(data)
             user.twitter_user_data = [twitter_user]
@@ -423,10 +433,13 @@ def reset(default):
             user.profiles = [profile]
 
             data = {            
-                'twitter_id': 783214,
-                'twitter_name': 'twitter',
-                 'twitter_image': 'https://si0.twimg.com/profile_images/378800000485472101/27c7a9dc98a6aaaa1e208c242bcb3666_normal.png',
-            } 
+                'twitter_id': 632058592,
+                'screen_name': 'twitter',
+                'image': 'https://si0.twimg.com/profile_images/378800000485472101/27c7a9dc98a6aaaa1e208c242bcb3666_normal.png',
+                'created_at': 'Tue Jul 10 15:03:07 +0000 2012',
+                'followers_count': 10, 
+                'status_count': 10 
+            }
             twitter_user = TwitterUserData(data)
             user.twitter_user_data = [twitter_user]
 
@@ -439,4 +452,4 @@ def reset(default):
 
 #flood(863)
 
-#reset(True)
+reset(True)
