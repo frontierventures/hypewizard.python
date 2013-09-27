@@ -236,7 +236,7 @@ class Complete(Resource):
         offer.status = 'complete'
 
         client = db.query(Profile).filter(Profile.user_id == offer.client_id).first()
-        client.offer_count -= 1
+        client.transaction_count -= 1
         client.reserved_balance -= offer.charge
 
         promoter = db.query(Profile).filter(Profile.user_id == offer.promoter_id).first()
