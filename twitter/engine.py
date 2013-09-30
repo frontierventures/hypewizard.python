@@ -2,7 +2,8 @@ import pycurl
 import sys
 import sign_request
 import json
-#import get_tweets
+import collections
+from pymongo import Connection
 
 
 STREAM_URL = 'https://stream.twitter.com/1.1/statuses/filter.json'
@@ -14,11 +15,11 @@ HEADER = 'Authorization: %s' % string
 DATA = 'follow=1898591701'
 
 
-from pymongo import Connection
-
 connection = Connection('localhost', 27017)
 db = connection['hypewizard']
-tweets = db['tweets']
+
+twitter_data = db['twitter_data']
+keywords = db['keywords']
 
 class Header:
     def __init__(self):
@@ -44,7 +45,13 @@ class Storage:
         self.line = self.line + 1
         self.contents = "%s%i: %s" % (self.contents, self.line, data)
         print self.contents
-        tweet = self.assemble(data)
+
+        try:
+            tweet = self.assemble(data)
+        except Exception as e:
+            print e
+            return
+
         self.process_tweet(tweet)
 
     def assemble(self, data):
@@ -58,7 +65,24 @@ class Storage:
 
     def process_tweet(self, tweet):
         print "id: %s" % tweet['id']
-        tweets.insert(tweet)
+        print "text: %s" % tweet['text']
+        data = {
+            'uid': 0,
+            'pid': tweet['user']['id'], 
+            'tweet_id': tweet['id'],
+            'text': tweet['text']
+        }
+        twitter_data.insert(data)
+        print "data: %s => twitter_data" % data 
+
+        # Update current keywords
+        words = tweet['text'].split() 
+
+        counter = collections.Counter(words)
+        data = dict(counter)
+
+        keywords.insert(data)
+        print "data: %s => keywords" % data 
 
     def __str__(self):
         return self.contents
