@@ -2,35 +2,49 @@ from pymongo import Connection
 #connection = Connection()
 
 connection = Connection('localhost', 27017)
-db = connection['test']
-collection = db['test-collection']
 
-import datetime
-post = {"author": "Mike",
-        "text": "My first blog post!sdsdsdsdqw",
-        "tags": ["mongodb", "python", "pymongo"],
-        "sasdasdasdate": datetime.datetime.utcnow()}
+db = connection['test_1']
+words = db['words']
 
-posts = db.posts
-for x in range(1, 10):
-    post = {"author": "Mike%s" % x,
-            "text": "My first blog post!sdsdsdsdqw",
-            "tags": ["mongodb", "python", "pymongo"],
-            "sasdasdasdate": datetime.datetime.utcnow()}
-    
-    posts.insert(post)
-    print x
-    
+post = {
+    'twitter_name': 'hypewizard',
+    'text': 'text'
+}
+#posts = db.posts
+words.insert(post)
 
-print db.collection_names()
-print posts
+result = words.find_one({'twitter_name': 'hypewizard'})
+print result['twitter_name']
 
-print posts.find_one({"author": "Mike2"})
-
-
-test_data = db.test_data
-test_data.insert({'user': 1})
-print test_data
+#db = connection['test']
+#collection = db['test-collection']
+#
+#import datetime
+#post = {"author": "Mike",
+#        "text": "My first blog post!sdsdsdsdqw",
+#        "tags": ["mongodb", "python", "pymongo"],
+#        "sasdasdasdate": datetime.datetime.utcnow()}
+#
+#posts = db.posts
+#for x in range(1, 10):
+#    post = {"author": "Mike%s" % x,
+#            "text": "My first blog post!sdsdsdsdqw",
+#            "tags": ["mongodb", "python", "pymongo"],
+#            "sasdasdasdate": datetime.datetime.utcnow()}
+#    
+#    posts.insert(post)
+#    print x
+#    
+#
+#print db.collection_names()
+#print posts
+#
+#print posts.find_one({"author": "Mike2"})
+#
+#
+#test_data = db.test_data
+#test_data.insert({'user': 1})
+#print test_data
 
 ## pull from twitter
 #
