@@ -66,23 +66,49 @@ class Storage:
     def process_tweet(self, tweet):
         print "id: %s" % tweet['id']
         print "text: %s" % tweet['text']
+
+        uid = 1
+
         data = {
-            'uid': 0,
+            'uid': uid,
             'pid': tweet['user']['id'], 
             'tweet_id': tweet['id'],
             'text': tweet['text']
         }
+
         twitter_data.insert(data)
         print "data: %s => twitter_data" % data 
 
         # Update current keywords
         words = tweet['text'].split() 
 
+        # count words
         counter = collections.Counter(words)
-        data = dict(counter)
+        counts = dict(counter)
 
-        keywords.insert(data)
-        print "data: %s => keywords" % data 
+        #entry = db.keywords.find({uid: 1})
+        entry = keywords.find_one({'uid': 1})
+
+        if entry:
+            print "Entry updated"
+
+            cursor = keywords.find({'counts.ted': {'$exists': True}})
+            cursor = keywords.find({'counts.bob': {'$exists': True}})
+            print cursor
+
+            does_key_exit = False
+            if cursor.count() > 0:
+                print "Key exists"
+                does_key_exist = True
+
+        else:
+            data = {
+                'uid': uid,
+                'counts': counts
+            }
+
+            keywords.insert(data)
+            print "data: %s => keywords" % data 
 
     def __str__(self):
         return self.contents
