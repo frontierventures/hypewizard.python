@@ -85,6 +85,7 @@ class Storage:
         # count words
         counter = collections.Counter(words)
         counts = dict(counter)
+        print "counts: %s" % counts
 
         #entry = db.keywords.find({uid: 1})
 
@@ -92,14 +93,15 @@ class Storage:
         # PULL ALL KEYS
 
         record = keywords.find_one({'uid': 1})
+        print 'existing_record: %s' % record
 
         if record:
             # current_keys for the user
             current_keys = record['counts'].keys()
-            print "current_keys: %s" % current_keys
+            print "keys in database: %s" % current_keys
 
             new_keys = counts.keys()
-            print "new_keys: %s" % new_keys
+            print "keys not in database: %s" % new_keys
 
             #difference = list(set(current_keys) - set(new_keys)) 
             #print "difference: %s" % difference
@@ -110,31 +112,27 @@ class Storage:
             for key in new_keys:
                 if key not in current_keys:
                     print "word: %s not in database" % key
+
+                    existing_counts = record['counts']
+                    existing_counts[key] = counts[key]
+                    keywords.update( 
+                            {'uid': 1},
+                            {'$set': {'counts': existing_counts}}
+                        )
+                    
+                    print "%s => database" % key
+
                 else:
                     print "word: %s is in database" % key
 
-                    keywords.update({'counts.%s' % key: {$inc, counts[key]}})
+                    keywords.update(
+                            {'uid': 1}, 
+                            {'$inc': {'counts.%s' % key: counts[key]}}
+                        )
+            
+            record = keywords.find_one({'uid': 1})
+            print 'new_record: %s' % record
 
-            #record = keywords.find_one({'uid': 1})
-
-            #if 'ted' in keys: 
-            #    print "FOUND"
-
-            #if 'bob' in keys: 
-            #    print "FOUND"
-
-            # CHECK RECORD ONE BY ONE
-
-            # INSERT KEYS IF NEEDED
-            #cursor = keywords.find({'counts.ted': {'$exists': True}})
-            #cursor = keywords.find({'counts.ted': {'$exists': True}})
-            #cursor = keywords.find({'counts.bob': {'$exists': True}})
-            #print cursor
-
-            #does_key_exit = False
-            #if cursor.count() > 0:
-            #    print "Key exists"
-            #    does_key_exist = True
             print "Entry updated"
 
         else:
