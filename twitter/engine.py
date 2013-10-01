@@ -110,8 +110,10 @@ class Storage:
             for key in new_keys:
                 if key not in current_keys:
                     print "word: %s not in database" % key
+                else:
+                    print "word: %s is in database" % key
 
-
+            
 
             #record = keywords.find_one({'uid': 1})
 
