@@ -1,3 +1,4 @@
+import config
 import pycurl
 import sys
 import sign_request
@@ -103,12 +104,6 @@ class Storage:
             new_keys = counts.keys()
             print "keys not in database: %s" % new_keys
 
-            #difference = list(set(current_keys) - set(new_keys)) 
-            #print "difference: %s" % difference
-
-            #difference = list(set(new_keys) - set()) 
-            #print "difference: %s" % difference
-            
             for key in new_keys:
                 if key not in current_keys:
                     print "word: %s not in database" % key
@@ -119,8 +114,8 @@ class Storage:
                             {'uid': 1},
                             {'$set': {'counts': existing_counts}}
                         )
-                    
-                    print "%s => database" % key
+            
+                    print '%s%s => keywords%s' % (config.color.RED, key, config.color.ENDC)
 
                 else:
                     print "word: %s is in database" % key
@@ -129,6 +124,8 @@ class Storage:
                             {'uid': 1}, 
                             {'$inc': {'counts.%s' % key: counts[key]}}
                         )
+
+                    print '%s%s += %s%s' % (config.color.RED, key, counts[key], config.color.ENDC)
             
             record = keywords.find_one({'uid': 1})
             print 'new_record: %s' % record
@@ -142,6 +139,7 @@ class Storage:
             }
 
             keywords.insert(data)
+            print '%s%s => keywords%s' % (config.color.RED, data, config.color.ENDC)
             print "data: %s => keywords" % data 
 
     def __str__(self):
