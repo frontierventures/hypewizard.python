@@ -1,5 +1,4 @@
-nal
-mmport pycurl
+import pycurl
 import sys
 import sign_request
 import json
