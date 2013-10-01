@@ -1,4 +1,5 @@
-import pycurl
+nal
+mmport pycurl
 import sys
 import sign_request
 import json
@@ -73,7 +74,7 @@ class Storage:
             'uid': uid,
             'pid': tweet['user']['id'], 
             'tweet_id': tweet['id'],
-            'text': tweet['text']
+            'text': tweet['text'] 
         }
 
         twitter_data.insert(data)
@@ -87,19 +88,53 @@ class Storage:
         counts = dict(counter)
 
         #entry = db.keywords.find({uid: 1})
-        entry = keywords.find_one({'uid': 1})
 
-        if entry:
+        # CHECK THERE ARE WORDS THAT NEED TO BE INSERTED
+        # PULL ALL KEYS
+
+        record = keywords.find_one({'uid': 1})
+
+        if record:
+            # current_keys for the user
+            current_keys = record['counts'].keys()
+            print "current_keys: %s" % current_keys
+
+            new_keys = counts.keys()
+            print "new_keys: %s" % new_keys
+
+            #difference = list(set(current_keys) - set(new_keys)) 
+            #print "difference: %s" % difference
+
+            #difference = list(set(new_keys) - set()) 
+            #print "difference: %s" % difference
+
+            for key in new_keys:
+                if key not in current_keys:
+                    print key
+
+
+
+            #record = keywords.find_one({'uid': 1})
+
+            #if 'ted' in keys: 
+            #    print "FOUND"
+
+            #if 'bob' in keys: 
+            #    print "FOUND"
+
+            # CHECK RECORD ONE BY ONE
+
+            # INSERT KEYS IF NEEDED
+            #cursor = keywords.find({'counts.ted': {'$exists': True}})
+            #cursor = keywords.find({'counts.ted': {'$exists': True}})
+            #cursor = keywords.find({'counts.bob': {'$exists': True}})
+            #print cursor
+
+            #does_key_exit = False
+            #if cursor.count() > 0:
+            #    print "Key exists"
+            #    does_key_exist = True
             print "Entry updated"
-
-            cursor = keywords.find({'counts.ted': {'$exists': True}})
-            cursor = keywords.find({'counts.bob': {'$exists': True}})
-            print cursor
-
-            does_key_exit = False
-            if cursor.count() > 0:
-                print "Key exists"
-                does_key_exist = True
 
         else:
             data = {
