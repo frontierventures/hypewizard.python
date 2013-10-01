@@ -113,7 +113,7 @@ class Storage:
                 else:
                     print "word: %s is in database" % key
 
-            
+                    keywords.update({'counts.%s' % key: {$inc, counts[key]}})
 
             #record = keywords.find_one({'uid': 1})
 
