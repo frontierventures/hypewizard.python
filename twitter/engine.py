@@ -106,10 +106,10 @@ class Storage:
 
             #difference = list(set(new_keys) - set()) 
             #print "difference: %s" % difference
-
+            
             for key in new_keys:
                 if key not in current_keys:
-                    print key
+                    print "word: %s not in database" % key
 
 
 
